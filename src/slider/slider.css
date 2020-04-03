@@ -46,6 +46,7 @@
     height: 20px;
     border-radius: 50%;
     background-color: var(--active-color);
+    cursor: pointer;
 }
 .slider__label {
     width: 90%;
@@ -107,4 +108,3 @@
     left: 10px;
     z-index: -1;
 }
-

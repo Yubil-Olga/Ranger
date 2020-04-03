@@ -1,6 +1,7 @@
 .slider {
     --basic-color: #e5e5e5;
     --active-color: #53b6a8;
+    --transition: 0.5s;
     width: 290px;
     padding: 10px 0;
     box-sizing: border-box;
@@ -30,6 +31,8 @@
     border-radius: 4px;
     background-color: var(--active-color);
     left: 0;
+    right: 100%;
+    transition: var(--transition);
 }
 .slider__thumb {
     width: 1px;
@@ -40,12 +43,14 @@
     display: grid;
     align-content: center;
     justify-content: center;
+    transition: var(--transition);
 }
 .thumb__marker {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background-color: var(--active-color);
+    cursor: pointer;
 }
 .slider__label {
     width: 90%;
@@ -95,6 +100,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: var(--transition);
 }
 .tag__mark:before {
     content: "";

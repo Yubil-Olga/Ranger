@@ -38,7 +38,9 @@ module.exports = {
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
             $: 'jquery',
-            jQuery: 'jquery'
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+            "window.jQuery": "jquery"
           })
     ],
     module: {
@@ -51,6 +53,13 @@ module.exports = {
             test: /(?!.test)\.ts(x?)$/,
             exclude: /node_modules/,
             use: 'ts-loader'
+          },
+          {
+            test: /\.(png|jpe?g|gif)$/i,
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
           }
         ],
       }
