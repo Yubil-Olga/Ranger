@@ -4,7 +4,7 @@ import './slider/app'
 // }
 
 $('.perfectSlider').perfectSlider({
-    "step": 20
+    // "step": 20
 });
 
 

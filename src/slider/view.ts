@@ -14,7 +14,7 @@ export default class View {
       })
       
       this._slider._thumbMarker.addEventListener('mousedown', function() {
-        _ranger._slider._container.style.setProperty('--transition', 0)
+        _ranger._slider._container.style.setProperty('--transition', "0")
         let mousemove = _ranger.onSelect.bind(_ranger)
         startSelect()   
         
@@ -39,14 +39,22 @@ export default class View {
     }
    
     onSelect() {
-      let coord = (<MouseEvent>event).clientX - this._slider._thumbMarker.clientWidth
+      // let coord = (<MouseEvent>event).clientX - this._slider._thumbMarker.clientWidth
+      // if (coord < 0) {
+      //   coord = 0
+      // }
+      // if (coord > this._slider._track.clientWidth) {
+      //   coord = this._slider._track.clientWidth
+      // }
+      let coord = Math.round((<MouseEvent>event).clientY - this._slider._track.getBoundingClientRect().top)
       if (coord < 0) {
         coord = 0
       }
-      if (coord > this._slider._track.clientWidth) {
-        coord = this._slider._track.clientWidth
+      if (coord > this._slider._track.clientHeight) {
+        coord = this._slider._track.clientHeight
       }
-      this.callCommand(this._slider._track.clientWidth, coord)
+      // this.callCommand(this._slider._track.clientWidth, coord)
+      this.callCommand(this._slider._track.clientHeight, coord)
     }
   
     callCommand(trackWidth: number, position: number) {
@@ -54,9 +62,12 @@ export default class View {
     }
   
     moveThumb(pos: number) {
-      this._slider._thumb.style.left = pos + "px";
-      this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/2) + "px";
-      this._slider._barSelected.style.right = this._slider._track.clientWidth - pos + "px";
+      // this._slider._thumb.style.left = pos + "px";
+      // this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/2) + "px";
+      // this._slider._barSelected.style.right = this._slider._track.clientWidth - pos + "px";
+      this._slider._thumb.style.top = pos + "px";
+      this._slider._mark.style.top = pos - (this._slider._mark.clientHeight/2) + "px";
+      this._slider._barSelected.style.bottom = this._slider._track.clientHeight - pos + "px";
     }
     
     changeTitle(title: number) {

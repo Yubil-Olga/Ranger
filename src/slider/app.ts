@@ -5,9 +5,9 @@ import Presenter from './presenter'
 
 (function( $ ) {
     $.fn.perfectSlider = function(options: any) {
-      // let settings = $.extend({
+      let settings = $.extend({
 
-      // }, options);
+      }, options);
       return this.each(function() {
         let model = new Model(),
           view = new View(),

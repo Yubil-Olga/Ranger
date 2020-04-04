@@ -36,19 +36,25 @@ export default class Slider {
       
     }
     details() {
-      this._container.className = 'slider'
+      // this._container.className = 'slider'
+      this._container.classList.add('slider', 'slider-vertical')
       this._tag.className = 'slider__tag'
+      this._tag.classList.add('slider__tag-vertical')
       this._mark.className = 'tag__mark'
+      this._mark.classList.add('tag__mark-vertical')
       this._mark.textContent = "0"
       this._title.className = 'slider__title';
       this._title.textContent = 'Total: '
       this._value.type = "text";
-      this._title.className = "slider__track";
       this._track.className = "slider__track"
+      this._track.classList.add('slider-vertical__track')
       this._bar.className = 'track__bar'
+      this._bar.classList.add('track__bar-vertical')
       this._barSelected.className = 'track__bar_selected'
       this._label.className = "slider__label";
+      this._label.classList.add("slider__label-vertical");
       this._thumb.className = "slider__thumb"
+      this._thumb.classList.add("slider__thumb-vertical")
       this._thumbMarker.className = "thumb__marker"
     }
     create() {
@@ -60,7 +66,10 @@ export default class Slider {
       for (let i=0; i<5; i++) {
         let labelMark = document.createElement('span')
         labelMark.className = 'label__mark'
+        labelMark.classList.add('label__mark-vertical')
         labelMark.setAttribute("data-text", (i*25).toString())
+        // labelMark.style.left = i*25 + "%"
+        labelMark.style.top = i*25 + "%"
         this._label.append(labelMark)
       }
       return this
