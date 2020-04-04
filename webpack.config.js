@@ -9,7 +9,8 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        index: './index.ts'
+        index: './index.ts',
+        favouriteslider: './slider/app.ts'
     },
     output: {
         filename: './js/[name].bundle.js',
