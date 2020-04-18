@@ -8,15 +8,7 @@
     display: grid;
     justify-items: center;
 }
-.slider-vertical {
-    display: flex;
-    width: unset;
-    height: 290px;
-    padding: 10px 20px;
-}
-.slider-vertical .slider__title {
-    display: none;
-}
+
 .slider input {
     position: absolute;
     opacity: 0;
@@ -26,28 +18,21 @@
     height: 30px;
     position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
-.slider-vertical__track {
-    width: 30px;
-    height: 90%;
-}
+
 .track__bar {
     width: 100%;
     height: 6px;
     border-radius: 4px;
-    background-color: var(--basic-color);
+    background: var(--basic-color);
 }
-.track__bar-vertical {
-    width: 6px;
-    height: 100%;
-}
+
 .track__bar_selected {
     position: absolute;
     height: 6px;
     border-radius: 4px;
-    background-color: var(--active-color);
+    background: var(--active-color);
     left: 0;
     right: 100%;
     transition: var(--transition);
@@ -63,18 +48,12 @@
     justify-content: center;
     transition: var(--transition);
 }
-.slider__thumb-vertical {
-    align-content: unset;
-    width: 100%;
-    height: 1px;
-    display: flex;
-    align-items: center;
-}
+
 .thumb__marker {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: var(--active-color);
+    background: var(--active-color);
     cursor: pointer;
 }
 .slider__label {
@@ -82,33 +61,22 @@
     position: relative;
     font-size: 12px;
 }
-.slider__label-vertical {
-    width: unset;
-    height: 90%;
-}
+
 .label__mark {
     width: 1px;
     height: 4px;
-    background-color: var(--active-color);
+    background: var(--active-color);
     display: flex;
     justify-content: center;
     position: absolute;
     left: 0;
 }
-.label__mark-vertical {
-    width: 4px;
-    height: 1px;
-    justify-content: unset;
-    align-items: center;
-}
+
 .label__mark:before {
     content: attr(data-text);
     padding-top: 5px;
 }
-.label__mark-vertical:before {
-    padding-top: 0;
-    padding-left: 10px;
-}
+
 /* .label__mark:nth-child(2) {
     left: 25%;
 }
@@ -126,14 +94,11 @@
     position: relative;
     height: 25px;
 }
-.slider__tag-vertical {
-    width: 25px;
-    height: 90%;
-}
+
 .tag__mark {
     width: 30px;
     height: 20px;
-    background-color: var(--active-color);
+    background: var(--active-color);
     border-radius: 4px;
     position: absolute;
     top: 0;
@@ -145,13 +110,11 @@
     justify-content: center;
     transition: var(--transition);
 }
-.tag__mark-vertical {
-    top: -10px;
-}
+
 .tag__mark:before {
     content: "";
     position: absolute;
-    background-color: var(--active-color);
+    background: var(--active-color);
     width: 10px;
     height: 10px;
     transform: rotate(45deg);
@@ -159,8 +122,65 @@
     left: 10px;
     z-index: -1;
 }
-.tag__mark-vertical:before {
+
+/****************************** Vertical orintation ************************************************/
+.slider-vertical {
+    display: flex;
+    width: unset;
+    height: 290px;
+    padding: 10px 20px;
+}
+.slider-vertical .slider__title {
+    display: none;
+}
+.slider-vertical .slider__track {
+    width: 30px;
+    height: 90%;
+    flex-direction: column;
+}
+.slider-vertical .track__bar {
+    width: 6px;
+    height: 100%;
+}
+.slider-vertical .track__bar_selected {
+    --bar-width: 6px;
+    width: var(--bar-width);
+    height: unset;
+    right: 0;
+    left: calc(50% - (var(--bar-width)/2));
+    top: 0;
+    bottom: 100%;
+}
+.slider-vertical .slider__thumb {
+    align-content: unset;
+    width: 100%;
+    height: 1px;
+    display: flex;
+    align-items: center;
+}
+.slider-vertical .slider__tag {
+    width: 25px;
+    height: 90%;
+}
+.slider-vertical .tag__mark {
+    top: -10px;
+}
+.slider-vertical .tag__mark:before {
     bottom: 5px;
     left: unset;
     right: -2px;
+}
+.slider-vertical .slider__label {
+    width: unset;
+    height: 90%;
+}
+.slider-vertical .label__mark {
+    width: 4px;
+    height: 1px;
+    justify-content: unset;
+    align-items: center;
+}
+.slider-vertical .label__mark:before {
+    padding-top: 0;
+    padding-left: 10px;
 }

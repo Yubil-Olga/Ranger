@@ -4,6 +4,7 @@ import eventDispatcher from './dispatcher'
 export default class View {
     private _slider: any
     private _inputChanged: any
+    private _options: any
     constructor() {
       this._slider = new Slider().create()
       this._inputChanged = new eventDispatcher(this)
@@ -33,28 +34,44 @@ export default class View {
         return false
       })
     }
-  
-    createSlider(elem: HTMLElement) {
+    createSlider(elem: HTMLElement, options: any) {
+      this._options = options
       elem.append(this._slider._container)
+      if (this._options.direction == "vertical") {
+        (<HTMLElement>this._slider._container).classList.add('slider-vertical')
+      }
+      if (typeof this._options.tagmark === "boolean" && this._options.tagmark === false) {
+        this._slider.tagmarkVisibility()
+      }
+      if (typeof this._options.color == 'string') {
+        this._slider.colorScheme(this._options.color)
+      }
+      if (typeof options.thumb == 'string') {
+        this._slider.thumbShape(options.thumb)
+      }
+      this._slider.addLabel(options)
+      this._slider.addScale(options)
     }
    
     onSelect() {
-      // let coord = (<MouseEvent>event).clientX - this._slider._thumbMarker.clientWidth
-      // if (coord < 0) {
-      //   coord = 0
-      // }
-      // if (coord > this._slider._track.clientWidth) {
-      //   coord = this._slider._track.clientWidth
-      // }
-      let coord = Math.round((<MouseEvent>event).clientY - this._slider._track.getBoundingClientRect().top)
+      let width: number
+      let coord: number
+
+      if (this._options.direction == "vertical") {
+        width = this._slider._track.clientHeight
+        coord = Math.round((<MouseEvent>event).clientY - this._slider._track.getBoundingClientRect().top)
+      }
+      else {
+        width = this._slider._track.clientWidth
+        coord = Math.round((<MouseEvent>event).clientX - this._slider._thumbMarker.clientWidth)
+      }
       if (coord < 0) {
         coord = 0
       }
-      if (coord > this._slider._track.clientHeight) {
-        coord = this._slider._track.clientHeight
+      if (coord > width) {
+        coord = width
       }
-      // this.callCommand(this._slider._track.clientWidth, coord)
-      this.callCommand(this._slider._track.clientHeight, coord)
+      this.callCommand(width, coord)
     }
   
     callCommand(trackWidth: number, position: number) {
@@ -62,15 +79,30 @@ export default class View {
     }
   
     moveThumb(pos: number) {
-      // this._slider._thumb.style.left = pos + "px";
-      // this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/2) + "px";
-      // this._slider._barSelected.style.right = this._slider._track.clientWidth - pos + "px";
-      this._slider._thumb.style.top = pos + "px";
-      this._slider._mark.style.top = pos - (this._slider._mark.clientHeight/2) + "px";
-      this._slider._barSelected.style.bottom = this._slider._track.clientHeight - pos + "px";
+      if (this._options.direction == "vertical") {
+        this._slider._thumb.style.top = pos + "%";
+        this._slider._mark.style.top = pos - (this._slider._mark.clientHeight/this._slider._track.clientHeight)*50 + "%";
+        this._slider._barSelected.style.bottom = 100 - pos + "%";
+      }
+      else {
+        this._slider._thumb.style.left = pos + "%";
+        this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/this._slider._track.clientWidth)*50 + "%";
+        this._slider._barSelected.style.right = 100 - pos + "%";
+      } 
+      // if (this._options.direction == "vertical") {
+      //   this._slider._thumb.style.top = pos + "px";
+      //   this._slider._mark.style.top = pos - (this._slider._mark.clientHeight/2) + "px";
+      //   this._slider._barSelected.style.bottom = this._slider._track.clientHeight - pos + "px";
+      // }
+      // else {
+      //   this._slider._thumb.style.left = pos + "px";
+      //   this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/2) + "px";
+      //   this._slider._barSelected.style.right = this._slider._track.clientWidth - pos + "px";
+      // } 
     }
     
     changeTitle(title: number) {
+      this._slider._value.value = title
       this._slider._title.textContent = "Total: " + title
       this._slider._mark.textContent = title
     }

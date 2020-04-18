@@ -1,4 +1,5 @@
 import './slider.css'
+import jQuery from 'jquery'
 import Model  from './model'
 import View from './view'
 import Presenter from './presenter'
