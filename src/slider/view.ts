@@ -6,37 +6,44 @@ export default class View {
     private _inputChanged: any
     private _options: any
     constructor() {
-      this._slider = new Slider().create()
+      this._slider = new Slider()
       this._inputChanged = new eventDispatcher(this)
       let _ranger = this
       this._slider._track.addEventListener('click', function() {
         _ranger._slider._container.style.setProperty('--transition', "0.5s")
         _ranger.onSelect()
       })
-      
-      this._slider._thumbMarker.addEventListener('mousedown', function() {
-        _ranger._slider._container.style.setProperty('--transition', "0")
+      this._slider._track.addEventListener('mousedown', function(e: any) {
         let mousemove = _ranger.onSelect.bind(_ranger)
-        startSelect()   
-        
+        if (e.target.className === "thumb__marker") {
+          _ranger._slider._container.style.setProperty('--transition', "0")
+          startSelect()  
+        }
         function startSelect() {
           event.preventDefault()
           document.addEventListener('mousemove', mousemove)
           document.addEventListener('mouseup', endSelect)
         }
-  
         function endSelect() {
           document.removeEventListener('mouseup',  endSelect)
           document.removeEventListener('mousemove',  mousemove)
         }
-      })  
-      this._slider._thumbMarker.addEventListener('dragstart', () => {
+      })
+      
+      this._slider._track.addEventListener('dragstart', () => {
         return false
       })
     }
     createSlider(elem: HTMLElement, options: any) {
       this._options = options
+      
+      let type = 1
+      if (options.type === 'double') {
+        type = 2
+      }
+      this._slider.createSlider(type)
       elem.append(this._slider._container)
+      
       if (this._options.direction == "vertical") {
         (<HTMLElement>this._slider._container).classList.add('slider-vertical')
       }
@@ -49,6 +56,7 @@ export default class View {
       if (typeof options.thumb == 'string') {
         this._slider.thumbShape(options.thumb)
       }
+      
       this._slider.addLabel(options)
       this._slider.addScale(options)
     }
@@ -63,7 +71,8 @@ export default class View {
       }
       else {
         width = this._slider._track.clientWidth
-        coord = Math.round((<MouseEvent>event).clientX - this._slider._thumbMarker.clientWidth)
+        let markerWidth = (<HTMLElement>this._slider._thumblers[0]).children[0].clientWidth
+        coord = Math.round((<MouseEvent>event).clientX - markerWidth)
       }
       if (coord < 0) {
         coord = 0
@@ -71,39 +80,75 @@ export default class View {
       if (coord > width) {
         coord = width
       }
-      this.callCommand(width, coord)
+      
+      let index = 0
+      if (this._options.type === "double") {
+        let arr = [];
+        this._slider._thumblers.forEach((e: any) => {
+          let dist: number
+          if (this._options.direction === "vertical") {
+            dist = Math.abs(coord - e.getBoundingClientRect().top);
+          }
+          else {
+            dist = Math.abs(coord - e.getBoundingClientRect().left);
+          }
+          arr.push(dist) 
+        })
+        index = arr.indexOf(Math.min(...arr))
+      }
+      this.callCommand(width, coord, index); 
     }
   
-    callCommand(trackWidth: number, position: number) {
-      this._inputChanged.notify({trackWidth: trackWidth, position: position});
+    callCommand(trackWidth: number, position: number, index: number) {
+      this._inputChanged.notify({trackWidth: trackWidth, position: position, index: index});
     }
   
-    moveThumb(pos: number) {
-      if (this._options.direction == "vertical") {
-        this._slider._thumb.style.top = pos + "%";
-        this._slider._mark.style.top = pos - (this._slider._mark.clientHeight/this._slider._track.clientHeight)*50 + "%";
-        this._slider._barSelected.style.bottom = 100 - pos + "%";
+    // changeTitle(title: number) {
+    //   this._slider._value.value = title
+    //   this._slider._title.textContent = "Total: " + title
+    //   this._slider._mark.textContent = title
+    // }
+    
+    update(data: any) {
+      let arr = []
+      let prefix = this._options.prefix ? this._options.prefix + " " : ""
+      for (let i=0; i<data.length; i++) {
+        this._slider._tagmarks[i].textContent = prefix + data[i].value
+        arr.push(data[i].value);
+        this.moveThumbs(data, i);
+      }
+      this.moveBar(data);
+      this._slider._value.value = arr.join(";")
+    }
+
+    moveThumbs(data: any, index: number) {
+      if (this._options.direction === "vertical") {
+        this._slider._thumblers[index].style.top = data[index].coord + "%"
+        this._slider._tagmarks[index].style.top = data[index].coord - (this._slider._tagmarks[index].clientHeight/this._slider._track.clientHeight)*50 + "%"
       }
       else {
-        this._slider._thumb.style.left = pos + "%";
-        this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/this._slider._track.clientWidth)*50 + "%";
-        this._slider._barSelected.style.right = 100 - pos + "%";
-      } 
-      // if (this._options.direction == "vertical") {
-      //   this._slider._thumb.style.top = pos + "px";
-      //   this._slider._mark.style.top = pos - (this._slider._mark.clientHeight/2) + "px";
-      //   this._slider._barSelected.style.bottom = this._slider._track.clientHeight - pos + "px";
-      // }
-      // else {
-      //   this._slider._thumb.style.left = pos + "px";
-      //   this._slider._mark.style.left = pos - (this._slider._mark.clientWidth/2) + "px";
-      //   this._slider._barSelected.style.right = this._slider._track.clientWidth - pos + "px";
-      // } 
+        this._slider._thumblers[index].style.left = data[index].coord + "%"
+        this._slider._tagmarks[index].style.left = data[index].coord - (this._slider._tagmarks[index].clientWidth/this._slider._track.clientWidth)*50 + "%"
+      }
     }
-    
-    changeTitle(title: number) {
-      this._slider._value.value = title
-      this._slider._title.textContent = "Total: " + title
-      this._slider._mark.textContent = title
+    moveBar(data: any) {
+      let barStart: string
+      let barEnd: string
+      if (data.length > 1) {
+        barStart = data[0].coord + "%"
+        barEnd = 100 - data[1].coord + "%"
+      }
+      else {
+        barStart = 0 + "%"
+        barEnd = 100 - data[0].coord + "%"
+      }
+      if (this._options.direction === 'vertical') {
+        this._slider._barSelected.style.top = barStart;
+        this._slider._barSelected.style.bottom = barEnd;
+      }
+      else {
+        this._slider._barSelected.style.left = barStart;
+        this._slider._barSelected.style.right = barEnd;
+      }
     }
-  }
+}

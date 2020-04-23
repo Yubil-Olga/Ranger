@@ -10,11 +10,10 @@ export default class Presenter {
       this._view = view
       let _presenter = this
       this._view._inputChanged.attach(function (sender: any, args: any) {
-        _presenter.callModel(args.position, args.trackWidth)
+        _presenter.callModel(args.position, args.trackWidth, args.index)
       })
       this._model._modelChanged.attach(function(sender: any, args: any) {
-        _presenter._view.moveThumb(args.newPos)
-        _presenter._view.changeTitle(args.newValue)
+        _presenter._view.update(args)
       })
     }
     init(elem: HTMLLIElement, options: any) {
@@ -38,7 +37,7 @@ export default class Presenter {
       
       return options
     }
-    callModel(position: number, trackWidth: number) {
-      this._model.valueCalculation(position, trackWidth)
+    callModel(position: number, trackWidth: number, index: number) {
+      this._model.valueCalculation(position, trackWidth, index)
     }
   }
