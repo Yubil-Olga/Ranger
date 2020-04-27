@@ -2,17 +2,19 @@ import Slider from './slider'
 import eventDispatcher from './dispatcher'
 
 export default class View {
+    private _options: any
     private _slider: any
     private _inputChanged: any
-    private _options: any
     constructor() {
       this._slider = new Slider()
       this._inputChanged = new eventDispatcher(this)
       let _ranger = this
+
       this._slider._track.addEventListener('click', function() {
         _ranger._slider._container.style.setProperty('--transition', "0.5s")
         _ranger.onSelect()
       })
+
       this._slider._track.addEventListener('mousedown', function(e: any) {
         let mousemove = _ranger.onSelect.bind(_ranger)
         if (e.target.className === "thumb__marker") {
@@ -34,45 +36,26 @@ export default class View {
         return false
       })
     }
+    get slider() {
+      return this._slider
+    }
     createSlider(elem: HTMLElement, options: any) {
       this._options = options
-      
-      let type = 1
-      if (options.type === 'double') {
-        type = 2
-      }
-      this._slider.createSlider(type)
-      elem.append(this._slider._container)
-      
-      if (this._options.direction == "vertical") {
-        (<HTMLElement>this._slider._container).classList.add('slider-vertical')
-      }
-      if (typeof this._options.tagmark === "boolean" && this._options.tagmark === false) {
-        this._slider.tagmarkVisibility()
-      }
-      if (typeof this._options.color == 'string') {
-        this._slider.colorScheme(this._options.color)
-      }
-      if (typeof options.thumb == 'string') {
-        this._slider.thumbShape(options.thumb)
-      }
-      
-      this._slider.addLabel(options)
-      this._slider.addScale(options)
+      this._slider.createSlider(options)
+      elem.append(this._slider._container)  
     }
    
     onSelect() {
       let width: number
       let coord: number
-
+      
       if (this._options.direction == "vertical") {
         width = this._slider._track.clientHeight
         coord = Math.round((<MouseEvent>event).clientY - this._slider._track.getBoundingClientRect().top)
       }
       else {
         width = this._slider._track.clientWidth
-        let markerWidth = (<HTMLElement>this._slider._thumblers[0]).children[0].clientWidth
-        coord = Math.round((<MouseEvent>event).clientX - markerWidth)
+        coord = Math.round((<MouseEvent>event).clientX - this._slider._track.getBoundingClientRect().left)
       }
       if (coord < 0) {
         coord = 0
@@ -81,33 +64,30 @@ export default class View {
         coord = width
       }
       
+      let index = this.selectedThumb()
+      this.callCommand(width, coord, index); 
+    }
+    selectedThumb() {
       let index = 0
-      if (this._options.type === "double") {
+      if (this._options.type === 2) {
         let arr = [];
         this._slider._thumblers.forEach((e: any) => {
           let dist: number
           if (this._options.direction === "vertical") {
-            dist = Math.abs(coord - e.getBoundingClientRect().top);
+            dist = Math.abs((<MouseEvent>event).clientY - e.getBoundingClientRect().top);
           }
           else {
-            dist = Math.abs(coord - e.getBoundingClientRect().left);
+            dist = Math.abs((<MouseEvent>event).clientX - e.getBoundingClientRect().left);
           }
           arr.push(dist) 
         })
         index = arr.indexOf(Math.min(...arr))
       }
-      this.callCommand(width, coord, index); 
+      return index
     }
-  
     callCommand(trackWidth: number, position: number, index: number) {
       this._inputChanged.notify({trackWidth: trackWidth, position: position, index: index});
     }
-  
-    // changeTitle(title: number) {
-    //   this._slider._value.value = title
-    //   this._slider._title.textContent = "Total: " + title
-    //   this._slider._mark.textContent = title
-    // }
     
     update(data: any) {
       let arr = []
@@ -124,7 +104,7 @@ export default class View {
     moveThumbs(data: any, index: number) {
       if (this._options.direction === "vertical") {
         this._slider._thumblers[index].style.top = data[index].coord + "%"
-        this._slider._tagmarks[index].style.top = data[index].coord - (this._slider._tagmarks[index].clientHeight/this._slider._track.clientHeight)*50 + "%"
+        this._slider._tagmarks[index].style.top = data[index].coord - 5 + "%"
       }
       else {
         this._slider._thumblers[index].style.left = data[index].coord + "%"

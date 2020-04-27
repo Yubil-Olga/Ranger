@@ -1,6 +1,7 @@
 import './model'
 import './view'
 import eventDistapcher from './dispatcher'
+import Options from './options'
 
 export default class Presenter {
     private _model: any
@@ -17,25 +18,9 @@ export default class Presenter {
       })
     }
     init(elem: HTMLLIElement, options: any) {
-      let params = this.checkOptions(options)
+      let params = new Options(options).create()
       this._view.createSlider(elem, params)
       this._model.init(params)
-    }
-    checkOptions(options: any) {
-      if (typeof options.start !== 'number' || options.start > options.end) {
-        options.start = 0
-      }
-      if (typeof options.end !== 'number' || options.end < options.start) {
-        options.end = 100
-      }
-      if (typeof options.step !== 'number'|| options.step < 1 || (options.end - options.start)%options.step > 0) {
-        options.step = 1
-      }
-      if (typeof options.to !== 'number' || options.to > options.end || options.to < options.start) {
-        options.to = options.start
-      }
-      
-      return options
     }
     callModel(position: number, trackWidth: number, index: number) {
       this._model.valueCalculation(position, trackWidth, index)
