@@ -1,4 +1,4 @@
-import Slider from './slider'
+import Slider from './slider/slider'
 import View from './view'
 
 describe("Single slider", () => {
@@ -11,7 +11,11 @@ describe("Single slider", () => {
         step: 10
     }
     view.createSlider(div, options)
-
+    
+    test ("Selected thumbler", () => {
+        view.slider._thumblers[0].style.top = "5%"
+        expect(view.selectedThumb(100, 120, view.slider._thumblers)).toBe(0)
+    })
     test("Update tagmark value", () => {
         view.update([{coord: 10, value: 20}])
         expect(view.slider._tagmarks[0].textContent).toBe("20")
@@ -45,8 +49,39 @@ describe("Double slider", () => {
         view.moveThumbs([{coord: 20, value: "two"}, {coord: 80, value: "four"}], 1)
         expect(view.slider._thumblers[1].style.top).toBe('80%')
     })
-    test("Click event", () => {
-        
-        expect(2+2).toBe(4)
+    // test("Click event", () => {
+    //     view.onSelect = jest.fn()
+    //     view.slider._track.click()
+    //     expect(view.onSelect).toBeCalled()
+    // })
+    test ("Selected thumbler", () => {
+        view.slider._thumblers[0].style.top = "5%"
+        view.slider._thumblers[1].style.top = "80%"
+        expect(view.selectedThumb(100, 120, view.slider._thumblers)).toBe(1)
+    })
+    test ("Click event", () => {   
+        let smth = new MouseEvent('click', {
+            clientY: 100
+        })
+        view.callCommand = jest.fn()
+        view.onSelect(smth)
+        expect(view.callCommand).toBeCalled()
+        expect(view.callCommand).toBeCalledWith(0, 0, 0)
+    })
+})
+
+describe("Double slider", () => {
+    let view = new View()
+    let div = document.createElement('div')
+    let options = {
+        type: 2,
+        values: ["one", "two", "three", "four", "five"]
+    }
+    view.createSlider(div, options)
+    
+    test ("Selected thumbler", () => {
+        view.slider._thumblers[0].style.left = "50%"
+        view.slider._thumblers[1].style.left = "80%"
+        expect(view.selectedThumb(10, 120, view.slider._thumblers)).toBe(0)
     })
 })

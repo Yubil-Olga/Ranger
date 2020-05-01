@@ -1,4 +1,4 @@
-import Slider from './slider'
+import Slider from './slider/slider'
 import eventDispatcher from './dispatcher'
 
 export default class View {
@@ -9,28 +9,11 @@ export default class View {
       this._slider = new Slider()
       this._inputChanged = new eventDispatcher(this)
       let _ranger = this
+      this._slider._track.addEventListener('click', _ranger.onSelect.bind(_ranger))
 
-      this._slider._track.addEventListener('click', function() {
-        _ranger._slider._container.style.setProperty('--transition', "0.5s")
-        _ranger.onSelect()
-      })
+      this._slider._label._scale.addEventListener('click', _ranger.onSelect.bind(_ranger))
 
-      this._slider._track.addEventListener('mousedown', function(e: any) {
-        let mousemove = _ranger.onSelect.bind(_ranger)
-        if (e.target.className === "thumb__marker") {
-          _ranger._slider._container.style.setProperty('--transition', "0")
-          startSelect()  
-        }
-        function startSelect() {
-          event.preventDefault()
-          document.addEventListener('mousemove', mousemove)
-          document.addEventListener('mouseup', endSelect)
-        }
-        function endSelect() {
-          document.removeEventListener('mouseup',  endSelect)
-          document.removeEventListener('mousemove',  mousemove)
-        }
-      })
+      this._slider._track.addEventListener('mousedown', _ranger.onMouseDown.bind(_ranger))
       
       this._slider._track.addEventListener('dragstart', () => {
         return false
@@ -44,18 +27,32 @@ export default class View {
       this._slider.createSlider(options)
       elem.append(this._slider._container)  
     }
-   
-    onSelect() {
+    onMouseDown(event: MouseEvent) {
+      let mousemove = this.onSelect.bind(this)
+      if ((<HTMLElement>event.target).className === "thumb__marker") {
+        startSelect()
+      }
+      function startSelect() {        
+        event.preventDefault()
+        document.addEventListener('mousemove', mousemove)
+        document.addEventListener('mouseup', endSelect)
+      }
+      function endSelect() {
+        document.removeEventListener('mouseup',  endSelect)
+        document.removeEventListener('mousemove',  mousemove)
+      }
+    }
+    onSelect(event: MouseEvent) {
       let width: number
       let coord: number
-      
+      this.transitionDuration(event)
       if (this._options.direction == "vertical") {
         width = this._slider._track.clientHeight
         coord = Math.round((<MouseEvent>event).clientY - this._slider._track.getBoundingClientRect().top)
       }
       else {
         width = this._slider._track.clientWidth
-        coord = Math.round((<MouseEvent>event).clientX - this._slider._track.getBoundingClientRect().left)
+        coord = Math.round((<MouseEvent>event).clientX- this._slider._track.getBoundingClientRect().left)
       }
       if (coord < 0) {
         coord = 0
@@ -64,20 +61,29 @@ export default class View {
         coord = width
       }
       
-      let index = this.selectedThumb()
+      let index = this.selectedThumb(coord, width, this._slider._thumblers)
       this.callCommand(width, coord, index); 
     }
-    selectedThumb() {
+    transitionDuration(event: MouseEvent) {
+      if (event.type === 'click') {
+        this._slider._container.style.setProperty('--transition', "0.5s")
+      }
+      else {
+        this._slider._container.style.setProperty('--transition', "0")
+      }
+    }
+    selectedThumb(coord: number, width: number, thumblers: any) {
       let index = 0
+      
       if (this._options.type === 2) {
         let arr = [];
-        this._slider._thumblers.forEach((e: any) => {
+        thumblers.forEach((el: HTMLElement) => {
           let dist: number
           if (this._options.direction === "vertical") {
-            dist = Math.abs((<MouseEvent>event).clientY - e.getBoundingClientRect().top);
+            dist = Math.abs(coord - parseInt(el.style.top)*width/100)
           }
           else {
-            dist = Math.abs((<MouseEvent>event).clientX - e.getBoundingClientRect().left);
+            dist = Math.abs(coord - parseInt(el.style.left)*width/100)
           }
           arr.push(dist) 
         })

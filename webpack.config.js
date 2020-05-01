@@ -10,7 +10,7 @@ module.exports = {
     mode: 'development',
     entry: {
         index: './index.ts',
-        favouriteslider: './slider/app.ts'
+        favouriteslider: './app/app.ts'
     },
     output: {
         filename: './js/[name].bundle.js',

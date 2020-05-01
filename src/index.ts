@@ -1,4 +1,4 @@
-import './slider/app'
+import './app/app'
 import $ from 'jquery'
 
 export function sum(a: number, b: number): number {
@@ -25,7 +25,8 @@ $('.perfectSlider2').perfectSlider({
     "start": -100,
     "step": 30,
     "end": 100,
-    "scalestep": 20,
+    tagmark: true,
+    // "scalestep": 2000,
     'direction': 'vertical',
     "color": "linear-gradient(yellow 0, red 100%)",
     // "tagmark": false 

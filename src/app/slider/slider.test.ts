@@ -7,7 +7,8 @@ describe("Number slider", () => {
         start: 0,
         end: 100,
         step: 25,
-        scalestep: 10
+        scalestep: 10,
+        tagmark: true
     }
     ranger.createSlider(options)
 
@@ -15,7 +16,7 @@ describe("Number slider", () => {
         expect(ranger).toBeDefined()
         expect(ranger._thumblers.length).toBe(1)
         expect(ranger._tagmarks.length).toBe(1)
-        expect(ranger._tag.style.display).not.toContainEqual('none')
+        expect(ranger._tag.style.display).not.toBe('none')
     })
 })
 

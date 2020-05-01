@@ -97,6 +97,149 @@ eval("var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!\n * jQ
 
 /***/ }),
 
+/***/ "./app/app.ts":
+/*!********************!*\
+  !*** ./app/app.ts ***!
+  \********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n__webpack_require__(/*! ./slider/slider.css */ \"./app/slider/slider.css\");\r\nvar jquery_1 = __importDefault(__webpack_require__(/*! jquery */ \"../node_modules/jquery/dist/jquery.js\"));\r\nvar model_1 = __importDefault(__webpack_require__(/*! ./model */ \"./app/model.ts\"));\r\nvar view_1 = __importDefault(__webpack_require__(/*! ./view */ \"./app/view.ts\"));\r\nvar presenter_1 = __importDefault(__webpack_require__(/*! ./presenter */ \"./app/presenter.ts\"));\r\n(function ($) {\r\n    $.fn.perfectSlider = function (options) {\r\n        var settings = $.extend({}, options);\r\n        return this.each(function () {\r\n            var model = new model_1.default(), view = new view_1.default(), presenter = new presenter_1.default(model, view);\r\n            presenter.init(this, options);\r\n        });\r\n    };\r\n})(jquery_1.default);\r\n\n\n//# sourceURL=webpack:///./app/app.ts?");
+
+/***/ }),
+
+/***/ "./app/data.ts":
+/*!*********************!*\
+  !*** ./app/data.ts ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Data = /** @class */ (function () {\r\n    function Data(i, options) {\r\n        if (options.values) {\r\n            this.value = options.values[i].toString(),\r\n                this.coord = i * 100 / (options.values.length - 1);\r\n        }\r\n        else {\r\n            this.value = options.start + i * options.step,\r\n                this.coord = i * options.step * 100 / (options.end - options.start);\r\n        }\r\n    }\r\n    return Data;\r\n}());\r\nexports.default = Data;\r\n\n\n//# sourceURL=webpack:///./app/data.ts?");
+
+/***/ }),
+
+/***/ "./app/dispatcher.ts":
+/*!***************************!*\
+  !*** ./app/dispatcher.ts ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar eventDispatcher = /** @class */ (function () {\r\n    function eventDispatcher(sender) {\r\n        this._listeners = [];\r\n        this._sender = sender;\r\n    }\r\n    eventDispatcher.prototype.attach = function (listener) {\r\n        this._listeners.push(listener);\r\n    };\r\n    eventDispatcher.prototype.notify = function (args) {\r\n        var index;\r\n        for (index = 0; index < this._listeners.length; index += 1) {\r\n            this._listeners[index](this._sender, args);\r\n        }\r\n    };\r\n    return eventDispatcher;\r\n}());\r\nexports.default = eventDispatcher;\r\n\n\n//# sourceURL=webpack:///./app/dispatcher.ts?");
+
+/***/ }),
+
+/***/ "./app/model.ts":
+/*!**********************!*\
+  !*** ./app/model.ts ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar dispatcher_1 = __importDefault(__webpack_require__(/*! ./dispatcher */ \"./app/dispatcher.ts\"));\r\nvar data_1 = __importDefault(__webpack_require__(/*! ./data */ \"./app/data.ts\"));\r\nvar Model = /** @class */ (function () {\r\n    function Model() {\r\n        this._data = [];\r\n        this._modelChanged = new dispatcher_1.default(this);\r\n    }\r\n    Model.prototype.init = function (options) {\r\n        this._options = options;\r\n        for (var i = 0; i < options.type; i++) {\r\n            var data = new data_1.default(i, this._options);\r\n            this._data.push(data);\r\n        }\r\n        this.callCommand(this._data);\r\n    };\r\n    Model.prototype.stepCalculation = function () {\r\n        var step = (this._options.step / (this._options.end - this._options.start)) * 100;\r\n        return step;\r\n    };\r\n    Model.prototype.positionCalculation = function (position, step, trackWidth) {\r\n        var percent = (position / trackWidth) * 100;\r\n        var pos;\r\n        if ((percent + step) > 100) {\r\n            pos = 100;\r\n        }\r\n        else {\r\n            pos = Math.round(percent / step) * step;\r\n        }\r\n        return pos;\r\n    };\r\n    Model.prototype.valueCalculation = function (position, trackWidth, index) {\r\n        if (this._options.values) {\r\n            var step = 100 / (this._options.values.length - 1);\r\n            var pos = this.positionCalculation(position, step, trackWidth);\r\n            this._data[index].value = this._options.values[pos / step];\r\n            this._data[index].coord = pos;\r\n        }\r\n        else {\r\n            var step = this.stepCalculation();\r\n            var pos = this.positionCalculation(position, step, trackWidth);\r\n            this._data[index].value = Math.round(pos * (this._options.end - this._options.start) / 100 + this._options.start);\r\n            this._data[index].coord = pos;\r\n        }\r\n        this.callCommand(this._data);\r\n        return this._data;\r\n    };\r\n    Model.prototype.callCommand = function (data) {\r\n        this._modelChanged.notify(data);\r\n    };\r\n    return Model;\r\n}());\r\nexports.default = Model;\r\n\n\n//# sourceURL=webpack:///./app/model.ts?");
+
+/***/ }),
+
+/***/ "./app/options.ts":
+/*!************************!*\
+  !*** ./app/options.ts ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __extends = (this && this.__extends) || (function () {\r\n    var extendStatics = function (d, b) {\r\n        extendStatics = Object.setPrototypeOf ||\r\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\r\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\r\n        return extendStatics(d, b);\r\n    };\r\n    return function (d, b) {\r\n        extendStatics(d, b);\r\n        function __() { this.constructor = d; }\r\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\r\n    };\r\n})();\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Options = /** @class */ (function () {\r\n    function Options(options) {\r\n        this.settings = options;\r\n        this.type = options.type === 'double' ? 2 : 1;\r\n        this.direction = options.direction === 'vertical' ? 'vertical' : null;\r\n        this.prefix = typeof options.prefix === 'string' ? options.prefix : null;\r\n        this.color = typeof options.color === 'string' ? options.color : null;\r\n        this.tagmark = options.tagmark === false ? false : true;\r\n    }\r\n    Options.prototype.create = function () {\r\n        var values = [];\r\n        if (this.settings.values && Array.isArray(this.settings.values)) {\r\n            values = this.settings.values.filter(function (el) { return typeof el === 'string'; });\r\n        }\r\n        if (values.length > 1) {\r\n            return new ValueSlider(values, this.settings);\r\n        }\r\n        else {\r\n            return new NumberSlider(this.settings);\r\n        }\r\n    };\r\n    return Options;\r\n}());\r\nexports.default = Options;\r\nvar NumberSlider = /** @class */ (function (_super) {\r\n    __extends(NumberSlider, _super);\r\n    function NumberSlider(options) {\r\n        var _this = _super.call(this, options) || this;\r\n        if (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start > options.end) {\r\n            _this.start = 0;\r\n            _this.end = 100;\r\n        }\r\n        else {\r\n            _this.start = options.start;\r\n            _this.end = options.end;\r\n        }\r\n        _this.step = _this.checkStep(options);\r\n        _this.scalestep = _this.checkScalestep(options);\r\n        return _this;\r\n    }\r\n    NumberSlider.prototype.checkStep = function (options) {\r\n        if (typeof options.step !== 'number' || options.step < 1) {\r\n            return 1;\r\n        }\r\n        if (options.step > Math.abs(options.end - options.start)) {\r\n            return Math.abs(options.end - options.start);\r\n        }\r\n        else {\r\n            return options.step;\r\n        }\r\n    };\r\n    NumberSlider.prototype.checkScalestep = function (options) {\r\n        if (typeof options.scalestep === 'number' && options.scalestep > 1 && options.scalestep < (this.end - this.start)) {\r\n            return options.scalestep;\r\n        }\r\n        return (this.end - this.start);\r\n    };\r\n    return NumberSlider;\r\n}(Options));\r\nvar ValueSlider = /** @class */ (function (_super) {\r\n    __extends(ValueSlider, _super);\r\n    function ValueSlider(values, options) {\r\n        var _this = _super.call(this, options) || this;\r\n        _this.values = values;\r\n        return _this;\r\n    }\r\n    return ValueSlider;\r\n}(Options));\r\n\n\n//# sourceURL=webpack:///./app/options.ts?");
+
+/***/ }),
+
+/***/ "./app/presenter.ts":
+/*!**************************!*\
+  !*** ./app/presenter.ts ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n__webpack_require__(/*! ./model */ \"./app/model.ts\");\r\n__webpack_require__(/*! ./view */ \"./app/view.ts\");\r\nvar options_1 = __importDefault(__webpack_require__(/*! ./options */ \"./app/options.ts\"));\r\nvar Presenter = /** @class */ (function () {\r\n    function Presenter(model, view) {\r\n        this._model = model;\r\n        this._view = view;\r\n        var _presenter = this;\r\n        this._view._inputChanged.attach(function (sender, args) {\r\n            _presenter.callModel(args.position, args.trackWidth, args.index);\r\n        });\r\n        this._model._modelChanged.attach(function (sender, args) {\r\n            _presenter._view.update(args);\r\n        });\r\n    }\r\n    Presenter.prototype.init = function (elem, options) {\r\n        var params = new options_1.default(options).create();\r\n        this._view.createSlider(elem, params);\r\n        this._model.init(params);\r\n    };\r\n    Presenter.prototype.callModel = function (position, trackWidth, index) {\r\n        this._model.valueCalculation(position, trackWidth, index);\r\n    };\r\n    return Presenter;\r\n}());\r\nexports.default = Presenter;\r\n\n\n//# sourceURL=webpack:///./app/presenter.ts?");
+
+/***/ }),
+
+/***/ "./app/slider/__scale/scale.ts":
+/*!*************************************!*\
+  !*** ./app/slider/__scale/scale.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Scale = /** @class */ (function () {\r\n    function Scale() {\r\n        this._scale = document.createElement('div');\r\n        this._scale.className = 'slider__label';\r\n    }\r\n    Scale.prototype.addMark = function (tag, direction, position) {\r\n        var labelMark = document.createElement('span');\r\n        labelMark.className = 'label__mark';\r\n        labelMark.setAttribute(\"data-text\", tag);\r\n        if (direction == 'vertical') {\r\n            labelMark.style.top = position;\r\n        }\r\n        else {\r\n            labelMark.style.left = position;\r\n        }\r\n        this._scale.append(labelMark);\r\n    };\r\n    Scale.prototype.addScale = function (options) {\r\n        if (options.values) {\r\n            var count = options.values.length;\r\n            var percent = 100 / (count - 1);\r\n            for (var i = 0; i < count; i++) {\r\n                var position = i * percent + \"%\";\r\n                this.addMark(options.values[i].toString(), options.direction, position);\r\n            }\r\n        }\r\n        else {\r\n            var count = Math.round((options.end - options.start) / options.scalestep);\r\n            var percent = (options.scalestep / (options.end - options.start)) * 100;\r\n            for (var i = 0; i < count + 1; i++) {\r\n                var tag = (i * options.scalestep + options.start).toString();\r\n                var position = i * percent + \"%\";\r\n                this.addMark(tag, options.direction, position);\r\n            }\r\n        }\r\n    };\r\n    return Scale;\r\n}());\r\nexports.default = Scale;\r\n\n\n//# sourceURL=webpack:///./app/slider/__scale/scale.ts?");
+
+/***/ }),
+
+/***/ "./app/slider/__tagmark/tagmark.ts":
+/*!*****************************************!*\
+  !*** ./app/slider/__tagmark/tagmark.ts ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Tagmark = /** @class */ (function () {\r\n    function Tagmark() {\r\n        this._tagmark = document.createElement('span');\r\n        this._tagmark.className = 'tag__mark';\r\n    }\r\n    Object.defineProperty(Tagmark.prototype, \"tagmark\", {\r\n        get: function () {\r\n            return this._tagmark;\r\n        },\r\n        enumerable: true,\r\n        configurable: true\r\n    });\r\n    return Tagmark;\r\n}());\r\nexports.default = Tagmark;\r\n\n\n//# sourceURL=webpack:///./app/slider/__tagmark/tagmark.ts?");
+
+/***/ }),
+
+/***/ "./app/slider/__thumb/thumb.ts":
+/*!*************************************!*\
+  !*** ./app/slider/__thumb/thumb.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Thumb = /** @class */ (function () {\r\n    function Thumb() {\r\n        this._thumb = document.createElement('div');\r\n        this._thumb.className = \"slider__thumb\";\r\n    }\r\n    Thumb.prototype.createThumb = function () {\r\n        var thumbmark = document.createElement(\"span\");\r\n        thumbmark.className = \"thumb__marker\";\r\n        this._thumb.append(thumbmark);\r\n        return this._thumb;\r\n    };\r\n    return Thumb;\r\n}());\r\nexports.default = Thumb;\r\n\n\n//# sourceURL=webpack:///./app/slider/__thumb/thumb.ts?");
+
+/***/ }),
+
+/***/ "./app/slider/slider.css":
+/*!*******************************!*\
+  !*** ./app/slider/slider.css ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./app/slider/slider.css?");
+
+/***/ }),
+
+/***/ "./app/slider/slider.ts":
+/*!******************************!*\
+  !*** ./app/slider/slider.ts ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar thumb_1 = __importDefault(__webpack_require__(/*! ./__thumb/thumb */ \"./app/slider/__thumb/thumb.ts\"));\r\nvar tagmark_1 = __importDefault(__webpack_require__(/*! ./__tagmark/tagmark */ \"./app/slider/__tagmark/tagmark.ts\"));\r\nvar scale_1 = __importDefault(__webpack_require__(/*! ./__scale/scale */ \"./app/slider/__scale/scale.ts\"));\r\nvar Slider = /** @class */ (function () {\r\n    function Slider() {\r\n        this._container = this.createElement('div', 'slider');\r\n        this._tag = this.createElement('div', 'slider__tag');\r\n        this._value = this.createInput('text');\r\n        this._track = this.createElement('div', 'slider__track');\r\n        this._bar = this.createElement('div', 'track__bar');\r\n        this._barSelected = this.createElement('div', 'track__bar_selected');\r\n        this._label = new scale_1.default();\r\n        this._thumblers = [];\r\n        this._tagmarks = [];\r\n    }\r\n    Slider.prototype.createInput = function (type) {\r\n        var el = document.createElement(\"input\");\r\n        el.type = type;\r\n        return el;\r\n    };\r\n    Slider.prototype.createElement = function (tag, classname) {\r\n        var el = document.createElement(tag);\r\n        el.className = classname;\r\n        return el;\r\n    };\r\n    Slider.prototype.createSlider = function (options) {\r\n        var _a, _b;\r\n        this._container.append(this._value, this._tag, this._track, this._label._scale);\r\n        this._track.append(this._bar, this._barSelected);\r\n        for (var i = 0; i < options.type; i++) {\r\n            this._thumblers.push(new thumb_1.default().createThumb());\r\n            this._tagmarks.push(new tagmark_1.default().tagmark);\r\n        }\r\n        (_a = this._tag).append.apply(_a, this._tagmarks);\r\n        (_b = this._track).append.apply(_b, this._thumblers);\r\n        this.checkDirection(options.direction);\r\n        this.tagmarkVisibility(options.tagmark);\r\n        this.colorScheme(options);\r\n        this._label.addScale(options);\r\n        return this;\r\n    };\r\n    Slider.prototype.tagmarkVisibility = function (tagmark) {\r\n        if (!tagmark) {\r\n            this._tag.style.display = 'none';\r\n        }\r\n    };\r\n    Slider.prototype.colorScheme = function (options) {\r\n        if (options.color) {\r\n            this._container.style.setProperty('--active-color', options.color);\r\n        }\r\n    };\r\n    Slider.prototype.checkDirection = function (direction) {\r\n        if (direction === 'vertical') {\r\n            this._container.classList.add('slider-vertical');\r\n        }\r\n    };\r\n    return Slider;\r\n}());\r\nexports.default = Slider;\r\n\n\n//# sourceURL=webpack:///./app/slider/slider.ts?");
+
+/***/ }),
+
+/***/ "./app/view.ts":
+/*!*********************!*\
+  !*** ./app/view.ts ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar slider_1 = __importDefault(__webpack_require__(/*! ./slider/slider */ \"./app/slider/slider.ts\"));\r\nvar dispatcher_1 = __importDefault(__webpack_require__(/*! ./dispatcher */ \"./app/dispatcher.ts\"));\r\nvar View = /** @class */ (function () {\r\n    function View() {\r\n        this._slider = new slider_1.default();\r\n        this._inputChanged = new dispatcher_1.default(this);\r\n        var _ranger = this;\r\n        this._slider._track.addEventListener('click', _ranger.onSelect.bind(_ranger));\r\n        this._slider._label._scale.addEventListener('click', _ranger.onSelect.bind(_ranger));\r\n        this._slider._track.addEventListener('mousedown', _ranger.onMouseDown.bind(_ranger));\r\n        this._slider._track.addEventListener('dragstart', function () {\r\n            return false;\r\n        });\r\n    }\r\n    Object.defineProperty(View.prototype, \"slider\", {\r\n        get: function () {\r\n            return this._slider;\r\n        },\r\n        enumerable: true,\r\n        configurable: true\r\n    });\r\n    View.prototype.createSlider = function (elem, options) {\r\n        this._options = options;\r\n        this._slider.createSlider(options);\r\n        elem.append(this._slider._container);\r\n    };\r\n    View.prototype.onMouseDown = function (event) {\r\n        var mousemove = this.onSelect.bind(this);\r\n        if (event.target.className === \"thumb__marker\") {\r\n            startSelect();\r\n        }\r\n        function startSelect() {\r\n            event.preventDefault();\r\n            document.addEventListener('mousemove', mousemove);\r\n            document.addEventListener('mouseup', endSelect);\r\n        }\r\n        function endSelect() {\r\n            document.removeEventListener('mouseup', endSelect);\r\n            document.removeEventListener('mousemove', mousemove);\r\n        }\r\n    };\r\n    View.prototype.onSelect = function (event) {\r\n        var width;\r\n        var coord;\r\n        this.transitionDuration(event);\r\n        if (this._options.direction == \"vertical\") {\r\n            width = this._slider._track.clientHeight;\r\n            coord = Math.round(event.clientY - this._slider._track.getBoundingClientRect().top);\r\n        }\r\n        else {\r\n            width = this._slider._track.clientWidth;\r\n            coord = Math.round(event.clientX - this._slider._track.getBoundingClientRect().left);\r\n        }\r\n        if (coord < 0) {\r\n            coord = 0;\r\n        }\r\n        if (coord > width) {\r\n            coord = width;\r\n        }\r\n        var index = this.selectedThumb(coord, width, this._slider._thumblers);\r\n        this.callCommand(width, coord, index);\r\n    };\r\n    View.prototype.transitionDuration = function (event) {\r\n        if (event.type === 'click') {\r\n            this._slider._container.style.setProperty('--transition', \"0.5s\");\r\n        }\r\n        else {\r\n            this._slider._container.style.setProperty('--transition', \"0\");\r\n        }\r\n    };\r\n    View.prototype.selectedThumb = function (coord, width, thumblers) {\r\n        var _this = this;\r\n        var index = 0;\r\n        if (this._options.type === 2) {\r\n            var arr_1 = [];\r\n            thumblers.forEach(function (el) {\r\n                var dist;\r\n                if (_this._options.direction === \"vertical\") {\r\n                    dist = Math.abs(coord - parseInt(el.style.top) * width / 100);\r\n                }\r\n                else {\r\n                    dist = Math.abs(coord - parseInt(el.style.left) * width / 100);\r\n                }\r\n                arr_1.push(dist);\r\n            });\r\n            index = arr_1.indexOf(Math.min.apply(Math, arr_1));\r\n        }\r\n        return index;\r\n    };\r\n    View.prototype.callCommand = function (trackWidth, position, index) {\r\n        this._inputChanged.notify({ trackWidth: trackWidth, position: position, index: index });\r\n    };\r\n    View.prototype.update = function (data) {\r\n        var arr = [];\r\n        var prefix = this._options.prefix ? this._options.prefix + \" \" : \"\";\r\n        for (var i = 0; i < data.length; i++) {\r\n            this._slider._tagmarks[i].textContent = prefix + data[i].value;\r\n            arr.push(data[i].value);\r\n            this.moveThumbs(data, i);\r\n        }\r\n        this.moveBar(data);\r\n        this._slider._value.value = arr.join(\";\");\r\n    };\r\n    View.prototype.moveThumbs = function (data, index) {\r\n        if (this._options.direction === \"vertical\") {\r\n            this._slider._thumblers[index].style.top = data[index].coord + \"%\";\r\n            this._slider._tagmarks[index].style.top = data[index].coord - 5 + \"%\";\r\n        }\r\n        else {\r\n            this._slider._thumblers[index].style.left = data[index].coord + \"%\";\r\n            this._slider._tagmarks[index].style.left = data[index].coord - (this._slider._tagmarks[index].clientWidth / this._slider._track.clientWidth) * 50 + \"%\";\r\n        }\r\n    };\r\n    View.prototype.moveBar = function (data) {\r\n        var barStart;\r\n        var barEnd;\r\n        if (data.length > 1) {\r\n            barStart = data[0].coord + \"%\";\r\n            barEnd = 100 - data[1].coord + \"%\";\r\n        }\r\n        else {\r\n            barStart = 0 + \"%\";\r\n            barEnd = 100 - data[0].coord + \"%\";\r\n        }\r\n        if (this._options.direction === 'vertical') {\r\n            this._slider._barSelected.style.top = barStart;\r\n            this._slider._barSelected.style.bottom = barEnd;\r\n        }\r\n        else {\r\n            this._slider._barSelected.style.left = barStart;\r\n            this._slider._barSelected.style.right = barEnd;\r\n        }\r\n    };\r\n    return View;\r\n}());\r\nexports.default = View;\r\n\n\n//# sourceURL=webpack:///./app/view.ts?");
+
+/***/ }),
+
 /***/ "./index.ts":
 /*!******************!*\
   !*** ./index.ts ***!
@@ -105,114 +248,7 @@ eval("var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!\n * jQ
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n__webpack_require__(/*! ./slider/app */ \"./slider/app.ts\");\r\nvar jquery_1 = __importDefault(__webpack_require__(/*! jquery */ \"../node_modules/jquery/dist/jquery.js\"));\r\nfunction sum(a, b) {\r\n    return a + b;\r\n}\r\nexports.sum = sum;\r\njquery_1.default('.perfectSlider1').perfectSlider({\r\n    // \"type\": \"double\",\r\n    \"start\": -80,\r\n    \"step\": 20,\r\n    \"end\": 0,\r\n    \"scalestep\": 200,\r\n    // \"to\": 70,\r\n    // 'direction': 'vertical',\r\n    values: [\"olga\", \"roma\", \"grisha\", \"konstantin konstantinopolskij\"],\r\n    prefix: \"$\"\r\n    // \"color\": \"linear-gradient(yellow 0, red 100%)\",\r\n    // \"thumb\": \"square\",\r\n    // \"tagmark\": false \r\n});\r\njquery_1.default('.perfectSlider2').perfectSlider({\r\n    \"type\": \"double\",\r\n    \"start\": -100,\r\n    \"step\": 30,\r\n    \"end\": 100,\r\n    \"scalestep\": 20,\r\n    'direction': 'vertical',\r\n    \"color\": \"linear-gradient(yellow 0, red 100%)\",\r\n});\r\n\n\n//# sourceURL=webpack:///./index.ts?");
-
-/***/ }),
-
-/***/ "./slider/app.ts":
-/*!***********************!*\
-  !*** ./slider/app.ts ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n__webpack_require__(/*! ./slider.css */ \"./slider/slider.css\");\r\nvar jquery_1 = __importDefault(__webpack_require__(/*! jquery */ \"../node_modules/jquery/dist/jquery.js\"));\r\nvar model_1 = __importDefault(__webpack_require__(/*! ./model */ \"./slider/model.ts\"));\r\nvar view_1 = __importDefault(__webpack_require__(/*! ./view */ \"./slider/view.ts\"));\r\nvar presenter_1 = __importDefault(__webpack_require__(/*! ./presenter */ \"./slider/presenter.ts\"));\r\n(function ($) {\r\n    $.fn.perfectSlider = function (options) {\r\n        var settings = $.extend({}, options);\r\n        return this.each(function () {\r\n            var model = new model_1.default(), view = new view_1.default(), presenter = new presenter_1.default(model, view);\r\n            presenter.init(this, options);\r\n        });\r\n    };\r\n})(jquery_1.default);\r\n\n\n//# sourceURL=webpack:///./slider/app.ts?");
-
-/***/ }),
-
-/***/ "./slider/data.ts":
-/*!************************!*\
-  !*** ./slider/data.ts ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Data = /** @class */ (function () {\r\n    function Data(i, options) {\r\n        if (options.values) {\r\n            this.value = options.values[i].toString(),\r\n                this.coord = i * 100 / (options.values.length - 1);\r\n        }\r\n        else {\r\n            this.value = options.start + i * options.step,\r\n                this.coord = i * options.step * 100 / (options.end - options.start);\r\n        }\r\n    }\r\n    return Data;\r\n}());\r\nexports.default = Data;\r\n\n\n//# sourceURL=webpack:///./slider/data.ts?");
-
-/***/ }),
-
-/***/ "./slider/dispatcher.ts":
-/*!******************************!*\
-  !*** ./slider/dispatcher.ts ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar eventDispatcher = /** @class */ (function () {\r\n    function eventDispatcher(sender) {\r\n        this._listeners = [];\r\n        this._sender = sender;\r\n    }\r\n    eventDispatcher.prototype.attach = function (listener) {\r\n        this._listeners.push(listener);\r\n    };\r\n    eventDispatcher.prototype.notify = function (args) {\r\n        var index;\r\n        for (index = 0; index < this._listeners.length; index += 1) {\r\n            this._listeners[index](this._sender, args);\r\n        }\r\n    };\r\n    return eventDispatcher;\r\n}());\r\nexports.default = eventDispatcher;\r\n\n\n//# sourceURL=webpack:///./slider/dispatcher.ts?");
-
-/***/ }),
-
-/***/ "./slider/model.ts":
-/*!*************************!*\
-  !*** ./slider/model.ts ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar dispatcher_1 = __importDefault(__webpack_require__(/*! ./dispatcher */ \"./slider/dispatcher.ts\"));\r\nvar data_1 = __importDefault(__webpack_require__(/*! ./data */ \"./slider/data.ts\"));\r\nvar Model = /** @class */ (function () {\r\n    function Model() {\r\n        this._data = [];\r\n        this._modelChanged = new dispatcher_1.default(this);\r\n    }\r\n    Model.prototype.init = function (options) {\r\n        this._options = options;\r\n        for (var i = 0; i < options.type; i++) {\r\n            var data = new data_1.default(i, this._options);\r\n            this._data.push(data);\r\n        }\r\n        this.callCommand(this._data);\r\n    };\r\n    Model.prototype.stepCalculation = function () {\r\n        var step = (this._options.step / (this._options.end - this._options.start)) * 100;\r\n        return step;\r\n    };\r\n    Model.prototype.positionCalculation = function (position, step, trackWidth) {\r\n        var percent = (position / trackWidth) * 100;\r\n        var pos;\r\n        if ((percent + step) > 100) {\r\n            pos = 100;\r\n        }\r\n        else {\r\n            pos = Math.round(percent / step) * step;\r\n        }\r\n        return pos;\r\n    };\r\n    Model.prototype.valueCalculation = function (position, trackWidth, index) {\r\n        if (this._options.values) {\r\n            var step = 100 / (this._options.values.length - 1);\r\n            var pos = this.positionCalculation(position, step, trackWidth);\r\n            this._data[index].value = this._options.values[pos / step];\r\n            this._data[index].coord = pos;\r\n        }\r\n        else {\r\n            var step = this.stepCalculation();\r\n            var pos = this.positionCalculation(position, step, trackWidth);\r\n            this._data[index].value = Math.round(pos * (this._options.end - this._options.start) / 100 + this._options.start);\r\n            this._data[index].coord = pos;\r\n        }\r\n        this.callCommand(this._data);\r\n        return this._data;\r\n    };\r\n    Model.prototype.callCommand = function (data) {\r\n        this._modelChanged.notify(data);\r\n    };\r\n    return Model;\r\n}());\r\nexports.default = Model;\r\n\n\n//# sourceURL=webpack:///./slider/model.ts?");
-
-/***/ }),
-
-/***/ "./slider/options.ts":
-/*!***************************!*\
-  !*** ./slider/options.ts ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nvar __extends = (this && this.__extends) || (function () {\r\n    var extendStatics = function (d, b) {\r\n        extendStatics = Object.setPrototypeOf ||\r\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\r\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\r\n        return extendStatics(d, b);\r\n    };\r\n    return function (d, b) {\r\n        extendStatics(d, b);\r\n        function __() { this.constructor = d; }\r\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\r\n    };\r\n})();\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Options = /** @class */ (function () {\r\n    function Options(options) {\r\n        this.settings = options;\r\n        this.type = options.type === 'double' ? 2 : 1;\r\n        this.direction = options.direction === 'vertical' ? 'vertical' : null;\r\n        this.prefix = typeof options.prefix === 'string' ? options.prefix : null;\r\n        this.color = typeof options.color === 'string' ? options.color : null;\r\n        this.tagmark = options.tagmark === false ? false : true;\r\n    }\r\n    Options.prototype.create = function () {\r\n        var values = [];\r\n        if (this.settings.values && Array.isArray(this.settings.values)) {\r\n            values = this.settings.values.filter(function (el) { return typeof el === 'string'; });\r\n        }\r\n        if (values.length > 1) {\r\n            return new ValueSlider(values, this.settings);\r\n        }\r\n        else {\r\n            return new NumberSlider(this.settings);\r\n        }\r\n    };\r\n    return Options;\r\n}());\r\nexports.default = Options;\r\nvar NumberSlider = /** @class */ (function (_super) {\r\n    __extends(NumberSlider, _super);\r\n    function NumberSlider(options) {\r\n        var _this = _super.call(this, options) || this;\r\n        if (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start > options.end) {\r\n            _this.start = 0;\r\n            _this.end = 100;\r\n        }\r\n        else {\r\n            _this.start = options.start;\r\n            _this.end = options.end;\r\n        }\r\n        _this.step = _this.checkStep(options);\r\n        _this.scalestep = _this.checkScalestep(options);\r\n        return _this;\r\n    }\r\n    NumberSlider.prototype.checkStep = function (options) {\r\n        // if (typeof options.step !== 'number'|| options.step < 1 || (this.end - this.start)%options.step > 0) {\r\n        //     return 1\r\n        // }\r\n        if (typeof options.step !== 'number' || options.step < 1) {\r\n            return 1;\r\n        }\r\n        if (options.step > Math.abs(options.end - options.start)) {\r\n            return Math.abs(options.end - options.start);\r\n        }\r\n        else {\r\n            return options.step;\r\n        }\r\n    };\r\n    NumberSlider.prototype.checkScalestep = function (options) {\r\n        if (typeof options.scalestep === 'number' && options.scalestep > 1 && options.scalestep < (this.end - this.start)) {\r\n            return options.scalestep;\r\n        }\r\n        return null;\r\n    };\r\n    return NumberSlider;\r\n}(Options));\r\nvar ValueSlider = /** @class */ (function (_super) {\r\n    __extends(ValueSlider, _super);\r\n    function ValueSlider(values, options) {\r\n        var _this = _super.call(this, options) || this;\r\n        _this.values = values;\r\n        return _this;\r\n    }\r\n    return ValueSlider;\r\n}(Options));\r\n\n\n//# sourceURL=webpack:///./slider/options.ts?");
-
-/***/ }),
-
-/***/ "./slider/presenter.ts":
-/*!*****************************!*\
-  !*** ./slider/presenter.ts ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n__webpack_require__(/*! ./model */ \"./slider/model.ts\");\r\n__webpack_require__(/*! ./view */ \"./slider/view.ts\");\r\nvar options_1 = __importDefault(__webpack_require__(/*! ./options */ \"./slider/options.ts\"));\r\nvar Presenter = /** @class */ (function () {\r\n    function Presenter(model, view) {\r\n        this._model = model;\r\n        this._view = view;\r\n        var _presenter = this;\r\n        this._view._inputChanged.attach(function (sender, args) {\r\n            _presenter.callModel(args.position, args.trackWidth, args.index);\r\n        });\r\n        this._model._modelChanged.attach(function (sender, args) {\r\n            _presenter._view.update(args);\r\n        });\r\n    }\r\n    Presenter.prototype.init = function (elem, options) {\r\n        var params = new options_1.default(options).create();\r\n        this._view.createSlider(elem, params);\r\n        this._model.init(params);\r\n    };\r\n    Presenter.prototype.callModel = function (position, trackWidth, index) {\r\n        this._model.valueCalculation(position, trackWidth, index);\r\n    };\r\n    return Presenter;\r\n}());\r\nexports.default = Presenter;\r\n\n\n//# sourceURL=webpack:///./slider/presenter.ts?");
-
-/***/ }),
-
-/***/ "./slider/slider.css":
-/*!***************************!*\
-  !*** ./slider/slider.css ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./slider/slider.css?");
-
-/***/ }),
-
-/***/ "./slider/slider.ts":
-/*!**************************!*\
-  !*** ./slider/slider.ts ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Slider = /** @class */ (function () {\r\n    function Slider() {\r\n        this._container = this.createElement('div', 'slider');\r\n        this._tag = this.createElement('div', 'slider__tag');\r\n        this._value = this.createInput('text');\r\n        this._track = this.createElement('div', 'slider__track');\r\n        this._bar = this.createElement('div', 'track__bar');\r\n        this._barSelected = this.createElement('div', 'track__bar_selected');\r\n        this._label = this.createElement('div', 'slider__label');\r\n        this._thumblers = [];\r\n        this._tagmarks = [];\r\n    }\r\n    Slider.prototype.createInput = function (type) {\r\n        var el = document.createElement(\"input\");\r\n        el.type = type;\r\n        return el;\r\n    };\r\n    Slider.prototype.createElement = function (tag, classname) {\r\n        var el = document.createElement(tag);\r\n        el.className = classname;\r\n        return el;\r\n    };\r\n    Slider.prototype.createThumbler = function () {\r\n        var thumb = this.createElement(\"div\", \"slider__thumb\");\r\n        var thumbmark = this.createElement(\"span\", \"thumb__marker\");\r\n        thumb.append(thumbmark);\r\n        var tagmark = this.createElement('span', 'tag__mark');\r\n        this._tagmarks.push(tagmark);\r\n        return thumb;\r\n    };\r\n    Slider.prototype.createSlider = function (options) {\r\n        var _a, _b;\r\n        this._container.append(this._value, this._tag, this._track, this._label);\r\n        this._track.append(this._bar, this._barSelected);\r\n        for (var i = 0; i < options.type; i++) {\r\n            this._thumblers.push(this.createThumbler());\r\n        }\r\n        (_a = this._tag).append.apply(_a, this._tagmarks);\r\n        (_b = this._track).append.apply(_b, this._thumblers);\r\n        this.checkDirection(options.direction);\r\n        this.tagmarkVisibility(options.tagmark);\r\n        this.colorScheme(options);\r\n        this.addLabel(options);\r\n        this.addScale(options);\r\n        return this;\r\n    };\r\n    Slider.prototype.tagmarkVisibility = function (tagmark) {\r\n        if (!tagmark) {\r\n            this._tag.style.display = 'none';\r\n        }\r\n    };\r\n    Slider.prototype.colorScheme = function (options) {\r\n        if (options.color) {\r\n            this._container.style.setProperty('--active-color', options.color);\r\n        }\r\n    };\r\n    Slider.prototype.checkDirection = function (direction) {\r\n        if (direction === 'vertical') {\r\n            this._container.classList.add('slider-vertical');\r\n        }\r\n    };\r\n    Slider.prototype.addMark = function (tag, direction, position) {\r\n        var labelMark = document.createElement('span');\r\n        labelMark.className = 'label__mark';\r\n        labelMark.setAttribute(\"data-text\", tag);\r\n        if (direction == 'vertical') {\r\n            labelMark.style.top = position;\r\n        }\r\n        else {\r\n            labelMark.style.left = position;\r\n        }\r\n        this._label.append(labelMark);\r\n    };\r\n    Slider.prototype.addScale = function (options) {\r\n        if (options.values) {\r\n            var count = options.values.length;\r\n            var percent = 100 / (count - 1);\r\n            for (var i = 0; i < count; i++) {\r\n                var position = i * percent + \"%\";\r\n                this.addMark(options.values[i].toString(), options.direction, position);\r\n            }\r\n        }\r\n        else {\r\n            var count = Math.round((options.end - options.start) / options.scalestep);\r\n            var percent = (options.scalestep / (options.end - options.start)) * 100;\r\n            for (var i = 1; i < count; i++) {\r\n                var tag = (i * options.scalestep + options.start).toString();\r\n                var position = i * percent + \"%\";\r\n                this.addMark(tag, options.direction, position);\r\n            }\r\n        }\r\n    };\r\n    Slider.prototype.addLabel = function (options) {\r\n        if (!options.values) {\r\n            this.addMark(options.start, options.direction, \"0\");\r\n            this.addMark(options.end, options.direction, \"100%\");\r\n        }\r\n    };\r\n    return Slider;\r\n}());\r\nexports.default = Slider;\r\n\n\n//# sourceURL=webpack:///./slider/slider.ts?");
-
-/***/ }),
-
-/***/ "./slider/view.ts":
-/*!************************!*\
-  !*** ./slider/view.ts ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar slider_1 = __importDefault(__webpack_require__(/*! ./slider */ \"./slider/slider.ts\"));\r\nvar dispatcher_1 = __importDefault(__webpack_require__(/*! ./dispatcher */ \"./slider/dispatcher.ts\"));\r\nvar View = /** @class */ (function () {\r\n    function View() {\r\n        this._slider = new slider_1.default();\r\n        this._inputChanged = new dispatcher_1.default(this);\r\n        var _ranger = this;\r\n        this._slider._track.addEventListener('click', function () {\r\n            _ranger._slider._container.style.setProperty('--transition', \"0.5s\");\r\n            _ranger.onSelect();\r\n        });\r\n        this._slider._track.addEventListener('mousedown', function (e) {\r\n            var mousemove = _ranger.onSelect.bind(_ranger);\r\n            if (e.target.className === \"thumb__marker\") {\r\n                _ranger._slider._container.style.setProperty('--transition', \"0\");\r\n                startSelect();\r\n            }\r\n            function startSelect() {\r\n                event.preventDefault();\r\n                document.addEventListener('mousemove', mousemove);\r\n                document.addEventListener('mouseup', endSelect);\r\n            }\r\n            function endSelect() {\r\n                document.removeEventListener('mouseup', endSelect);\r\n                document.removeEventListener('mousemove', mousemove);\r\n            }\r\n        });\r\n        this._slider._track.addEventListener('dragstart', function () {\r\n            return false;\r\n        });\r\n    }\r\n    Object.defineProperty(View.prototype, \"slider\", {\r\n        get: function () {\r\n            return this._slider;\r\n        },\r\n        enumerable: true,\r\n        configurable: true\r\n    });\r\n    View.prototype.createSlider = function (elem, options) {\r\n        this._options = options;\r\n        this._slider.createSlider(options);\r\n        elem.append(this._slider._container);\r\n    };\r\n    View.prototype.onSelect = function () {\r\n        var width;\r\n        var coord;\r\n        if (this._options.direction == \"vertical\") {\r\n            width = this._slider._track.clientHeight;\r\n            coord = Math.round(event.clientY - this._slider._track.getBoundingClientRect().top);\r\n        }\r\n        else {\r\n            width = this._slider._track.clientWidth;\r\n            coord = Math.round(event.clientX - this._slider._track.getBoundingClientRect().left);\r\n        }\r\n        if (coord < 0) {\r\n            coord = 0;\r\n        }\r\n        if (coord > width) {\r\n            coord = width;\r\n        }\r\n        var index = this.selectedThumb();\r\n        this.callCommand(width, coord, index);\r\n    };\r\n    View.prototype.selectedThumb = function () {\r\n        var _this = this;\r\n        var index = 0;\r\n        if (this._options.type === 2) {\r\n            var arr_1 = [];\r\n            this._slider._thumblers.forEach(function (e) {\r\n                var dist;\r\n                if (_this._options.direction === \"vertical\") {\r\n                    dist = Math.abs(event.clientY - e.getBoundingClientRect().top);\r\n                }\r\n                else {\r\n                    dist = Math.abs(event.clientX - e.getBoundingClientRect().left);\r\n                }\r\n                arr_1.push(dist);\r\n            });\r\n            index = arr_1.indexOf(Math.min.apply(Math, arr_1));\r\n        }\r\n        return index;\r\n    };\r\n    View.prototype.callCommand = function (trackWidth, position, index) {\r\n        this._inputChanged.notify({ trackWidth: trackWidth, position: position, index: index });\r\n    };\r\n    View.prototype.update = function (data) {\r\n        var arr = [];\r\n        var prefix = this._options.prefix ? this._options.prefix + \" \" : \"\";\r\n        for (var i = 0; i < data.length; i++) {\r\n            this._slider._tagmarks[i].textContent = prefix + data[i].value;\r\n            arr.push(data[i].value);\r\n            this.moveThumbs(data, i);\r\n        }\r\n        this.moveBar(data);\r\n        this._slider._value.value = arr.join(\";\");\r\n    };\r\n    View.prototype.moveThumbs = function (data, index) {\r\n        if (this._options.direction === \"vertical\") {\r\n            this._slider._thumblers[index].style.top = data[index].coord + \"%\";\r\n            this._slider._tagmarks[index].style.top = data[index].coord - 5 + \"%\";\r\n        }\r\n        else {\r\n            this._slider._thumblers[index].style.left = data[index].coord + \"%\";\r\n            this._slider._tagmarks[index].style.left = data[index].coord - (this._slider._tagmarks[index].clientWidth / this._slider._track.clientWidth) * 50 + \"%\";\r\n        }\r\n    };\r\n    View.prototype.moveBar = function (data) {\r\n        var barStart;\r\n        var barEnd;\r\n        if (data.length > 1) {\r\n            barStart = data[0].coord + \"%\";\r\n            barEnd = 100 - data[1].coord + \"%\";\r\n        }\r\n        else {\r\n            barStart = 0 + \"%\";\r\n            barEnd = 100 - data[0].coord + \"%\";\r\n        }\r\n        if (this._options.direction === 'vertical') {\r\n            this._slider._barSelected.style.top = barStart;\r\n            this._slider._barSelected.style.bottom = barEnd;\r\n        }\r\n        else {\r\n            this._slider._barSelected.style.left = barStart;\r\n            this._slider._barSelected.style.right = barEnd;\r\n        }\r\n    };\r\n    return View;\r\n}());\r\nexports.default = View;\r\n\n\n//# sourceURL=webpack:///./slider/view.ts?");
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n__webpack_require__(/*! ./app/app */ \"./app/app.ts\");\r\nvar jquery_1 = __importDefault(__webpack_require__(/*! jquery */ \"../node_modules/jquery/dist/jquery.js\"));\r\nfunction sum(a, b) {\r\n    return a + b;\r\n}\r\nexports.sum = sum;\r\njquery_1.default('.perfectSlider1').perfectSlider({\r\n    // \"type\": \"double\",\r\n    \"start\": -80,\r\n    \"step\": 20,\r\n    \"end\": 0,\r\n    \"scalestep\": 200,\r\n    // \"to\": 70,\r\n    // 'direction': 'vertical',\r\n    values: [\"olga\", \"roma\", \"grisha\", \"konstantin konstantinopolskij\"],\r\n    prefix: \"$\"\r\n    // \"color\": \"linear-gradient(yellow 0, red 100%)\",\r\n    // \"thumb\": \"square\",\r\n    // \"tagmark\": false \r\n});\r\njquery_1.default('.perfectSlider2').perfectSlider({\r\n    \"type\": \"double\",\r\n    \"start\": -100,\r\n    \"step\": 30,\r\n    \"end\": 100,\r\n    tagmark: true,\r\n    // \"scalestep\": 2000,\r\n    'direction': 'vertical',\r\n    \"color\": \"linear-gradient(yellow 0, red 100%)\",\r\n});\r\n\n\n//# sourceURL=webpack:///./index.ts?");
 
 /***/ })
 

@@ -5,7 +5,8 @@ body {
     --basic-color: #e5e5e5;
     --active-color: #53b6a8;
     --transition: 0.5s;
-    width: 290px;
+    width: 100%;
+    min-width: 290px;
     padding: 20px;
     box-sizing: border-box;
     display: grid;
@@ -118,7 +119,9 @@ body {
 .slider-vertical {
     display: flex;
     width: unset;
-    height: 290px;
+    min-width: unset;
+    min-height: 290px;
+    height: 100%;
 }
 .slider-vertical .slider__track {
     width: 30px;

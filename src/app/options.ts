@@ -46,9 +46,6 @@ class NumberSlider extends Options {
         this.scalestep = this.checkScalestep(options)
     }
     checkStep(options: any) {
-        // if (typeof options.step !== 'number'|| options.step < 1 || (this.end - this.start)%options.step > 0) {
-        //     return 1
-        // }
         if (typeof options.step !== 'number'|| options.step < 1) {
             return 1
         }
@@ -63,7 +60,7 @@ class NumberSlider extends Options {
         if (typeof options.scalestep === 'number' && options.scalestep > 1 && options.scalestep < (this.end - this.start)) {
             return options.scalestep
         }
-        return null
+        return (this.end - this.start)
     }
 }
 class ValueSlider extends Options{

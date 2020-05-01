@@ -11,7 +11,7 @@ smth[0] = {
 
 smth[1] = {
     options : {start: 250, end: 100, step: 30, scalestep: 1000},
-    result : {type: 1, start: 0, end: 100, step: 1, tagmark: true},  
+    result : {type: 1, start: 0, end: 100, step: 30, tagmark: true, scalestep: 100},  
     settings() {
         return new Options(this.options).create()
     }
