@@ -1,28 +1,28 @@
-import './model'
-import './view'
-import eventDistapcher from './dispatcher'
-import Options from './options'
+import Model from './model'
+import View from './view'
+import Data from './data'
 
 export default class Presenter {
-    private _model: any
-    private _view: any
-    constructor(model: any, view: any) {
+    private _model: Model
+    private _view: View
+    constructor(model: Model, view: View) {
       this._model = model
       this._view = view
       let _presenter = this
-      this._view._inputChanged.attach(function (sender: any, args: any) {
+      this._view.inputChanged.attach(function (sender: View, args: IUserInput) {
         _presenter.callModel(args.position, args.trackWidth, args.index)
       })
-      this._model._modelChanged.attach(function(sender: any, args: any) {
-        _presenter._view.update(args)
+      this._model.modelChanged.attach(function(sender: Model, args: Array<Data>) {
+        _presenter._view.slider.update(args)
       })
-    }
-    init(elem: HTMLLIElement, options: any) {
-      let params = new Options(options).create()
-      this._view.createSlider(elem, params)
-      this._model.init(params)
     }
     callModel(position: number, trackWidth: number, index: number) {
       this._model.valueCalculation(position, trackWidth, index)
     }
+  }
+
+  interface IUserInput {
+    trackWidth: number
+    position: number
+    index: number
   }

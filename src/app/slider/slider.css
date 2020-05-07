@@ -115,6 +115,10 @@ body {
     z-index: -1;
 }
 
+.tag__mark_hide {
+    display: none;
+}
+
 /****************************** Vertical orintation ************************************************/
 .slider-vertical {
     display: flex;

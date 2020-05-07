@@ -14,10 +14,10 @@ $('.perfectSlider1').perfectSlider({
     // "to": 70,
     // 'direction': 'vertical',
     values: ["olga", "roma", "grisha", "konstantin konstantinopolskij"],
-    prefix: "$"
+    prefix: "$",
     // "color": "linear-gradient(yellow 0, red 100%)",
     // "thumb": "square",
-    // "tagmark": false 
+    "tagmark": false 
 });
 
 $('.perfectSlider2').perfectSlider({
@@ -25,7 +25,7 @@ $('.perfectSlider2').perfectSlider({
     "start": -100,
     "step": 30,
     "end": 100,
-    tagmark: true,
+    "tagmark": true,
     // "scalestep": 2000,
     'direction': 'vertical',
     "color": "linear-gradient(yellow 0, red 100%)",

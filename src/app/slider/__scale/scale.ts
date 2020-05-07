@@ -1,8 +1,12 @@
+import { IOptions } from '../../options'
 export default class Scale {
     private _scale: HTMLElement
     constructor() {
         this._scale = document.createElement('div');
         this._scale.className = 'slider__label'
+    }
+    get scale() {
+      return this._scale
     }
     addMark(tag: string, direction: string, position: string) {
         let labelMark = document.createElement('span')
@@ -16,7 +20,7 @@ export default class Scale {
         }
         this._scale.append(labelMark);
     }
-    addScale(options: any) {
+    addScale(options: IOptions) {
         if (options.values) {
             let count = options.values.length;
             let percent = 100/(count-1);
@@ -35,5 +39,6 @@ export default class Scale {
               this.addMark(tag, options.direction, position)
             }
           }
+          return this
     }
 }

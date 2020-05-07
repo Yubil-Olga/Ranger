@@ -1,18 +1,48 @@
-export default class Options {
-    private type: number
-    private direction: string
-    private prefix: string
-    private color: string
-    private tagmark: boolean
-    private settings: any
+import UserSettings from './userSettings'
 
-    constructor(options: any) {
+export interface IOptions {
+    type: number,
+    direction: string,
+    start?: number,
+    end?: number,
+    step?: number,
+    scalestep?: number,
+    values?: Array<string>,
+    prefix: string,
+    tagmark: boolean,
+    color?: string
+}
+
+export class Options implements IOptions  {
+    private _type: number
+    private _direction: string
+    private _prefix: string
+    private _color: string
+    private _tagmark: boolean
+    private settings: UserSettings
+
+    constructor(options: UserSettings) {
         this.settings = options
-        this.type = options.type === 'double' ? 2 : 1
-        this.direction = options.direction === 'vertical' ? 'vertical' : null
-        this.prefix = typeof options.prefix === 'string' ? options.prefix : null
-        this.color = typeof options.color === 'string' ? options.color : null
-        this.tagmark = options.tagmark === false ? false : true
+        this._type = options.type === 'double' ? 2 : 1
+        this._direction = options.direction === 'vertical' ? 'vertical' : null
+        this._prefix = typeof options.prefix === 'string' ? options.prefix : null
+        this._color = typeof options.color === 'string' ? options.color : null
+        this._tagmark = options.tagmark === false ? false : true
+    }
+    get type() {
+        return this._type
+    }
+    get direction() {
+        return this._direction
+    }
+    get prefix() {
+        return this._prefix
+    }
+    get tagmark() {
+        return this._tagmark
+    }
+    get color() {
+        return this._color
     }
     create() {
         let values = []
@@ -28,24 +58,36 @@ export default class Options {
     }
 }
 class NumberSlider extends Options {
-    private start: number
-    private end: number
-    private step: number
-    private scalestep: number
-    constructor(options: any) {
+    private _start: number
+    private _end: number
+    private _step: number
+    private _scalestep: number
+    constructor(options: UserSettings) {
         super(options)
         if (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start > options.end) {
-            this.start = 0
-            this.end = 100
+            this._start = 0
+            this._end = 100
         }
         else {
-            this.start = options.start
-            this.end = options.end
+            this._start = options.start
+            this._end = options.end
         }
-        this.step = this.checkStep(options)
-        this.scalestep = this.checkScalestep(options)
+        this._step = this.checkStep(options)
+        this._scalestep = this.checkScalestep(options)
     }
-    checkStep(options: any) {
+    get start() {
+        return this._start
+    }
+    get end() {
+        return this._end
+    }
+    get step() {
+        return this._step
+    }
+    get scalestep() {
+        return this._scalestep
+    }
+    checkStep(options: UserSettings) {
         if (typeof options.step !== 'number'|| options.step < 1) {
             return 1
         }
@@ -56,7 +98,7 @@ class NumberSlider extends Options {
             return options.step
         }
     }
-    checkScalestep(options: any) {
+    checkScalestep(options: UserSettings) {
         if (typeof options.scalestep === 'number' && options.scalestep > 1 && options.scalestep < (this.end - this.start)) {
             return options.scalestep
         }
@@ -64,10 +106,13 @@ class NumberSlider extends Options {
     }
 }
 class ValueSlider extends Options{
-    private values: any
-    constructor(values: any, options: any) {
+    private _values: Array<string>
+    constructor(values: Array<string>, options: UserSettings) {
         super(options)
-        this.values = values
+        this._values = values
+    }
+    get values() {
+        return this._values
     }
 }
 

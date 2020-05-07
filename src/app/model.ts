@@ -1,25 +1,33 @@
-import eventDispatcher from './dispatcher'
+import EventDispatcher from './dispatcher'
 import Data from './data'
+import { IOptions } from './options'
 
 export default class Model {
-    private _options: any
-    private _data: any
-    private _modelChanged: any
+    private _options: IOptions
+    private _data: Array<Data>
+    private _modelChanged: EventDispatcher
    
-    constructor() {
-      this._data = []
-      this._modelChanged = new eventDispatcher(this)
+    constructor(options: IOptions) {
+      this._options = options
+      this._data = this.initData(options.type)
+      this._modelChanged = new EventDispatcher(this)
     }
 
-    init(options: any) {
-      this._options = options
-      for (let i=0; i<options.type; i++) {
-        let data = new Data(i, this._options)
-        this._data.push(data)
-      }
+    get modelChanged() {
+      return this._modelChanged
+    }
+    
+    init() {
       this.callCommand(this._data)
     }
-
+    initData(type: number) {
+      let arr = []
+      for (let i=0; i<type; i++) {
+        let data = new Data(i, this._options)
+        arr.push(data)
+      }
+      return arr
+    }
     stepCalculation() {
       let step = (this._options.step/(this._options.end - this._options.start))*100
       return step
@@ -39,20 +47,18 @@ export default class Model {
       if (this._options.values) {
         let step = 100/(this._options.values.length - 1);
         let pos = this.positionCalculation(position, step, trackWidth);
-        this._data[index].value = this._options.values[pos/step]
-        this._data[index].coord = pos;
+        this._data[index].update(this._options.values[pos/step], pos)
       }
       else {
         let step = this.stepCalculation();
         let pos = this.positionCalculation(position, step, trackWidth);
-        this._data[index].value = Math.round(pos*(this._options.end - this._options.start)/100 + this._options.start);
-        this._data[index].coord = pos;
+        let newValue = Math.round(pos*(this._options.end - this._options.start)/100 + this._options.start);
+        this._data[index].update(newValue.toString(), pos)
       }
       this.callCommand(this._data);
-      return this._data;
     }
     
-    callCommand(data: any) {
+    callCommand(data: Array<Data>) {
       this._modelChanged.notify(data)
     }
   } 

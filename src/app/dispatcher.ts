@@ -1,4 +1,4 @@
-export default class eventDispatcher {
+export default class EventDispatcher {
     _sender: any
     _listeners = []
     constructor(sender: any) {
