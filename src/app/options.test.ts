@@ -1,50 +1,32 @@
 import { Options } from './options'
 
-let smth = []
-smth[0] = {
+let arr = []
+
+arr[0] = {
     options : {start: -25, end: 100, step: 25, scalestep: 10, prefix: "%"},
-    result : {type: 1, start: -25, end: 100, step: 25, scalestep: 10, tagmark: true, prefix: "%"},
-    settings() {
-        return new Options(this.options).create()
-    }   
+    result : {_type: 1, _direction: null, _start: -25, _end: 100, _step: 25, _scalestep: 10, _tagmark: true, _prefix: "%", _color: null},  
 }
 
-smth[1] = {
+arr[1] = {
     options : {start: 250, end: 100, step: 30, scalestep: 1000},
-    result : {type: 1, start: 0, end: 100, step: 30, tagmark: true, scalestep: 100},  
-    settings() {
-        return new Options(this.options).create()
-    }
+    result : {_type: 1, _start: 0, _end: 100, _step: 30, _tagmark: true, _scalestep: 100, _color: null, _direction: null},  
 }
 
-smth[2] = {
+arr[2] = {
     options : {type: 'double', start: 250, end: 100, values: ["one", "two", "three", 4], direction: 'vertical'},
-    result : {type: 2, direction: 'vertical', values: ["one", "two", "three"], tagmark: true},  
-    settings() {
-        return new Options(this.options).create()
-    }
+    result : {_type: 2, _direction: 'vertical', _values: ["one", "two", "three"], _tagmark: true},  
 }
 
-smth[3] = {
+arr[3] = {
     options : {type: 'double',start: 250, end: 100, values: ["one", "two", "three", 4], direction: 'vertical', tagmark: false, color: "red"},
-    result : {type: 2, direction: 'vertical', values: ["one", "two", "three"], color: "red", tagmark: false},  
-    settings() {
-        return new Options(this.options).create()
-    }
+    result : {_type: 2, _direction: 'vertical', _values: ["one", "two", "three"], _color: "red", _tagmark: false},  
 }
 
 test('Set correct options', ( ) => {
-    expect(smth[0].settings).toBeDefined()
-    expect(smth[0].settings()).toMatchObject(smth[0].result)
-
-    expect(smth[1].settings).toBeDefined()
-    expect(smth[1].settings()).toMatchObject(smth[1].result)
-
-    expect(smth[2].settings).toBeDefined()
-    expect(smth[2].settings()).toMatchObject(smth[2].result)
-
-    expect(smth[3].settings).toBeDefined()
-    expect(smth[3].settings()).toMatchObject(smth[3].result)
+    for (let i=0; i<arr.length; i++) {
+        let param = new Options(arr[i].options).create() 
+        expect(param).toMatchObject(arr[i].result)
+    }
 })
 
 

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.89% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/18</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.67% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/6</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.89% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/18</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -84,60 +84,60 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import './model'
-import './view'
-import eventDistapcher from './dispatcher'
-import Options from './options'
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Model from './model'
+import View from './view'
+import Data from './data'
 &nbsp;
 export default class Presenter {
-    private _model: any
-    private _view: any
-<span class="fstat-no" title="function not covered" >    constructor(m</span>odel: any, view: any) {
-<span class="cstat-no" title="statement not covered" >      this._model = model</span>
-<span class="cstat-no" title="statement not covered" >      this._view = view</span>
-      let _presenter = <span class="cstat-no" title="statement not covered" >this</span>
-<span class="cstat-no" title="statement not covered" >      this._view._inputChanged.attach(<span class="fstat-no" title="function not covered" >function (s</span>ender: any, args: any) {</span>
-<span class="cstat-no" title="statement not covered" >        _presenter.callModel(args.position, args.trackWidth, args.index)</span>
+    private _model: Model
+    private _view: View
+    constructor(model: Model, view: View) {
+      this._model = model
+      this._view = view
+      let _presenter = this
+      this._view.inputChanged.attach(function (sender: View, args: IUserInput) {
+        _presenter.callModel(args.position, args.trackWidth, args.index)
       })
-<span class="cstat-no" title="statement not covered" >      this._model._modelChanged.attach(<span class="fstat-no" title="function not covered" >function(s</span>ender: any, args: any) {</span>
-<span class="cstat-no" title="statement not covered" >        _presenter._view.update(args)</span>
+      this._model.modelChanged.attach(function(sender: Model, args: Array&lt;Data&gt;) {
+        _presenter._view.slider.update(args)
       })
     }
-<span class="fstat-no" title="function not covered" >    init(</span>elem: HTMLLIElement, options: any) {
-      let params = <span class="cstat-no" title="statement not covered" >new Options(options).create()</span>
-<span class="cstat-no" title="statement not covered" >      this._view.createSlider(elem, params)</span>
-<span class="cstat-no" title="statement not covered" >      this._model.init(params)</span>
+    callModel(position: number, trackWidth: number, index: number) {
+      this._model.valueCalculation(position, trackWidth, index)
     }
-<span class="fstat-no" title="function not covered" >    callModel(</span>position: number, trackWidth: number, index: number) {
-<span class="cstat-no" title="statement not covered" >      this._model.valueCalculation(position, trackWidth, index)</span>
-    }
+  }
+&nbsp;
+  interface IUserInput {
+    trackWidth: number
+    position: number
+    index: number
   }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -145,7 +145,7 @@ export default class Presenter {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri May 01 2020 15:56:01 GMT+0300 (GMT+03:00)
+                at Sat May 09 2020 01:03:36 GMT+0300 (GMT+03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

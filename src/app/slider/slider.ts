@@ -31,6 +31,9 @@ export default class Slider {
     get thumblers() {
       return this._thumblers
     }
+    get tagmarks() {
+      return this._tagmarks
+    }
     get label() {
       return this._label
     }
@@ -39,6 +42,12 @@ export default class Slider {
     }
     get container() {
       return this._container
+    }
+    get barSelected() {
+      return this._barSelected
+    }
+    get value() {
+      return this._value
     }
     createInput(type: string) {
       let el = document.createElement("input");
@@ -87,19 +96,19 @@ export default class Slider {
       for (let i=0; i<data.length; i++) {
           this._tagmarks[i].textContent = prefix + data[i].value
         arr.push(data[i].value);
-        this.moveThumbs(data, i);
+        this.moveThumbs(data[i], i);
       }
       this.moveBar(data);
       this._value.value = arr.join(";")
     }
-    moveThumbs(data: Array<Data>, index: number) {
+    moveThumbs(data: Data, index: number) {
       if (this._settings.direction === "vertical") {
-        this._thumblers[index].style.top = data[index].coord + "%"
-        this._tagmarks[index].style.top = data[index].coord - 5 + "%"
+        this._thumblers[index].style.top = data.coord + "%"
+        this._tagmarks[index].style.top = data.coord - 5 + "%"
       }
       else {
-        this._thumblers[index].style.left = data[index].coord + "%"
-        this._tagmarks[index].style.left = data[index].coord - (this._tagmarks[index].clientWidth/this._track.clientWidth)*50 + "%"
+        this._thumblers[index].style.left = data.coord + "%"
+        this._tagmarks[index].style.left = data.coord - (this._tagmarks[index].clientWidth/this._track.clientWidth)*50 + "%"
       }
     }
     moveBar(data: Array<Data>) {

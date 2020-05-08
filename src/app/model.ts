@@ -56,6 +56,7 @@ export default class Model {
         this._data[index].update(newValue.toString(), pos)
       }
       this.callCommand(this._data);
+      return this._data
     }
     
     callCommand(data: Array<Data>) {
