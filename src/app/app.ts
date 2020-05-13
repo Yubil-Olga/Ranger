@@ -3,7 +3,7 @@ import jQuery from 'jquery'
 import Model  from './model'
 import View from './view'
 import Presenter from './presenter'
-import UserSettings from './userSettings'
+import UserSettings from './IUserSettings'
 import { Options } from './options'
 
 (function( $ ) {

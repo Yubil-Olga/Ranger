@@ -1,7 +1,7 @@
 import './index.css'
 import './app/app'
 import $ from 'jquery'
-import Slider from './app/slider/slider'
+import IUserSettings from './app/IUserSettings'
 
 document.addEventListener('dragstart', () => {
     return false
@@ -24,6 +24,7 @@ class FormControll {
     stepInput: HTMLInputElement
     scalestepInput: HTMLInputElement
     tagmarkInput: HTMLInputElement
+    valueInput: HTMLInputElement
     btn: HTMLButtonElement
     constructor(index: number) {
         this.form = document.createElement('form')
@@ -36,21 +37,28 @@ class FormControll {
         this.stepInput = this.createInput('number', 'step')
         this.scalestepInput = this.createInput('number', 'step of the scale')
         this.tagmarkInput = this.createInput('checkbox', 'tagmark')
+        this.valueInput = this.createInput('text', "String values")
         this.btn = this.createButton(`apply-${index}`)
     }
-    createForm(el: any) {
-        this.colorInput.value = el.color !== undefined? el.color : null
+    createForm(el: IUserSettings) {
+        this.colorInput.value = el.color !== undefined? el.color : '#53b6a8'
         this.directionInput.value = el.direction? el.direction : 'horizontal'
         this.typeInput.value = el.type? el.type : 'single'
-        this.startInput.value = el.start? el.start : 0
-        this.endInput.value = el.end? el.end : 100
+        this.prefixInput.value = el.prefix? el.prefix : null
+        this.startInput.value = el.start? el.start.toString() : null
+        this.endInput.value = el.end? el.end.toString() : null
+        this.stepInput.value = el.step? el.step.toString() : null
+        this.scalestepInput.value = el.scalestep? el.scalestep.toString() : null
+        this.tagmarkInput.checked = (el.tagmark === false) ? false : true
+        this.valueInput.value = el.values? el.values.join(',') : null
+        
         let tagmarkLabel = document.createElement('label')
         tagmarkLabel.textContent = 'Show tagmark'
         tagmarkLabel.append(this.tagmarkInput)
         
         this.form.append(this.colorInput, this.prefixInput, this.typeInput, this.directionInput, 
                          this.startInput, this.endInput, this.stepInput, this.scalestepInput, tagmarkLabel,
-                        this.btn)
+                        this.valueInput, this.btn)
         
         return this
     }
@@ -82,7 +90,10 @@ settings.forEach((el, index) => {
     container.className = `container-${index}`
     document.querySelector('.wrapper').append(container)
     $(`.container-${index}`).perfectSlider(el)
-    let formControll = new FormControll(index).createForm(el)
+    let formControll = new FormControll(index).createForm(el) 
+    let resultInput = document.querySelector(`.container-${index} .slider input`)
+    formControll.form.append(resultInput)
+    // console.log(formControll.form)   
     formSettings.push(formControll)
     container.prepend(formControll.form)
 })
@@ -108,5 +119,6 @@ function changeSettings(index: number) {
     settings[index].step = Number(formSettings[index].stepInput.value)
     settings[index].scalestep = Number(formSettings[index].scalestepInput.value)
     settings[index].tagmark = formSettings[index].tagmarkInput.checked
+    settings[index].values = formSettings[index].valueInput.value.split(',')
 }
  

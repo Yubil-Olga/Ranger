@@ -1,4 +1,4 @@
-import UserSettings from './userSettings'
+import UserSettings from './IUserSettings'
 
 export interface IOptions {
     type: number,
