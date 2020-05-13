@@ -6,11 +6,12 @@ export default class View {
     private _options: IOptions
     private _slider: Slider
     private _inputChanged: EventDispatcher
+    
     constructor(options: IOptions) {
+      this._options = options
       this._slider = new Slider(options).createSlider()
       this._inputChanged = new EventDispatcher(this)
       let _ranger = this
-      this._options = options
    
       this._slider.track.addEventListener('click', _ranger.onSelect.bind(_ranger))
 
@@ -19,7 +20,7 @@ export default class View {
       this._slider.track.addEventListener('mousedown', _ranger.onMouseDown.bind(_ranger))
       
       this._slider.track.addEventListener('dragstart', () => {
-        return false
+        return false 
       })
     }
     get inputChanged() {
@@ -33,19 +34,19 @@ export default class View {
       return this
     }
     onMouseDown(event: MouseEvent) {
-      let mousemove = this.onSelect.bind(this)
       if ((<HTMLElement>event.target).className === "thumb__marker") {
-        startSelect()
+        this.startSelect()
       }
-      function startSelect() {        
-        event.preventDefault()
-        document.addEventListener('mousemove', mousemove)
-        document.addEventListener('mouseup', endSelect)
-      }
-      function endSelect() {
-        document.removeEventListener('mouseup',  endSelect)
-        document.removeEventListener('mousemove',  mousemove)
-      }
+    }
+    mousemove = this.onSelect.bind(this)
+    mouseup = this.endSelect.bind(this)
+    startSelect() {
+      document.addEventListener('mousemove', this.mousemove)
+      document.addEventListener('mouseup', this.mouseup)
+    }
+    endSelect() {
+      document.removeEventListener('mouseup', this.mouseup)
+      document.removeEventListener('mousemove', this.mousemove)
     }
     onSelect(event: MouseEvent) {
       let width: number

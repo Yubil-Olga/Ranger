@@ -15,6 +15,7 @@ describe("Creation of presenter", () => {
     let model = new Model(options)
     let view = new View(options)
     let presenter = new Presenter(model, view)
+    
     test("Call model", () => {
         model.valueCalculation = jest.fn()
         presenter.callModel(100, 260, 0)

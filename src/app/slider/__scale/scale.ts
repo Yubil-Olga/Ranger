@@ -30,12 +30,16 @@ export default class Scale {
             }
           }
           else {
-            let count = Math.round((options.end - options.start)/options.scalestep)
+            let count = Math.ceil((options.end - options.start)/options.scalestep)
             let percent = (options.scalestep/(options.end - options.start))*100
             
             for (let i=0; i<count+1; i++) {
               let tag = (i*options.scalestep + options.start).toString();
               let position = i*percent + "%"
+              if (Number(tag) > options.end) {
+                tag = options.end.toString();
+                position = "100%"
+              }
               this.addMark(tag, options.direction, position)
             }
           }

@@ -92,7 +92,7 @@ class NumberSlider extends Options {
             return 1
         }
         if (options.step > Math.abs(options.end - options.start)) {
-            return Math.abs(options.end - options.start)
+            return Math.abs(this.end - this.start)
         }
         else {
             return options.step
