@@ -3,7 +3,7 @@ import { Options } from './options'
 let arr = []
 
 arr[0] = {
-    options : {start: -25, end: 100, step: 25, scalestep: 10, prefix: "%"},
+    options : {start: -25, end: 100, step: 25, scalestep: 10, prefix: "%", color: "frd"},
     result : {_type: 1, _direction: null, _start: -25, _end: 100, _step: 25, _scalestep: 10, _tagmark: true, _prefix: "%", _color: null},  
 }
 

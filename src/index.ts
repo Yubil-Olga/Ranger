@@ -3,9 +3,6 @@ import './app/app'
 import $ from 'jquery'
 import IUserSettings from './app/IUserSettings'
 
-document.addEventListener('dragstart', () => {
-    return false
-})
 let settings = [
     {type: 'double', start: -80, end: 40, step: 20, scalestep: 20},
     {start: -80, end: 40, prefix: "$"},
@@ -37,7 +34,7 @@ class FormControll {
         this.stepInput = this.createInput('number', 'step')
         this.scalestepInput = this.createInput('number', 'step of the scale')
         this.tagmarkInput = this.createInput('checkbox', 'tagmark')
-        this.valueInput = this.createInput('text', "String values")
+        this.valueInput = this.createInput('text', "A, B, C")
         this.btn = this.createButton(`apply-${index}`)
     }
     createForm(el: IUserSettings) {
@@ -55,12 +52,25 @@ class FormControll {
         let tagmarkLabel = document.createElement('label')
         tagmarkLabel.textContent = 'Show tagmark'
         tagmarkLabel.append(this.tagmarkInput)
-        
-        this.form.append(this.colorInput, this.prefixInput, this.typeInput, this.directionInput, 
-                         this.startInput, this.endInput, this.stepInput, this.scalestepInput, tagmarkLabel,
-                        this.valueInput, this.btn)
+        this.createLabel("Color", this.colorInput)
+        this.createLabel("Prefix", this.prefixInput)
+        this.createLabel("Type", this.typeInput)
+        this.createLabel("direction", this.directionInput)
+        this.createLabel("Min value", this.startInput)
+        this.createLabel('Max value', this.endInput)
+        this.createLabel("Step of slider", this.stepInput)
+        this.createLabel("Scale step", this.scalestepInput)
+        this.createLabel("Show tagmark", this.tagmarkInput)
+        this.createLabel("String values", this.valueInput)
+        this.form.append(this.btn)
         
         return this
+    }
+    createLabel(name: string, input: HTMLElement) {
+        let label = document.createElement('label')
+        label.textContent = name
+        label.append(input)
+        this.form.append(label)
     }
     createInput(type: string, name: string) {
         let input = document.createElement('input')
@@ -85,18 +95,20 @@ class FormControll {
         return select
     }
 }
-settings.forEach((el, index) => {
-    let container = document.createElement('div')
-    container.className = `container-${index}`
-    document.querySelector('.wrapper').append(container)
-    $(`.container-${index}`).perfectSlider(el)
-    let formControll = new FormControll(index).createForm(el) 
-    let resultInput = document.querySelector(`.container-${index} .slider input`)
-    formControll.form.append(resultInput)
-    // console.log(formControll.form)   
-    formSettings.push(formControll)
-    container.prepend(formControll.form)
-})
+window.onload = function() {
+    settings.forEach((el, index) => {
+        let container = document.createElement('div')
+        container.id = `container-${index}`
+        document.querySelector('.wrapper').append(container)
+        $(`#container-${index}`).perfectSlider(el)
+        checkDirection(el.direction, container)
+        let formControll = new FormControll(index).createForm(el) 
+        let resultInput = document.querySelector(`#container-${index} .slider input`)
+        formControll.form.append(resultInput) 
+        formSettings.push(formControll)
+        container.prepend(formControll.form)
+    })
+}
 
 document.addEventListener('click', draw)
 
@@ -105,11 +117,22 @@ function draw() {
         event.preventDefault()
         let index = parseInt((<HTMLButtonElement>event.target).className.split('-')[1])
         changeSettings(index)
-        document.querySelector(`.container-${index} .slider`).remove()
-        $(`.container-${index}`).perfectSlider(settings[index])
+        document.querySelector(`#container-${index} .slider`).remove()
+        checkDirection(settings[index].direction, document.querySelector(`#container-${index}`))
+        $(`#container-${index}`).perfectSlider(settings[index])
+        document.querySelector(`#container-${index} form`).lastElementChild.remove()
+        let resultInput = document.querySelector(`#container-${index} .slider input`)
+        document.querySelector(`#container-${index} form`).append(resultInput) 
     } 
 }
 function changeSettings(index: number) {
+    settings[index].values = formSettings[index].valueInput.value.split(',')
+    if (settings[index].values.length > 1) {
+        formSettings[index].startInput.value = null;
+        formSettings[index].endInput.value = null;
+        formSettings[index].stepInput.value = null;
+        formSettings[index].scalestepInput.value = null; 
+    }
     settings[index].color = formSettings[index].colorInput.value
     settings[index].prefix = formSettings[index].prefixInput.value
     settings[index].type = formSettings[index].typeInput.value
@@ -119,6 +142,13 @@ function changeSettings(index: number) {
     settings[index].step = Number(formSettings[index].stepInput.value)
     settings[index].scalestep = Number(formSettings[index].scalestepInput.value)
     settings[index].tagmark = formSettings[index].tagmarkInput.checked
-    settings[index].values = formSettings[index].valueInput.value.split(',')
 }
- 
+function checkDirection(direction: string, div: HTMLElement) {
+    if (direction === 'vertical') {
+        div.className = 'row'
+    }
+    else {
+        div.className = ""
+    }
+}
+

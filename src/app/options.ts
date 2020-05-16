@@ -26,7 +26,7 @@ export class Options implements IOptions  {
         this._type = options.type === 'double' ? 2 : 1
         this._direction = options.direction === 'vertical' ? 'vertical' : null
         this._prefix = typeof options.prefix === 'string' ? options.prefix : null
-        this._color = typeof options.color === 'string' ? options.color : null
+        this._color = typeof options.color === 'string' ? this.colorValidation(options.color) : null
         this._tagmark = options.tagmark === false ? false : true
     }
     get type() {
@@ -43,6 +43,16 @@ export class Options implements IOptions  {
     }
     get color() {
         return this._color
+    }
+    colorValidation(color: string) {
+        let div = document.createElement('div')
+        div.style.color = color
+        if (div.style.color === "") {
+            return null
+        }
+        else {
+            return color
+        }
     }
     create() {
         let values = []
@@ -64,7 +74,7 @@ class NumberSlider extends Options {
     private _scalestep: number
     constructor(options: UserSettings) {
         super(options)
-        if (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start > options.end) {
+        if (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start >= options.end) {
             this._start = 0
             this._end = 100
         }

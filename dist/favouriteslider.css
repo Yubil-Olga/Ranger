@@ -124,8 +124,7 @@ body {
     display: flex;
     width: unset;
     min-width: unset;
-    min-height: 290px;
-    height: 100%;
+    min-height: 200px;
 }
 .slider-vertical .slider__track {
     width: 30px;

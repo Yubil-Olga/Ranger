@@ -1,21 +1,4 @@
-import Slider from './slider/slider'
 import View from './view'
-
-// let div = document.createElement('div')
-// let options = []
-// options[0] = {type: 1, direction: null, tagmark: true, start: 0, end: 200, step: 10, prefix: null}
-// options[1] = {type: 2, direction: null,  tagmark: true, values: ["one", "two", "three", "four", "five"], prefix: null}
-// options[2] = {type: 2, direction: 'vertical', tagmark: true, values: ["one", "two", "three", "four", "five"],  prefix: null}
-// let views = []
-// options.forEach(el => {
-//     let view = new View(el).appendSlider(div)
-//     view.slider.thumblers[0].style.top = "5%"
-//     view.slider.thumblers[0].style.left = "5%"
-//     views.push(view)
-// })
-// test('Selected thumbler', () => {
-//     expect(views[0].selectedThumb(100, 120, views[0].slider.thumblers)).toBe(0)
-// })
 
 describe("Single slider", () => {
     let div = document.createElement('div')
@@ -31,15 +14,14 @@ describe("Single slider", () => {
     let view = new View(options).appendSlider(div)
     
     test ("Selected thumbler", () => {
+        let event = new MouseEvent('click')
         view.slider.thumblers[0].style.top = "5%"
-        expect(view.selectedThumb(100, 120, view.slider.thumblers)).toBe(0)
+        expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(0)
     })
     test ('Mousedown event', () => {
         const spy = jest.spyOn(view, 'startSelect')
         let mousedown = new MouseEvent('mousedown')
-        Object.defineProperty(mousedown, 'target', {
-            value: {className: 'thumb__marker'}
-        })
+        view.slider.thumblers[0].querySelector('.thumb__marker').dispatchEvent(mousedown)
         view.onMouseDown(mousedown)
         expect(spy).toBeCalled()
     })
@@ -64,11 +46,6 @@ describe("Single slider", () => {
         expect(spy).not.toBeCalled()
         expect(spy2).not.toBeCalled()
     })
-    // test('Drag event return false', () => {
-    //     let drag = new MouseEvent('dragstart')
-    //     view.slider.track.dispatchEvent(drag)
-
-    // })
     test ("Click event", () => {   
         let smth = new MouseEvent('click', {
             clientX: 100
@@ -99,9 +76,10 @@ describe("Double slider", () => {
     let view = new View(options).appendSlider(div)
     
     test ("Selected thumbler", () => {
+        let event = new MouseEvent('mousemove')
         view.slider.thumblers[0].style.top = "5%"
         view.slider.thumblers[1].style.top = "80%"
-        expect(view.selectedThumb(100, 120, view.slider.thumblers)).toBe(1)
+        expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(1)
     })
     test('Call comand', () => {
         view.inputChanged.notify = jest.fn()
@@ -163,9 +141,10 @@ describe("One more slider", () => {
     let view = new View(options).appendSlider(div)
     
     test ("Selected thumbler", () => {
+        let event = new MouseEvent('click')
         view.slider.thumblers[0].style.left = "5%"
         view.slider.thumblers[1].style.left = "80%"
-        expect(view.selectedThumb(100, 120, view.slider.thumblers)).toBe(1)
+        expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(1)
     })
     test('Call comand', () => {
         view.inputChanged.notify = jest.fn()

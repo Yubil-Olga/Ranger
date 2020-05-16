@@ -104,7 +104,7 @@ export default class Slider {
     moveThumbs(data: Data, index: number) {
       if (this._settings.direction === "vertical") {
         this._thumblers[index].style.top = data.coord + "%"
-        this._tagmarks[index].style.top = data.coord - 5 + "%"
+        this._tagmarks[index].style.top = data.coord - 3 + "%"
       }
       else {
         this._thumblers[index].style.left = data.coord + "%"

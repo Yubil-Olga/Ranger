@@ -1,11 +1,12 @@
 import Slider from './slider/slider'
-import { IOptions } from './options'
+import { IOptions, Options } from './options'
 import EventDispatcher from './dispatcher'
 
 export default class View {
     private _options: IOptions
     private _slider: Slider
     private _inputChanged: EventDispatcher
+    private _activeThumbNum: number
     
     constructor(options: IOptions) {
       this._options = options
@@ -20,7 +21,7 @@ export default class View {
       this._slider.track.addEventListener('mousedown', _ranger.onMouseDown.bind(_ranger))
       
       this._slider.track.addEventListener('dragstart', () => {
-        return false 
+        event.preventDefault()
       })
     }
     get inputChanged() {
@@ -36,6 +37,7 @@ export default class View {
     onMouseDown(event: MouseEvent) {
       if ((<HTMLElement>event.target).className === "thumb__marker") {
         this.startSelect()
+        this._activeThumbNum = this._slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'))
       }
     }
     mousemove = this.onSelect.bind(this)
@@ -67,8 +69,8 @@ export default class View {
         coord = width
       }
       
-      let index = this.selectedThumb(coord, width, this._slider.thumblers)
-
+      let index = this.selectedThumb(coord, width, this._slider.thumblers, event)
+      
       this.callCommand(width, coord, index); 
     }
     transitionDuration(event: MouseEvent) {
@@ -79,22 +81,26 @@ export default class View {
         this._slider.container.style.setProperty('--transition', "0")
       }
     }
-    selectedThumb(coord: number, width: number, thumblers: Array<HTMLElement>) {
+    selectedThumb(coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent) {
       let index = 0
-      
       if (this._options.type === 2) {
-        let arr = [];
-        thumblers.forEach((el: HTMLElement) => {
-          let dist: number
-          if (this._options.direction === "vertical") {
-            dist = Math.abs(coord - parseInt(el.style.top)*width/100)
-          }
-          else {
-            dist = Math.abs(coord - parseInt(el.style.left)*width/100)
-          }
-          arr.push(dist) 
-        })
-        index = arr.indexOf(Math.min(...arr))
+        let min = this._options.direction === 'vertical' ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left)
+        let max = this._options.direction === 'vertical' ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left)
+        let pos = coord*100/width
+        if (event.type === 'mousemove') {
+          index = this._activeThumbNum
+        }
+        if ( (pos - min) < 0) {
+          this._activeThumbNum = 0
+          index = 0
+        }
+        if ( (pos - max) > 0) {
+          this._activeThumbNum = 1
+          index = 1
+        }
+        if ( (pos - min) > (max - pos) && event.type === 'click') {
+          index = 1
+        }
       }
       return index
     }
