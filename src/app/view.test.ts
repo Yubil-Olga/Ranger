@@ -62,7 +62,6 @@ describe("Single slider", () => {
         expect(spy).toBeCalled()
         expect(spy).toBeCalledWith(260, 90, 0)
     })
-    
 })
 describe("Double slider", () => {
     let div = document.createElement('div')
