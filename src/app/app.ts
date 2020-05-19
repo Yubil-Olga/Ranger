@@ -17,6 +17,7 @@ import { Options } from './options'
             presenter = new Presenter(model, view);
         
           model.init();
+          
         }) 
       }
       catch(err) {
