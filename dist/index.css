@@ -47,9 +47,6 @@ option {
     display: flex;
     justify-content: space-around;
 }
-body {
-    display: flex;
-}
 .slider {
     --basic-color: #e5e5e5;
     --active-color: #53b6a8;

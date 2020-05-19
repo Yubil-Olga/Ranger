@@ -8,18 +8,20 @@ import { Options } from './options'
 
 (function( $ ) {
     $.fn.perfectSlider = function(options: UserSettings) {
-      let settings = $.extend({
-
-      }, options);
-      
-      return this.each(function() {
-        let param = new Options(options).create()
-        let model = new Model(param),
-          view = new View(param).appendSlider(this),
-          presenter = new Presenter(model, view);
-      
-      model.init();
-      }) 
+      let settings = $.extend({}, options);
+      try {
+        return this.each(function() {
+          let param = new Options(settings).create()
+          let model = new Model(param),
+            view = new View(param).appendSlider(this),
+            presenter = new Presenter(model, view);
+        
+          model.init();
+        }) 
+      }
+      catch(err) {
+        console.log(err)
+      }
       
     };
   })(jQuery);
