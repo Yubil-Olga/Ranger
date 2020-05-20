@@ -3,7 +3,7 @@
 easy, flexible and responsive range slider
 
 ## Demo
-[Demo page](https://www.google.com)
+[Demo page](https://yubil-olga.github.io/Ranger/dist/)
 
 ## Архитектура приложения
 
