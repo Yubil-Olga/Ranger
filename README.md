@@ -2,6 +2,9 @@
 
 easy, flexible and responsive range slider
 
+## Demo
+[Demo page](https://www.google.com)
+
 ## Usage
 
 
