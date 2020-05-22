@@ -1,4 +1,4 @@
-import { Options } from './options'
+import { CreateOptions } from './options'
 
 let arr = []
 
@@ -28,7 +28,7 @@ arr[4] = {
 
 test('Set correct options', ( ) => {
     for (let i=0; i<arr.length; i++) {
-        let param = new Options(arr[i].options).create() 
+        let param = new CreateOptions(arr[i].options).create() 
         expect(param).toMatchObject(arr[i].result)
         expect(param.type).toBe(arr[i].result._type)
         expect(param.direction).toBe(arr[i].result._direction)

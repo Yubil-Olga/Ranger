@@ -1,6 +1,6 @@
 # PerfectSlider
 
-easy, flexible and responsive range slider
+Слайдер, плагин для jQuery
 
 ## Demo
 [Demo page](https://yubil-olga.github.io/Ranger/dist/)
@@ -13,14 +13,30 @@ easy, flexible and responsive range slider
 
 **Presenter** - посредник между View и Model. Слушает события: если inputChanged, вызывает метод модели valueCalculation и передает необходимые для расчета данные. Если modelChanged, то вызывает метод вида слайдера update и передает ему значения и координаты для перерисовки.
 
+## UML
+[uml](src\app\Diagram.png)
+
 ## Usage
 
 
 ### Initialisation
-To initialise the slider, call perfectSlider on the element:
-```javascript
-$("#example_id").perfectSlider()
+
 ```
+<div class='myElement'></div>
+```
+```javascript
+$(".myElement").perfectSlider()
+```
+
+#### Options:
+```javascript
+$('.myElement').slider({
+	type: 'double',
+    direction: 'vertical',
+    values: ['one', 'two', 'three']
+});
+```
+
 
 ### Settings
 | Option        | Defaults      | Type   | Description                                                                     |

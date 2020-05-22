@@ -3,15 +3,15 @@ import jQuery from 'jquery'
 import Model  from './model'
 import View from './view'
 import Presenter from './presenter'
-import UserSettings from './IUserSettings'
-import { Options } from './options'
+import IUserSettings from './IUserSettings'
+import { CreateOptions } from './options'
 
 (function( $ ) {
-    $.fn.perfectSlider = function(options: UserSettings) {
+    $.fn.perfectSlider = function(options: IUserSettings) {
       let settings = $.extend({}, options);
       try {
         return this.each(function() {
-          let param = new Options(settings).create()
+          let param = new CreateOptions(settings).create()
           let model = new Model(param),
             view = new View(param).appendSlider(this),
             presenter = new Presenter(model, view);
