@@ -14,7 +14,7 @@
 **Presenter** - посредник между View и Model. Слушает события: если inputChanged, вызывает метод модели valueCalculation и передает необходимые для расчета данные. Если modelChanged, то вызывает метод вида слайдера update и передает ему значения и координаты для перерисовки.
 
 ## UML
-![uml](src\app\Diagram.png)
+![uml](src/app/Diagram.jpg)
 
 ## Usage
 
