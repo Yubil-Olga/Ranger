@@ -13,7 +13,7 @@ module.exports = {
         favouriteslider: './app/app.ts'
     },
     output: {
-        filename: './js/[name].bundle.js',
+        filename: './js/[name].js',
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
