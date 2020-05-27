@@ -8,14 +8,14 @@ import { CreateOptions } from './options'
 
 (function( $ ) {
     $.fn.perfectSlider = function(options: IUserSettings) {
-      let settings = $.extend({}, options);
+      const settings = $.extend({}, options);
       try {
         return this.each(function() {
-          let param = new CreateOptions(settings).create()
-          let model = new Model(param),
+          const param = new CreateOptions(settings).create()
+          const model = new Model(param),
             view = new View(param).appendSlider(this),
             presenter = new Presenter(model, view);
-        
+                
           model.init();
           
         }) 

@@ -9,7 +9,7 @@ export default class Scale {
       return this._scale
     }
     addMark(tag: string, direction: string, position: string) {
-        let labelMark = document.createElement('span')
+        const labelMark = document.createElement('span')
         labelMark.className = 'label__mark'
         labelMark.setAttribute("data-text", tag)
         if (direction == 'vertical') {
@@ -22,23 +22,23 @@ export default class Scale {
     }
     addScale(options: IOptions) {
         if (options.values) {
-            let count = options.values.length;
-            let percent = 100/(count-1);
+            const count = options.values.length;
+            const percent = 100/(count-1);
             for (let i=0; i<count; i++) {
-              let position = i*percent + "%";
+              const position = i*percent + '%';
               this.addMark(options.values[i].toString(), options.direction, position)
             }
           }
           else {
-            let count = Math.ceil((options.end - options.start)/options.scalestep)
-            let percent = (options.scalestep/(options.end - options.start))*100
+            const count = Math.ceil((options.end - options.start)/options.scalestep)
+            const percent = (options.scalestep/(options.end - options.start))*100
             
             for (let i=0; i<count+1; i++) {
               let tag = (i*options.scalestep + options.start).toString();
-              let position = i*percent + "%"
+              let position = i*percent + '%'
               if (Number(tag) > options.end) {
                 tag = options.end.toString();
-                position = "100%"
+                position = '100%'
               }
               this.addMark(tag, options.direction, position)
             }

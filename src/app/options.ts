@@ -1,6 +1,6 @@
 import IUserSettings from './IUserSettings'
 
-export interface IOptions {
+interface IOptions {
     type: number,
     direction: string,
     start?: number,
@@ -13,7 +13,7 @@ export interface IOptions {
     color?: string
 }
 
-export class Options implements IOptions  {
+class Options implements IOptions  {
     private _type: number
     private _direction: string
     private _prefix: string
@@ -43,9 +43,9 @@ export class Options implements IOptions  {
         return this._color
     }
     colorValidation(color: string) {
-        let div = document.createElement('div')
+        const div = document.createElement('div')
         div.style.color = color
-        if (div.style.color === "") {
+        if (div.style.color === '') {
             return null
         }
         else {
@@ -53,7 +53,7 @@ export class Options implements IOptions  {
         }
     }
 }
-export class CreateOptions {
+class CreateOptions {
     private settings: IUserSettings
     constructor(settings: IUserSettings) {
         this.settings = settings
@@ -79,7 +79,7 @@ class NumberSliderOptions extends Options {
     
     constructor(options: IUserSettings) {
         super(options)
-        if (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start >= options.end) {
+        if (this.userSettingsInvalid(options)) {
             this._start = 0
             this._end = 100
         }
@@ -102,6 +102,9 @@ class NumberSliderOptions extends Options {
     get scalestep() {
         return this._scalestep
     }
+    userSettingsInvalid(options: IUserSettings) {
+        return (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start >= options.end)
+    }
     checkStep(options: IUserSettings) {
         if (typeof options.step !== 'number'|| options.step < 1) {
             return 1
@@ -114,10 +117,13 @@ class NumberSliderOptions extends Options {
         }
     }
     checkScalestep(options: IUserSettings) {
-        if (typeof options.scalestep === 'number' && options.scalestep > 1 && options.scalestep < (this.end - this.start)) {
+        if (this.scalestepSettingsValid(options)) {
             return options.scalestep
         }
         return (this.end - this.start)
+    }
+    scalestepSettingsValid(options: IUserSettings) {
+        return (typeof options.scalestep === 'number' && options.scalestep > 1 && options.scalestep < (this.end - this.start))
     }
 }
 class ValueSliderOptions extends Options{
@@ -129,6 +135,11 @@ class ValueSliderOptions extends Options{
     get values() {
         return this._values
     }
+}
+export {
+    IOptions,
+    Options,
+    CreateOptions
 }
 
     

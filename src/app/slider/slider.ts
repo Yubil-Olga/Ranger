@@ -50,12 +50,12 @@ export default class Slider {
       return this._value
     }
     createInput(type: string) {
-      let el = document.createElement("input");
+      const el = document.createElement('input');
       el.type = type;
       return el;
     }
     createElement(tag: string, classname: string) {
-      let el = document.createElement(tag);
+      const el = document.createElement(tag);
       el.className = classname;
       return el;
     }
@@ -91,36 +91,36 @@ export default class Slider {
     }
     
     update(data: Array<Data>) {
-      let arr = []
-      let prefix = this._settings.prefix ? this._settings.prefix + " " : ""
+      const arr = []
+      const prefix = this._settings.prefix ? this._settings.prefix + ' ' : ''
       for (let i=0; i<data.length; i++) {
           this._tagmarks[i].textContent = prefix + data[i].value
         arr.push(data[i].value);
         this.moveThumbs(data[i], i);
       }
       this.moveBar(data);
-      this._value.value = arr.join(";")
+      this._value.value = arr.join(';')
     }
     moveThumbs(data: Data, index: number) {
-      if (this._settings.direction === "vertical") {
-        this._thumblers[index].style.top = data.coord + "%"
-        this._tagmarks[index].style.top = data.coord - 3 + "%"
+      if (this._settings.direction === 'vertical') {
+        this._thumblers[index].style.top = data.coord + '%'
+        this._tagmarks[index].style.top = data.coord - 3 + '%'
       }
       else {
-        this._thumblers[index].style.left = data.coord + "%"
-        this._tagmarks[index].style.left = data.coord - (this._tagmarks[index].clientWidth/this._track.clientWidth)*50 + "%"
+        this._thumblers[index].style.left = data.coord + '%'
+        this._tagmarks[index].style.left = data.coord - (this._tagmarks[index].clientWidth/this._track.clientWidth)*50 + '%'
       }
     }
     moveBar(data: Array<Data>) {
       let barStart: string
       let barEnd: string
       if (data.length > 1) {
-        barStart = data[0].coord + "%"
-        barEnd = 100 - data[1].coord + "%"
+        barStart = data[0].coord + '%'
+        barEnd = 100 - data[1].coord + '%'
       }
       else {
-        barStart = 0 + "%"
-        barEnd = 100 - data[0].coord + "%"
+        barStart = 0 + '%'
+        barEnd = 100 - data[0].coord + '%'
       }
       if (this._settings.direction === 'vertical') {
         this._barSelected.style.top = barStart;

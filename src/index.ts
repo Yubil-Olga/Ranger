@@ -3,13 +3,13 @@ import './app/app'
 import $ from 'jquery'
 import IUserSettings from './app/IUserSettings'
 
-let settings = [
+const settings = [
     {type: 'double', start: -80, end: 40, step: 20, scalestep: 20},
     {start: -80, end: 40, prefix: "$"},
-    {values: ['jen', 'feb', 'march', 'apr', 'may'], color: "linear-gradient(yellow 0, red 100%)"},
+    {values: ['jen', 'feb', 'march', 'apr', 'may'], color: 'linear-gradient(yellow 0, red 100%)'},
     {direction: 'vertical', tagmark: false}
 ]
-let formSettings = []
+const formSettings = []
 class FormControll {
     form: HTMLElement
     colorInput: HTMLInputElement
@@ -27,7 +27,7 @@ class FormControll {
         this.form = document.createElement('form')
         this.colorInput = this.createInput('text', 'color')
         this.prefixInput = this.createInput('text', 'prefix')
-        this.typeInput = this.createSelect(['single', "double"])
+        this.typeInput = this.createSelect(['single', 'double'])
         this.directionInput = this.createSelect(['horizontal', 'vertical'])
         this.startInput = this.createInput('number', 'from')
         this.endInput = this.createInput('number', 'to')
@@ -49,45 +49,45 @@ class FormControll {
         this.tagmarkInput.checked = (el.tagmark === false) ? false : true
         this.valueInput.value = el.values? el.values.join(',') : null
         
-        let tagmarkLabel = document.createElement('label')
+        const tagmarkLabel = document.createElement('label')
         tagmarkLabel.textContent = 'Show tagmark'
         tagmarkLabel.append(this.tagmarkInput)
-        this.createLabel("Color", this.colorInput)
-        this.createLabel("Prefix", this.prefixInput)
-        this.createLabel("Type", this.typeInput)
-        this.createLabel("direction", this.directionInput)
-        this.createLabel("Min value", this.startInput)
+        this.createLabel('Color', this.colorInput)
+        this.createLabel('Prefix', this.prefixInput)
+        this.createLabel('Type', this.typeInput)
+        this.createLabel('direction', this.directionInput)
+        this.createLabel('Min value', this.startInput)
         this.createLabel('Max value', this.endInput)
-        this.createLabel("Step of slider", this.stepInput)
-        this.createLabel("Scale step", this.scalestepInput)
-        this.createLabel("Show tagmark", this.tagmarkInput)
-        this.createLabel("String values", this.valueInput)
+        this.createLabel('Step of slider', this.stepInput)
+        this.createLabel('Scale step', this.scalestepInput)
+        this.createLabel('Show tagmark', this.tagmarkInput)
+        this.createLabel('String values', this.valueInput)
         this.form.append(this.btn)
         
         return this
     }
     createLabel(name: string, input: HTMLElement) {
-        let label = document.createElement('label')
+        const label = document.createElement('label')
         label.textContent = name
         label.append(input)
         this.form.append(label)
     }
     createInput(type: string, name: string) {
-        let input = document.createElement('input')
+        const input = document.createElement('input')
         input.type = type
         input.placeholder = name
         return input
     }
     createButton(name: string) {
-        let el = document.createElement('button')
+        const el = document.createElement('button')
         el.className = name
         el.textContent = "Применить"
         return el
     }
     createSelect(name: Array<string>) {
-        let select = document.createElement('select')
+        const select = document.createElement('select')
         for (let i=0; i<name.length; i++) {
-            let option = document.createElement('option')
+            const option = document.createElement('option')
             option.value = name[i]
             option.textContent = name[i]
             select.append(option)
@@ -97,13 +97,13 @@ class FormControll {
 }
 window.onload = function() {
     settings.forEach((el, index) => {
-        let container = document.createElement('div')
+        const container = document.createElement('div')
         container.id = `container-${index}`
         document.querySelector('.wrapper').append(container)
         $(`#container-${index}`).perfectSlider(el)
         checkDirection(el.direction, container)
-        let formControll = new FormControll(index).createForm(el) 
-        let resultInput = document.querySelector(`#container-${index} .slider input`)
+        const formControll = new FormControll(index).createForm(el) 
+        const resultInput = document.querySelector(`#container-${index} .slider input`)
         formControll.form.append(resultInput) 
         formSettings.push(formControll)
         container.prepend(formControll.form)
@@ -115,13 +115,13 @@ document.addEventListener('click', draw)
 function draw() {
     if ((<HTMLLIElement>event.target).tagName === 'BUTTON') {
         event.preventDefault()
-        let index = parseInt((<HTMLButtonElement>event.target).className.split('-')[1])
+        const index = parseInt((<HTMLButtonElement>event.target).className.split('-')[1])
         changeSettings(index)
         document.querySelector(`#container-${index} .slider`).remove()
         checkDirection(settings[index].direction, document.querySelector(`#container-${index}`))
         $(`#container-${index}`).perfectSlider(settings[index])
         document.querySelector(`#container-${index} form`).lastElementChild.remove()
-        let resultInput = document.querySelector(`#container-${index} .slider input`)
+        const resultInput = document.querySelector(`#container-${index} .slider input`)
         document.querySelector(`#container-${index} form`).append(resultInput) 
     } 
 }
@@ -148,7 +148,7 @@ function checkDirection(direction: string, div: HTMLElement) {
         div.className = 'row'
     }
     else {
-        div.className = ""
+        div.className = ''
     }
 }
 

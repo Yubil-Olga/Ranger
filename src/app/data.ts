@@ -9,7 +9,7 @@ export default class Data {
             this._coord = i*100/(options.values.length - 1)
         }
         else {
-            let step = this.calculateStep(options)
+            const step = this.calculateStep(options)
             this._value = (options.start + i*step).toString(),
             this._coord = i*step*100/(options.end - options.start) 
         }

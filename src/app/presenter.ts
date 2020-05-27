@@ -8,7 +8,7 @@ export default class Presenter {
     constructor(model: Model, view: View) {
       this._model = model
       this._view = view
-      let _presenter = this
+      const _presenter = this
       this._view.inputChanged.attach(function (sender: View, args: IUserInput) {
         _presenter.callModel(args.position, args.trackWidth, args.index)
       })

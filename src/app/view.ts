@@ -12,17 +12,18 @@ export default class View {
       this._options = options
       this._slider = new Slider(options).createSlider()
       this._inputChanged = new EventDispatcher(this)
-      let _ranger = this
-   
-      this._slider.track.addEventListener('click', _ranger.onSelect.bind(_ranger))
+      this.bindEventListeners()
+    }
+    bindEventListeners() {
+      this._slider.track.addEventListener('click', this.onSelect.bind(this))
+      this._slider.label.scale.addEventListener('click', this.onSelect.bind(this))
 
-      this._slider.label.scale.addEventListener('click', _ranger.onSelect.bind(_ranger))
+      this._slider.track.addEventListener('mousedown', this.onMouseDown.bind(this))
 
-      this._slider.track.addEventListener('mousedown', _ranger.onMouseDown.bind(_ranger))
-      
-      this._slider.track.addEventListener('dragstart', () => {
-        event.preventDefault()
-      })
+      this._slider.track.addEventListener('dragstart', this.stopDrag)
+    }
+    stopDrag() {
+      event.preventDefault()
     }
     get inputChanged() {
       return this._inputChanged
@@ -35,7 +36,7 @@ export default class View {
       return this
     }
     onMouseDown(event: MouseEvent) {
-      if ((<HTMLElement>event.target).className === "thumb__marker") {
+      if ((<HTMLElement>event.target).className === 'thumb__marker') {
         this.startSelect()
         this._activeThumbNum = this._slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'))
       }
@@ -54,7 +55,7 @@ export default class View {
       let width: number
       let coord: number
       this.transitionDuration(event)
-      if (this._options.direction == "vertical") {
+      if (this._options.direction == 'vertical') {
         width = this._slider.track.clientHeight
         coord = Math.round((<MouseEvent>event).clientY - this._slider.track.getBoundingClientRect().top)
       }
@@ -69,24 +70,24 @@ export default class View {
         coord = width
       }
       
-      let index = this.selectedThumb(coord, width, this._slider.thumblers, event)
+      const index = this.selectedThumb(coord, width, this._slider.thumblers, event)
       
       this.callCommand(width, coord, index); 
     }
     transitionDuration(event: MouseEvent) {
       if (event.type === 'click') {
-        this._slider.container.style.setProperty('--transition', "0.5s")
+        this._slider.container.style.setProperty('--transition', '0.5s')
       }
       else {
-        this._slider.container.style.setProperty('--transition', "0")
+        this._slider.container.style.setProperty('--transition', '0')
       }
     }
     selectedThumb(coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent) {
       let index = 0
       if (this._options.type === 2) {
-        let min = this._options.direction === 'vertical' ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left)
-        let max = this._options.direction === 'vertical' ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left)
-        let pos = coord*100/width
+        const min = this._options.direction === 'vertical' ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left)
+        const max = this._options.direction === 'vertical' ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left)
+        const pos = coord*100/width
         if (event.type === 'mousemove') {
           index = this._activeThumbNum
         }
