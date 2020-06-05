@@ -20,7 +20,7 @@
 
 ### Установка
 
-1. **git clone** https://github.com/Yubil-Olga/Ranger.git - клонировать репозитрорий
+1. **git clone** https://github.com/Yubil-Olga/Range - клонировать репозитрорий
 2. **npm install** - установить зависимости
 3. **npm run build** - запустить сборку
 4. **npm test** - запуск тестов
