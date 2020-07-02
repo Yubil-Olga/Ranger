@@ -1,0 +1,228 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    width: 100vw;
+    font-family: Arial, Helvetica, sans-serif;
+}
+div[id^=container] {
+    padding: 30px 0;
+    border: 1px solid #000;
+}
+form {
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
+}
+input:not([type="checkbox"]), button, select {
+    border: 1px solid #000;
+    width: 200px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+button {
+    background: lightslategray;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+}
+label {
+    width: 350px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+option {
+    margin: 10px 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+.slider {
+    --basic-color: #e5e5e5;
+    --active-color: #53b6a8;
+    --transition: 0.5s;
+    width: 100%;
+    min-width: 290px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+    justify-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.slider input {
+    position: absolute;
+    opacity: 0;
+}
+.slider__track {
+    width: 90%;
+    height: 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.track__bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 4px;
+    background: var(--basic-color);
+}
+
+.track__bar_selected {
+    position: absolute;
+    height: 6px;
+    border-radius: 4px;
+    background: var(--active-color);
+    left: 0;
+    right: 100%;
+    transition: var(--transition);
+}
+.slider__thumb {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.thumb__marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--active-color);
+    cursor: pointer;
+}
+.slider__label {
+    width: 90%;
+    position: relative;
+    font-size: 12px;
+}
+
+.label__mark {
+    width: 1px;
+    height: 4px;
+    background: var(--active-color);
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+}
+
+.label__mark:before {
+    content: attr(data-text);
+    padding-top: 5px;
+}
+.slider__tag {
+    width: 90%;
+    position: relative;
+    height: 25px;
+}
+
+.tag__mark {
+    min-width: 30px;
+    white-space: nowrap;
+    padding: 5px;
+    background: var(--active-color);
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    color: #fff;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.tag__mark:after {
+    content: "";
+    position: absolute;
+    background: var(--active-color);
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    bottom: -2px;
+    z-index: -1;
+}
+
+.tag__mark_hide {
+    display: none;
+}
+
+/****************************** Vertical orintation ************************************************/
+.slider-vertical {
+    display: flex;
+    width: unset;
+    min-width: unset;
+    min-height: 200px;
+}
+.slider-vertical .slider__track {
+    width: 30px;
+    height: 90%;
+    flex-direction: column;
+}
+.slider-vertical .track__bar {
+    width: 6px;
+    height: 100%;
+}
+.slider-vertical .track__bar_selected {
+    --bar-width: 6px;
+    width: var(--bar-width);
+    height: unset;
+    right: 0;
+    left: calc(50% - (var(--bar-width)/2));
+    top: 0;
+    bottom: 100%;
+}
+.slider-vertical .slider__thumb {
+    align-content: unset;
+    width: 100%;
+    height: 1px;
+    display: flex;
+    align-items: center;
+}
+.slider-vertical .slider__tag {
+    width: 60px;
+    height: 90%;
+    margin-right: 10px;
+}
+.slider-vertical .tag__mark {
+    right: 0;
+    white-space: normal;
+    word-break: break-all;
+}
+.slider-vertical .tag__mark:after {
+    top: 8px;
+    left: unset;
+    right: -2px;
+}
+.slider-vertical .slider__label {
+    width: unset;
+    height: 90%;
+}
+.slider-vertical .label__mark {
+    width: 4px;
+    height: 1px;
+    justify-content: unset;
+    align-items: center;
+}
+.slider-vertical .label__mark:before {
+    padding-top: 0;
+    padding-left: 10px;
+}
