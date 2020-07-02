@@ -27,19 +27,19 @@ class Options implements IOptions  {
         this._color = typeof options.color === 'string' ? this.colorValidation(options.color) : null
         this._tagmark = options.tagmark === false ? false : true
     }
-    get type() {
+    get type(): number {
         return this._type
     }
-    get direction() {
+    get direction(): string {
         return this._direction
     }
-    get prefix() {
+    get prefix(): string {
         return this._prefix
     }
-    get tagmark() {
+    get tagmark(): boolean {
         return this._tagmark
     }
-    get color() {
+    get color(): string {
         return this._color
     }
     colorValidation(color: string) {

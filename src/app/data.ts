@@ -14,13 +14,13 @@ export default class Data {
             this._coord = i*step*100/(options.end - options.start) 
         }
     }
-    get value() {
+    get value(): string {
         return this._value
     }
-    get coord() {
+    get coord(): number {
         return this._coord
     } 
-    calculateStep(options: IOptions) {
+    calculateStep(options: IOptions): number {
         if (options.step*100/ (options.end - options.start) > 10 ) {
             return options.step
         }
@@ -28,7 +28,7 @@ export default class Data {
             return (options.end - options.start)/2
         }
     }
-    update(value: string, coord: number) {
+    update(value: string, coord: number): void {
         this._value = value
         this._coord = coord
     }

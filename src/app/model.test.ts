@@ -1,7 +1,7 @@
 import Model from './model'
 
 describe('Number model', () => {
-    let options = {
+    const options = {
         type: 1,
         direction: null,
         start: -25,
@@ -10,7 +10,7 @@ describe('Number model', () => {
         tagmark: true,
         prefix: null
     }
-    let slider = new Model(options)
+    const slider = new Model(options)
     
     test('Step calculation return size of one step in %', ( ) => {
         expect(slider.stepCalculation()).toBe(20)
@@ -28,14 +28,14 @@ describe('Number model', () => {
 })
 
 describe('Value model', () => {
-    let options = {
+    const options = {
         type: 1,
         direction: null,
         prefix: null,
         tagmark: true,
         values: ["one", "two", "three"]
     }
-    let slider = new Model(options)
+    const slider = new Model(options)
     
     test ('Selected value', () => {
         expect(slider.valueCalculation(0, 200, 0)).toMatchObject([{"coord": 0, "value": "one"}])

@@ -3,7 +3,7 @@ import View from './view'
 import Presenter from './presenter'
 
 describe("Creation of presenter", () => {
-    let options = {
+    const options = {
         type: 1,
         direction: null,
         start: -25,
@@ -12,9 +12,9 @@ describe("Creation of presenter", () => {
         tagmark: true,
         prefix: null
     }
-    let model = new Model(options)
-    let view = new View(options)
-    let presenter = new Presenter(model, view)
+    const model = new Model(options)
+    const view = new View(options)
+    const presenter = new Presenter(model, view)
     
     test("Call model", () => {
         model.valueCalculation = jest.fn()

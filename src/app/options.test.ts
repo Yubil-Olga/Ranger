@@ -1,6 +1,6 @@
 import { CreateOptions } from './options'
 
-let arr = []
+const arr = []
 
 arr[0] = {
     options : {start: -25, end: 100, step: 25, scalestep: 10, prefix: "%", color: "frd"},
@@ -27,23 +27,22 @@ arr[4] = {
 }
 
 test('Set correct options', ( ) => {
-    for (let i=0; i<arr.length; i++) {
-        let param = new CreateOptions(arr[i].options).create() 
-        expect(param).toMatchObject(arr[i].result)
-        expect(param.type).toBe(arr[i].result._type)
-        expect(param.direction).toBe(arr[i].result._direction)
-        expect(param.tagmark).toBe(arr[i].result._tagmark)
-        expect(param.color).toBe(arr[i].result._color)
-        expect(param.prefix).toBe(arr[i].result._prefix)
-        if ('step' in param) {
-            expect(param.step).toBe(arr[i].result._step)
-            expect(param.scalestep).toBe(arr[i].result._scalestep)  
-        }
-        if ('values' in param) {
-            expect(param.values).toEqual(arr[i].result._values)
-        }
-        
-    }
+  for (let i=0; i<arr.length; i++) {
+      let param = new CreateOptions(arr[i].options).create() 
+      expect(param).toMatchObject(arr[i].result)
+      expect(param.type).toBe(arr[i].result._type)
+      expect(param.direction).toBe(arr[i].result._direction)
+      expect(param.tagmark).toBe(arr[i].result._tagmark)
+      expect(param.color).toBe(arr[i].result._color)
+      expect(param.prefix).toBe(arr[i].result._prefix)
+      if ('step' in param) {
+          expect(param.step).toBe(arr[i].result._step)
+          expect(param.scalestep).toBe(arr[i].result._scalestep)  
+      }
+      if ('values' in param) {
+          expect(param.values).toEqual(arr[i].result._values)
+      }
+      
+  }
 })
-
 

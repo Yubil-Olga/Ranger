@@ -13,14 +13,14 @@ export default class Model {
       this._modelChanged = new EventDispatcher(this)
     }
 
-    get modelChanged() {
+    get modelChanged(): EventDispatcher {
       return this._modelChanged
     }
     
-    init() {
+    init(): void {
       this.callCommand(this._data)
     }
-    initData(type: number) {
+    initData(type: number): Array<Data> {
       const arr = []
       for (let i=0; i<type; i++) {
         const data = new Data(i, this._options)
@@ -28,11 +28,11 @@ export default class Model {
       }
       return arr
     }
-    stepCalculation() {
+    stepCalculation(): number {
       const step = (this._options.step/(this._options.end - this._options.start))*100
       return step
     }
-    positionCalculation(position: number, step: number, trackWidth:number) {
+    positionCalculation(position: number, step: number, trackWidth:number): number {
       const percent = (position/trackWidth)*100
       let pos: number
       if ((percent + step) > 100) {
@@ -43,7 +43,7 @@ export default class Model {
       }
       return pos
     }
-    valueCalculation(position: number, trackWidth: number, index: number) {
+    valueCalculation(position: number, trackWidth: number, index: number): Array<Data> {
       if (this._options.values) {
         const step = 100/(this._options.values.length - 1);
         const pos = this.positionCalculation(position, step, trackWidth);
@@ -59,7 +59,7 @@ export default class Model {
       return this._data
     }
     
-    callCommand(data: Array<Data>) {
+    callCommand(data: Array<Data>): void {
       this._modelChanged.notify(data)
     }
   } 

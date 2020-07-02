@@ -2,7 +2,7 @@ import Slider from './slider'
 import Data from '../data'
 
 describe("Number slider", () => {
-    let options = {
+    const options = {
         type: 1,
         direction: null,
         prefix: "$",
@@ -12,7 +12,7 @@ describe("Number slider", () => {
         scalestep: 10,
         tagmark: true
     }
-    let slider = new Slider(options).createSlider()
+    const slider = new Slider(options).createSlider()
 
     test('Create number slider correctly', () => {
         expect(slider).toBeDefined()
@@ -21,13 +21,13 @@ describe("Number slider", () => {
         expect(slider.container.className).toBe('slider')
     })
     test("Move thumbs", () => {
-        let data = new Data(0, options)
+        const data = new Data(0, options)
         data.update('100', 100)
         slider.moveThumbs(data, 0)
         expect(slider.thumblers[0].style.left).toBe('100%')
     })
     test("Move bar", () => {
-        let data1 = new Data(0, options)
+        const data1 = new Data(0, options)
         data1.update('80', 80)
         slider.moveBar([data1])
         expect(slider.barSelected.style.left).toBe("0%")
@@ -36,7 +36,7 @@ describe("Number slider", () => {
     test('Update function', () => {
         slider.moveBar = jest.fn()
         slider.moveThumbs = jest.fn()
-        let data = new Data(0, options)
+        const data = new Data(0, options)
         data.update('50', 50)
         slider.update([data])
         expect(slider.value.value).toBe('50')
@@ -48,7 +48,7 @@ describe("Number slider", () => {
 })
 
 describe("Value slider", () => {
-    let options = {
+    const options = {
         type: 2,
         direction: 'vertical',
         values: ["one", "two", "three"],
@@ -56,7 +56,7 @@ describe("Value slider", () => {
         tagmark: false,
         prefix: null
     }
-    let slider = new Slider(options).createSlider()
+    const slider = new Slider(options).createSlider()
 
     test('Create value slider correctly', () => {
         expect(slider).toBeDefined()
@@ -66,14 +66,14 @@ describe("Value slider", () => {
         expect(slider.container.className).toBe('slider slider-vertical')
     })
     test("Move thumbs", () => {
-        let data = new Data(0, options)
+        const data = new Data(0, options)
         data.update('two', 50)
         slider.moveThumbs(data, 0)
         expect(slider.thumblers[0].style.top).toBe('50%')
     })
     test("Move bar", () => {
-        let data1 = new Data(0, options)
-        let data2 = new Data(1, options)
+        const data1 = new Data(0, options)
+        const data2 = new Data(1, options)
         data1.update('two', 50)
         data2.update('three', 100)
         slider.moveBar([data1, data2])
@@ -83,8 +83,8 @@ describe("Value slider", () => {
     test('Update function', () => {
         slider.moveBar = jest.fn()
         slider.moveThumbs = jest.fn()
-        let data1 = new Data(0, options)
-        let data2 = new Data(1, options)
+        const data1 = new Data(0, options)
+        const data2 = new Data(1, options)
         data1.update('two', 50)
         data2.update('three', 100)
         slider.update([data1, data2])

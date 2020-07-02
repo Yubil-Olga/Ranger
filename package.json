@@ -8,18 +8,20 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "start": "webpack-dev-server --mode development --open",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "lint": "eslint --ext .js,.ts, src"
   },
   "author": "Yubil Olga",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^25.1.4",
-    "@typescript-eslint/eslint-plugin": "^3.0.1",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
     "@typescript-eslint/parser": "^3.0.1",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.4.2",
     "eslint": "^7.1.0",
     "eslint-plugin-fsd": "^1.0.1",
+    "eslint-plugin-import": "^2.22.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^25.1.0",

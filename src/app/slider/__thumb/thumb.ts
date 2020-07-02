@@ -4,7 +4,7 @@ export default class Thumb {
         this._thumb = document.createElement('div')
         this._thumb.className = 'slider__thumb'
     }
-    createThumb() {
+    createThumb(): HTMLElement {
         const thumbmark = document.createElement('span');
         thumbmark.className = 'thumb__marker';
         this._thumb.append(thumbmark);

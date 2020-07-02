@@ -43,7 +43,7 @@ class FormControll {
         this.typeInput.value = el.type? el.type : 'single'
         this.prefixInput.value = el.prefix? el.prefix : null
         this.startInput.value = el.start? el.start.toString() : null
-        this.endInput.value = el.end? el.end.toString() : null
+        this.endInput.value = el.end ? el.end.toString() : null
         this.stepInput.value = el.step? el.step.toString() : null
         this.scalestepInput.value = el.scalestep? el.scalestep.toString() : null
         this.tagmarkInput.checked = (el.tagmark === false) ? false : true
@@ -137,8 +137,8 @@ function changeSettings(index: number) {
     settings[index].prefix = formSettings[index].prefixInput.value
     settings[index].type = formSettings[index].typeInput.value
     settings[index].direction = formSettings[index].directionInput.value
-    settings[index].start = Number(formSettings[index].startInput.value)
-    settings[index].end = Number(formSettings[index].endInput.value)
+    settings[index].start = formSettings[index].startInput.value === '' ? 0 : Number(formSettings[index].startInput.value)
+    settings[index].end = formSettings[index].endInput.value === '' ? (settings[index].start + 100) : Number(formSettings[index].endInput.value)
     settings[index].step = Number(formSettings[index].stepInput.value)
     settings[index].scalestep = Number(formSettings[index].scalestepInput.value)
     settings[index].tagmark = formSettings[index].tagmarkInput.checked

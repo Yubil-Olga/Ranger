@@ -5,10 +5,10 @@ export default class Scale {
         this._scale = document.createElement('div');
         this._scale.className = 'slider__label'
     }
-    get scale() {
+    get scale(): HTMLElement {
       return this._scale
     }
-    addMark(tag: string, direction: string, position: string) {
+    addMark(tag: string, direction: string, position: string): void {
         const labelMark = document.createElement('span')
         labelMark.className = 'label__mark'
         labelMark.setAttribute("data-text", tag)
@@ -20,7 +20,7 @@ export default class Scale {
         }
         this._scale.append(labelMark);
     }
-    addScale(options: IOptions) {
+    addScale(options: IOptions): Scale {
         if (options.values) {
             const count = options.values.length;
             const percent = 100/(count-1);

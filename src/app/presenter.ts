@@ -16,7 +16,7 @@ export default class Presenter {
         _presenter._view.slider.update(args)
       })
     }
-    callModel(position: number, trackWidth: number, index: number) {
+    callModel(position: number, trackWidth: number, index: number): void {
       this._model.valueCalculation(position, trackWidth, index)
     }
   }
