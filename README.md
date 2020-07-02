@@ -3,7 +3,7 @@
 Слайдер, плагин для jQuery
 
 ## Demo
-[Demo page](https://yubil-olga.github.io/Range/)
+[Demo page](https://yubil-olga.github.io/Range/dist/index.html)
 
 ## Архитектура приложения
 
