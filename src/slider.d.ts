@@ -1,3 +1,3 @@
 interface JQuery {
-    perfectSlider: any;
+  perfectSlider: any;
 }
