@@ -1,9 +1,9 @@
-const path = require('path')
-const webpack = require('webpack')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const isDev = process.env.NODE_ENV === 'development'
+const path = require('path');
+const webpack = require('webpack');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -41,7 +41,6 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
-      "window.jQuery": "jquery"
     })
   ],
   module: {
@@ -64,4 +63,4 @@ module.exports = {
       }
     ],
   }
-}
+};

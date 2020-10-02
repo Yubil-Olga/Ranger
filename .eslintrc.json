@@ -23,6 +23,9 @@
   "rules": {
     "no-unused-vars": "off",
     "no-undef": "off",
-    "indent": ["error", 2] 
+    "indent": ["error", 2],
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "no-trailing-spaces": "error"
   }
 }
