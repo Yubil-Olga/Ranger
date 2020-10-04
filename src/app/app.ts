@@ -11,7 +11,7 @@ import CreateOptions from './Options/CreateOptions';
     const settings = $.extend({}, options);
     try {
       return this.each(function() {
-        const param = new CreateOptions(settings).create();
+        const param = CreateOptions.create(settings);
         const model = new Model(param),
           view = new View(param, this),
           presenter = new Presenter(model, view);

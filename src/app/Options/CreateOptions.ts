@@ -1,23 +1,18 @@
 import IUserSettings from '../IUserSettings';
-import { ValueSliderOptions, NumberSliderOptions, } from './Options';
+import ValueSliderOptions from './ValueSliderOptions';
+import NumberSliderOptions from './NumberSliderOptions';
 
 export default class CreateOptions {
-  private _settings: IUserSettings
-
-  constructor(settings: IUserSettings) {
-    this._settings = settings;
-  }
-
-  create() {
+  static create(settings: IUserSettings) {
     let values = [];
-    if (Array.isArray(this._settings.values)) {
-      values = this._settings.values.filter((el:any) => typeof el === 'string');
+    if (Array.isArray(settings.values)) {
+      values = settings.values.filter((el:any) => typeof el === 'string');
     }
     if (values.length > 1) {
-      return new ValueSliderOptions(values, this._settings);
+      return new ValueSliderOptions(values, settings);
     }
     else {
-      return new NumberSliderOptions(this._settings);
+      return new NumberSliderOptions(settings);
     }
   }
 }

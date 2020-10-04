@@ -28,7 +28,7 @@ arr[4] = {
 
 test('Set correct options', ( ) => {
   for (let i=0; i<arr.length; i++) {
-    let param = new CreateOptions(arr[i].options).create();
+    let param = CreateOptions.create(arr[i].options);
     expect(param).toMatchObject(arr[i].result);
     expect(param.type).toBe(arr[i].result._type);
     expect(param.direction).toBe(arr[i].result._direction);
