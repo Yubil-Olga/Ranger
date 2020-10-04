@@ -1,19 +1,19 @@
 export default class EventDispatcher {
-  _sender: any
-  _listeners = []
+  private sender: any
+  private listeners = []
 
   constructor(sender: any) {
-    this._sender = sender;
+    this.sender = sender;
   }
 
-  attach(listener: any) {
-    this._listeners.push(listener);
+  public attach(listener: any) {
+    this.listeners.push(listener);
   }
 
-  notify(args: any) {
+  public notify(args: any) {
     let index: number;
-    for (index = 0; index < this._listeners.length; index += 1) {
-      this._listeners[index](this._sender, args);
+    for (index = 0; index < this.listeners.length; index += 1) {
+      this.listeners[index](this.sender, args);
     }
   }
 }
