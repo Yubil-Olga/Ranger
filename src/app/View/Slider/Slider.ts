@@ -1,8 +1,8 @@
 import Thumb from './Thumb/Tumb';
 import Tagmark from './Tagmark/Tagmark';
 import Scale from './Scale/Scale';
-import IOptions from '../Options/IOptions';
-import Data from '../Data/Data';
+import IOptions from '../../Options/IOptions';
+import Data from '../../Model/Data/Data';
 
 export default class Slider {
   private _container: HTMLElement

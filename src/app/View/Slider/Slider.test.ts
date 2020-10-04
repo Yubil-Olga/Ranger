@@ -1,5 +1,5 @@
 import Slider from './Slider';
-import Data from '../Data/Data';
+import Data from '../../Model/Data/Data';
 
 describe('Number slider', () => {
   const options = {

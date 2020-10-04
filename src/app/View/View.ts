@@ -1,4 +1,4 @@
-import Slider from '../Slider/Slider';
+import Slider from './Slider/Slider';
 import IOptions from '../Options/IOptions';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 

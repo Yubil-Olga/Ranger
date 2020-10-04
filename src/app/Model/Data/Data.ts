@@ -1,4 +1,4 @@
-import IOptions from '../Options/IOptions';
+import IOptions from '../../Options/IOptions';
 
 export default class Data {
   private _index: number

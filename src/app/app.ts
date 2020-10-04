@@ -1,4 +1,4 @@
-import './Slider/slider.css';
+import './View/Slider/slider.css';
 import jQuery from 'jquery';
 import Model  from './Model/Model';
 import View from './View/View';

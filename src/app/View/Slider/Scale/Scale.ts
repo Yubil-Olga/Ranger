@@ -1,4 +1,4 @@
-import IOptions from '../../Options/IOptions';
+import IOptions from '../../../Options/IOptions';
 
 export default class Scale {
   private _scale: HTMLElement

@@ -1,5 +1,5 @@
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
-import Data from '../Data/Data';
+import Data from './Data/Data';
 import IOptions from '../Options/IOptions';
 
 export default class Model {

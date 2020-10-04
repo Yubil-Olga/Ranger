@@ -1,6 +1,6 @@
 import Model from '../Model/Model';
 import View from '../View/View';
-import Data from '../Data/Data';
+import Data from '../Model/Data/Data';
 import IUserInput from '../View/IUserInput';
 
 export default class Presenter {
