@@ -1,16 +1,19 @@
 export default class Thumb {
-
-  private _thumb: HTMLElement
+  private thumb: HTMLElement
 
   constructor() {
-    this._thumb = document.createElement('div');
-    this._thumb.className = 'slider__thumb';
+    this.createThumb();
   }
 
-  createThumb(): HTMLElement {
+  public getElement(): HTMLElement{
+    return this.thumb;
+  }
+
+  private createThumb(): void {
+    this.thumb = document.createElement('div');
+    this.thumb.className = 'slider__thumb';
     const thumbmark = document.createElement('span');
-    thumbmark.className = 'thumb__marker';
-    this._thumb.append(thumbmark);
-    return this._thumb;
+    thumbmark.className = 'slider__thumb-marker';
+    this.thumb.append(thumbmark);
   }
 }

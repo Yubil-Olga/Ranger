@@ -5,14 +5,10 @@ import IOptions from '../Options/IOptions';
 export default class Model {
   private _options: IOptions;
   private _data: Array<Data>;
-  private _modelChanged = new EventDispatcher(this);
+  public modelChanged = new EventDispatcher(this);
 
   constructor(options: IOptions) {
     this._options = options;
-  }
-
-  get modelChanged(): EventDispatcher {
-    return this._modelChanged;
   }
 
   init(): void {
@@ -62,6 +58,6 @@ export default class Model {
   }
 
   callCommand(data: Array<Data>): void {
-    this._modelChanged.notify(data);
+    this.modelChanged.notify(data);
   }
 }

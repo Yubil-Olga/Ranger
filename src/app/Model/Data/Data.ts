@@ -1,48 +1,40 @@
 import IOptions from '../../Options/IOptions';
 
 export default class Data {
-  private _index: number
-  private _value: string
-  private _coord: number
-  private _options: IOptions
+  public value: string
+  public coord: number
+  private index: number
+  private options: IOptions
 
   constructor(i: number, options: IOptions) {
-    this._index = i;
-    this._options = options;
+    this.index = i;
+    this.options = options;
     this.init();
   }
 
-  init() {
-    if (this._options.values) {
-      this._value = this._options.values[this._index].toString(),
-      this._coord = this._index*100/(this._options.values.length - 1);
+  private init() {
+    if (this.options.values) {
+      this.value = this.options.values[this.index].toString(),
+      this.coord = this.index*100/(this.options.values.length - 1);
     }
     else {
       const step = this.calculateStep();
-      this._value = (this._options.start + this._index*step).toString(),
-      this._coord = this._index*step*100/(this._options.end - this._options.start);
+      this.value = (this.options.start + this.index*step).toString(),
+      this.coord = this.index*step*100/(this.options.end - this.options.start);
     }
   }
 
-  get value(): string {
-    return this._value;
-  }
-
-  get coord(): number {
-    return this._coord;
-  }
-
-  calculateStep(): number {
-    if (this._options.step*100/ (this._options.end - this._options.start) > 10 ) {
-      return this._options.step;
+  private calculateStep(): number {
+    if (this.options.step*100/ (this.options.end - this.options.start) > 10 ) {
+      return this.options.step;
     }
     else {
-      return (this._options.end - this._options.start)/2;
+      return (this.options.end - this.options.start)/2;
     }
   }
 
   update(value: string, coord: number): void {
-    this._value = value;
-    this._coord = coord;
+    this.value = value;
+    this.coord = coord;
   }
 }

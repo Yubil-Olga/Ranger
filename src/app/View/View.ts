@@ -3,37 +3,29 @@ import IOptions from '../Options/IOptions';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 
 export default class View {
-  private _options: IOptions
-  private _slider: Slider
-  private _activeThumbNum: number
-  private _inputChanged = new EventDispatcher(this)
+  private options: IOptions
+  private activeThumbNum: number
+  public slider: Slider
+  public inputChanged = new EventDispatcher(this)
 
   constructor(options: IOptions, elem: HTMLElement) {
-    this._options = options;
+    this.options = options;
     this.initSlider(elem);
     this.bindEventListeners();
   }
 
   initSlider(elem: HTMLElement) {
-    this._slider = new Slider(this._options);
-    elem.append(this._slider.container);
+    this.slider = new Slider(this.options);
+    elem.append(this.slider.container);
   }
 
   bindEventListeners(): void {
     this.handleSliderClick = this.handleSliderClick.bind(this);
-    this._slider.track.addEventListener('click', this.handleSliderClick);
-    this._slider.label.scale.addEventListener('click', this.handleSliderClick);
+    this.slider.track.addEventListener('click', this.handleSliderClick);
+    this.slider.label.addEventListener('click', this.handleSliderClick);
     this.handleSliderMouseDown = this.handleSliderMouseDown.bind(this);
-    this._slider.track.addEventListener('mousedown', this.handleSliderMouseDown);
-    this._slider.track.addEventListener('dragstart', this.stopDrag);
-  }
-
-  get inputChanged(): EventDispatcher {
-    return this._inputChanged;
-  }
-
-  get slider(): Slider {
-    return this._slider;
+    this.slider.track.addEventListener('mousedown', this.handleSliderMouseDown);
+    this.slider.track.addEventListener('dragstart', this.stopDrag);
   }
 
   stopDrag(event: MouseEvent): void {
@@ -41,9 +33,9 @@ export default class View {
   }
 
   handleSliderMouseDown(event: MouseEvent): void {
-    if ((<HTMLElement>event.target).className === 'thumb__marker') {
+    if ((<HTMLElement>event.target).className === 'slider__thumb-marker') {
       this.startSelect();
-      this._activeThumbNum = this._slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'));
+      this.activeThumbNum = this.slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'));
     }
   }
 
@@ -56,13 +48,13 @@ export default class View {
     let width: number;
     let coord: number;
     this.transitionDuration(event);
-    if (this._options.direction == 'vertical') {
-      width = this._slider.track.clientHeight;
-      coord = Math.round((<MouseEvent>event).clientY - this._slider.track.getBoundingClientRect().top);
+    if (this.options.direction == 'vertical') {
+      width = this.slider.track.clientHeight;
+      coord = Math.round((<MouseEvent>event).clientY - this.slider.track.getBoundingClientRect().top);
     }
     else {
-      width = this._slider.track.clientWidth;
-      coord = Math.round((<MouseEvent>event).clientX- this._slider.track.getBoundingClientRect().left);
+      width = this.slider.track.clientWidth;
+      coord = Math.round((<MouseEvent>event).clientX- this.slider.track.getBoundingClientRect().left);
     }
     if (coord < 0) {
       coord = 0;
@@ -71,7 +63,7 @@ export default class View {
       coord = width;
     }
 
-    const index = this.selectedThumb(coord, width, this._slider.thumblers, event);
+    const index = this.selectedThumb(coord, width, this.slider.thumblers, event);
 
     this.callCommand(width, coord, index);
   }
@@ -84,28 +76,28 @@ export default class View {
 
   transitionDuration(event: MouseEvent): void {
     if (event.type === 'click') {
-      this._slider.container.style.setProperty('--transition', '0.5s');
+      this.slider.container.style.setProperty('--transition', '0.5s');
     }
     else {
-      this._slider.container.style.setProperty('--transition', '0');
+      this.slider.container.style.setProperty('--transition', '0');
     }
   }
 
   selectedThumb(coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent): number {
     let index = 0;
-    if (this._options.type === 2) {
-      const min = this._options.direction === 'vertical' ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left);
-      const max = this._options.direction === 'vertical' ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left);
+    if (this.options.type === 2) {
+      const min = this.options.direction === 'vertical' ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left);
+      const max = this.options.direction === 'vertical' ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left);
       const pos = coord*100/width;
       if (event.type === 'mousemove') {
-        index = this._activeThumbNum;
+        index = this.activeThumbNum;
       }
       if ( (pos - min) < 0) {
-        this._activeThumbNum = 0;
+        this.activeThumbNum = 0;
         index = 0;
       }
       if ( (pos - max) > 0) {
-        this._activeThumbNum = 1;
+        this.activeThumbNum = 1;
         index = 1;
       }
       if ( (pos - min) > (max - pos) && event.type === 'click') {
@@ -116,7 +108,7 @@ export default class View {
   }
 
   callCommand(trackWidth: number, position: number, index: number): void {
-    this._inputChanged.notify({trackWidth: trackWidth, position: position, index: index});
+    this.inputChanged.notify({trackWidth: trackWidth, position: position, index: index});
   }
 }
 

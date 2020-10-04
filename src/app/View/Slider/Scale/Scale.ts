@@ -1,15 +1,14 @@
 import IOptions from '../../../Options/IOptions';
 
 export default class Scale {
-  private _scale: HTMLElement
+  private scale: HTMLElement
 
-  constructor() {
-    this._scale = document.createElement('div');
-    this._scale.className = 'slider__label';
+  constructor(options: IOptions) {
+    this.addScale(options);
   }
 
-  get scale(): HTMLElement {
-    return this._scale;
+  public getElement(): HTMLElement {
+    return this.scale;
   }
 
   addMark(tag: string, direction: string, position: string): void {
@@ -21,10 +20,12 @@ export default class Scale {
     } else {
       labelMark.style.left = position;
     }
-    this._scale.append(labelMark);
+    this.scale.append(labelMark);
   }
 
-  addScale(options: IOptions): Scale {
+  private addScale(options: IOptions): void {
+    this.scale = document.createElement('div');
+    this.scale.className = 'slider__label';
     if (options.values) {
       const count = options.values.length;
       const percent = 100/(count-1);
@@ -46,6 +47,5 @@ export default class Scale {
         this.addMark(tag, options.direction, position);
       }
     }
-    return this;
   }
 }
