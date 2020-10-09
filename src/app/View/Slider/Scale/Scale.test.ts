@@ -19,13 +19,13 @@ describe('Create correct scale of slider', () => {
   });
   test('Position of first mark', () => {
     const scale = new Scale(arr[1]);
-    const marks = scale.getElement().querySelectorAll('.label__mark');
+    const marks = scale.getElement().querySelectorAll('.slider__label-mark');
     expect(marks[0].getAttribute('data-text')).toBe('-3');
     expect((<HTMLElement>marks[0]).style.left).toBe('');
   });
   test('Position of last mark', () => {
     const scale = new Scale(arr[1]);
-    const marks = scale.getElement().querySelectorAll('.label__mark');
+    const marks = scale.getElement().querySelectorAll('.slider__label-mark');
     expect(marks[marks.length - 1].getAttribute('data-text')).toBe('100');
     expect((<HTMLElement>marks[marks.length - 1]).style.top).toBe('100%');
   });

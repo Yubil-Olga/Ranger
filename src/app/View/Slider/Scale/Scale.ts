@@ -1,4 +1,4 @@
-import IOptions from '../../../Options/IOptions';
+import IOptions from '../../../Model/Options/IOptions';
 
 export default class Scale {
   private scale: HTMLElement
@@ -13,7 +13,7 @@ export default class Scale {
 
   addMark(tag: string, direction: string, position: string): void {
     const labelMark = document.createElement('span');
-    labelMark.className = 'label__mark';
+    labelMark.className = 'slider__label-mark';
     labelMark.setAttribute('data-text', tag);
     if (direction == 'vertical') {
       labelMark.style.top = position;
@@ -23,7 +23,7 @@ export default class Scale {
     this.scale.append(labelMark);
   }
 
-  private addScale(options: IOptions): void {
+  addScale(options: IOptions): void {
     this.scale = document.createElement('div');
     this.scale.className = 'slider__label';
     if (options.values) {

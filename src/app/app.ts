@@ -1,22 +1,17 @@
-import './View/Slider/slider.css';
+import './View/Slider/slider.scss';
 import jQuery from 'jquery';
-import Model  from './Model/Model';
-import View from './View/View';
-import Presenter from './Presenter/Presenter';
 import IUserSettings from './IUserSettings';
-import CreateOptions from './Options/CreateOptions';
+// import CreateOptions from './Options/CreateOptions';
+import Facade from './Presenter/Facade';
 
 (function( $ ) {
   $.fn.perfectSlider = function(options: IUserSettings) {
     const settings = $.extend({}, options);
     try {
-      return this.each(function() {
-        const param = CreateOptions.create(settings);
-        const model = new Model(param),
-          view = new View(param, this),
-          presenter = new Presenter(model, view);
-
-        model.init();
+      return this.map(function() {
+        // const options = CreateOptions.create(settings);
+        const facade = new Facade(options, this);
+        return facade;
       });
     }
     catch(err) {

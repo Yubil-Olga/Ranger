@@ -1,4 +1,4 @@
-import IUserSettings from '../IUserSettings';
+import IUserSettings from '../../IUserSettings';
 import IOptions from './IOptions';
 
 export default class Options implements IOptions  {
@@ -22,8 +22,8 @@ export default class Options implements IOptions  {
 
   colorValidation(color: string) {
     const div = document.createElement('div');
-    div.style.color = color;
-    if (div.style.color === '') {
+    div.style.background = color;
+    if (div.style.background === '') {
       return null;
     } else {
       return color;

@@ -40,7 +40,7 @@ describe('Number slider', () => {
     data.update('50', 50);
     slider.update([data]);
     expect(slider.value.value).toBe('50');
-    expect(slider.tagmarks[0].textContent).toBe('$ 50');
+    expect(slider.tagmarks[0].textContent).toBe('50 $');
     expect(slider.moveBar).toBeCalledWith([data]);
     expect(slider.moveThumbs).toBeCalled();
   });
@@ -62,7 +62,7 @@ describe('Value slider', () => {
     expect(slider.thumblers.length).toBe(2);
     expect(slider.tagmarks.length).toBe(2);
     expect(slider.container.style.getPropertyValue('--active-color')).toBe('red');
-    expect(slider.container.className).toBe('slider slider-vertical');
+    expect(slider.container.className).toBe('slider slider_vertical');
   });
   test('Move thumbs', () => {
     const data = new Data(0, options);

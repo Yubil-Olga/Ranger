@@ -1,5 +1,5 @@
 import Options from './Options';
-import IUserSettings from '../IUserSettings';
+import IUserSettings from '../../IUserSettings';
 
 export default class NumberSliderOptions extends Options {
   public start: number

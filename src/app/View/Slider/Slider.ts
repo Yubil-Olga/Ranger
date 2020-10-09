@@ -1,7 +1,6 @@
 import Thumb from './Thumb/Tumb';
-import Tagmark from './Tagmark/Tagmark';
 import Scale from './Scale/Scale';
-import IOptions from '../../Options/IOptions';
+import IOptions from '../../Model/Options/IOptions';
 import Data from '../../Model/Data/Data';
 
 export default class Slider {
@@ -22,21 +21,22 @@ export default class Slider {
   }
 
   private createTemplate() {
-    this.container = this.createElement('div', this.checkDirection(this.options.direction));
-    this.tag = this.createElement('div', 'slider__tag');
+    this.container = document.createElement('div');
+    this.container.className = this.options.direction === 'vertical' ? 'slider slider_vertical' : 'slider';
+    this.tag = document.createElement('div');
+    this.tag.className = this.options.hasTagmark ? 'slider__tag' : 'slider__tag slider__tag_hidden';
     this.value = this.createInput('text', 'slider__input');
     this.track = this.createElement('div', 'slider__track');
-    this.bar = this.createElement('div', 'track__bar');
-    this.barSelected = this.createElement('div', 'track__bar_selected');
+    this.bar = this.createElement('div', 'slider__track-bar');
+    this.barSelected = this.createElement('div', 'slider__track-bar_selected');
     this.label = new Scale(this.options).getElement();
     this.thumblers = this.createThumblers(this.options.type);
-    this.tagmarks = this.createTagmarks(this.options.type, this.options.hasTagmark);
+    this.tagmarks = this.createTagmarks(this.options.type);
     this.container.append(this.value, this.tag, this.track, this.label);
     this.track.append(this.bar, this.barSelected);
     this.tag.append(...this.tagmarks);
     this.track.append(...this.thumblers);
-    this.container.style.setProperty('--active-color', this.options.color);
-    return this;
+    this.setColor(this.options.color);
   }
 
   private createInput(type: string, className: string): HTMLInputElement {
@@ -52,10 +52,12 @@ export default class Slider {
     return el;
   }
 
-  private createTagmarks(type: number, isVisible: boolean): Array<HTMLElement> {
+  private createTagmarks(type: number): Array<HTMLElement> {
     this.tagmarks = [];
     for (let i=0; i<type; i++) {
-      this.tagmarks.push(new Tagmark(isVisible).getElement());
+      const tagmark = document.createElement('span');
+      tagmark.className = 'slider__tag-mark';
+      this.tagmarks.push(tagmark);
     }
     return this.tagmarks;
   }
@@ -68,20 +70,11 @@ export default class Slider {
     return this.thumblers;
   }
 
-  private checkDirection(direction: string): string {
-    if (direction === 'vertical') {
-      return 'slider slider_vertical';
-    }
-    else {
-      return 'slider';
-    }
-  }
-
   update(data: Array<Data>): void {
     const arr = [];
-    const prefix = this.options.prefix ? this.options.prefix + ' ' : '';
+    const prefix = this.options.prefix ? ' ' + this.options.prefix : '';
     for (let i=0; i<data.length; i++) {
-      this.tagmarks[i].textContent = prefix + data[i].value;
+      this.tagmarks[i].textContent = data[i].value + prefix;
       arr.push(data[i].value);
       this.moveThumbs(data[i], i);
     }
@@ -119,5 +112,9 @@ export default class Slider {
       this.barSelected.style.left = barStart;
       this.barSelected.style.right = barEnd;
     }
+  }
+
+  setColor(color: string) {
+    this.container.style.setProperty('--active-color', color);
   }
 }

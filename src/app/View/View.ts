@@ -1,12 +1,15 @@
+import bind from 'bind-decorator';
 import Slider from './Slider/Slider';
-import IOptions from '../Options/IOptions';
+import IOptions from '../Model/Options/IOptions';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
+import Data from '../Model/Data/Data';
 
 export default class View {
   private options: IOptions
   private activeThumbNum: number
   public slider: Slider
   public inputChanged = new EventDispatcher(this)
+  private parent: HTMLElement
 
   constructor(options: IOptions, elem: HTMLElement) {
     this.options = options;
@@ -15,23 +18,39 @@ export default class View {
   }
 
   initSlider(elem: HTMLElement) {
+    this.parent = elem;
     this.slider = new Slider(this.options);
     elem.append(this.slider.container);
   }
 
-  bindEventListeners(): void {
-    this.handleSliderClick = this.handleSliderClick.bind(this);
+  updateOptions(options: IOptions) {
+    this.options = options;
+    this.removeEventListeners();
+    this.slider.container.remove();
+    this.slider = new Slider(options);
+    this.parent.append(this.slider.container);
+    this.bindEventListeners();
+  }
+
+  bindEventListeners() {
     this.slider.track.addEventListener('click', this.handleSliderClick);
     this.slider.label.addEventListener('click', this.handleSliderClick);
-    this.handleSliderMouseDown = this.handleSliderMouseDown.bind(this);
     this.slider.track.addEventListener('mousedown', this.handleSliderMouseDown);
     this.slider.track.addEventListener('dragstart', this.stopDrag);
+  }
+
+  removeEventListeners() {
+    this.slider.track.removeEventListener('click', this.handleSliderClick);
+    this.slider.label.removeEventListener('click', this.handleSliderClick);
+    this.slider.track.removeEventListener('mousedown', this.handleSliderMouseDown);
+    this.slider.track.removeEventListener('dragstart', this.stopDrag);
   }
 
   stopDrag(event: MouseEvent): void {
     event.preventDefault();
   }
 
+  @bind
   handleSliderMouseDown(event: MouseEvent): void {
     if ((<HTMLElement>event.target).className === 'slider__thumb-marker') {
       this.startSelect();
@@ -44,6 +63,7 @@ export default class View {
     document.removeEventListener('mousemove', this.handleSliderClick);
   }
 
+  @bind
   handleSliderClick(event: MouseEvent): void {
     let width: number;
     let coord: number;
@@ -109,6 +129,10 @@ export default class View {
 
   callCommand(trackWidth: number, position: number, index: number): void {
     this.inputChanged.notify({trackWidth: trackWidth, position: position, index: index});
+  }
+
+  update(data: Array<Data>) {
+    this.slider.update(data);
   }
 }
 

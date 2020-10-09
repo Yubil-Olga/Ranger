@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -30,7 +31,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       filename: 'index.html',
       chunks: ['index'],
-      template: './index.html'
+      template: './demo/demo.pug'
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
@@ -41,13 +42,31 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
-    })
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/demo/favicons'),
+          to: path.resolve(__dirname, 'dist/favicons'),
+        },
+      ]
+    }),
   ],
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.s?css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
         test: /(?!.test)\.ts(x?)$/,
@@ -60,7 +79,11 @@ module.exports = {
         options: {
           name: '[path][name].[ext]',
         },
-      }
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader',
+      },
     ],
   }
 };

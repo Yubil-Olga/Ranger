@@ -1,14 +1,31 @@
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 import Data from './Data/Data';
-import IOptions from '../Options/IOptions';
+import IOptions from './Options/IOptions';
+import IUserSettings from '../IUserSettings';
+import CreateOptions from './Options/CreateOptions';
 
 export default class Model {
   private options: IOptions;
   private data: Array<Data>;
   public modelChanged = new EventDispatcher(this);
+  public optionsChanged = new EventDispatcher(this);
 
-  constructor(options: IOptions) {
-    this.options = options;
+  constructor(settings: IUserSettings) {
+    this.createOptions(settings);
+  }
+
+  public createOptions(settings: IUserSettings) {
+    this.options = CreateOptions.create(settings);
+  }
+
+  public updateOptions(settings: IUserSettings) {
+    this.createOptions(settings);
+    this.optionsChanged.notify(this.options);
+    this.init();
+  }
+
+  public getOptions(): IOptions {
+    return this.options;
   }
 
   public init(): void {
@@ -25,12 +42,12 @@ export default class Model {
     return arr;
   }
 
-  stepCalculation(): number {
+  public stepCalculation(): number {
     const step = (this.options.step/(this.options.end - this.options.start))*100;
     return step;
   }
 
-  positionCalculation(position: number, step: number, trackWidth:number): number {
+  public positionCalculation(position: number, step: number, trackWidth:number): number {
     const percent = (position/trackWidth)*100;
     let pos: number;
     if ((percent + step) > 100) {
@@ -42,7 +59,7 @@ export default class Model {
     return pos;
   }
 
-  valueCalculation(position: number, trackWidth: number, index: number): Array<Data> {
+  public valueCalculation(position: number, trackWidth: number, index: number): Array<Data> {
     if (this.options.values) {
       const step = 100/(this.options.values.length - 1);
       const pos = this.positionCalculation(position, step, trackWidth);
@@ -57,7 +74,7 @@ export default class Model {
     return this.data;
   }
 
-  callCommand(data: Array<Data>): void {
+  public callCommand(data: Array<Data>): void {
     this.modelChanged.notify(data);
   }
 }

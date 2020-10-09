@@ -1,9 +1,9 @@
-import IOptions from '../../Options/IOptions';
+import IOptions from '../Options/IOptions';
 
 export default class Data {
   public value: string
   public coord: number
-  private index: number
+  public index: number
   private options: IOptions
 
   constructor(i: number, options: IOptions) {
@@ -33,7 +33,7 @@ export default class Data {
     }
   }
 
-  update(value: string, coord: number): void {
+  public update(value: string, coord: number): void {
     this.value = value;
     this.coord = coord;
   }

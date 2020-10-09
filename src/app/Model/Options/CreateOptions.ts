@@ -1,4 +1,4 @@
-import IUserSettings from '../IUserSettings';
+import IUserSettings from '../../IUserSettings';
 import ValueSliderOptions from './ValueSliderOptions';
 import NumberSliderOptions from './NumberSliderOptions';
 
