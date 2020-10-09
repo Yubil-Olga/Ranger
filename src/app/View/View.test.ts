@@ -1,3 +1,4 @@
+import Slider from './Slider/Slider';
 import View from './View';
 
 describe('Single slider', () => {
@@ -18,6 +19,7 @@ describe('Single slider', () => {
     view.slider.thumblers[0].style.top = '5%';
     expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(0);
   });
+
   test ('Mousedown event', () => {
     const spy = jest.spyOn(view, 'startSelect');
     const mousedown = new MouseEvent('mousedown');
@@ -25,6 +27,7 @@ describe('Single slider', () => {
     view.handleSliderMouseDown(mousedown);
     expect(spy).toBeCalled();
   });
+
   test ('Mousemove', () => {
     const spy = jest.spyOn(view, 'handleSliderClick');
     view.startSelect();
@@ -32,20 +35,18 @@ describe('Single slider', () => {
     document.dispatchEvent(mousemove);
     expect(spy).toBeCalled();
   });
+
   test ('End select', () => {
     const spy = jest.spyOn(view, 'handleSliderClick');
-    const spy2 = jest.spyOn(view, 'handleDocumentMouseUp');
     spy.mockClear();
-    spy2.mockClear();
     view.handleDocumentMouseUp();
     const mousemove = new MouseEvent('mousemove');
     const mouseup = new MouseEvent('mouseup');
     document.dispatchEvent(mousemove);
     document.dispatchEvent(mouseup);
-
     expect(spy).not.toBeCalled();
-    expect(spy2).not.toBeCalled();
   });
+
   test ('Click event', () => {
     const smth = new MouseEvent('click', {
       clientX: 100
@@ -62,7 +63,23 @@ describe('Single slider', () => {
     expect(spy).toBeCalled();
     expect(spy).toBeCalledWith(260, 90, 0);
   });
+
+  test('Update options', () => {
+    const newOptions = {
+      type: 1,
+      direction: null,
+      hasTagmark: true,
+      prefix: null,
+      start: 0,
+      end: 200,
+      step: 10
+    };
+    const sliderUpdated = new Slider(newOptions);
+    view.updateOptions(newOptions);
+    expect(view.slider).toEqual(sliderUpdated);
+  });
 });
+
 describe('Double slider', () => {
   const div = document.createElement('div');
   const options = {
@@ -80,11 +97,13 @@ describe('Double slider', () => {
     view.slider.thumblers[1].style.top = '80%';
     expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(1);
   });
+
   test('Call comand', () => {
     view.inputChanged.notify = jest.fn();
     view.callCommand(261, 100, 0);
     expect(view.inputChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
+
   test ('Click event', () => {
     const smth = new MouseEvent('click', {
       clientY: 100
@@ -101,6 +120,7 @@ describe('Double slider', () => {
     expect(view.callCommand).toBeCalledWith(260, 50, 0);
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0.5s');
   });
+
   test ('Click event: coord more then width of the element', () => {
     const smth = new MouseEvent('click', {
       clientY: 350
@@ -111,6 +131,7 @@ describe('Double slider', () => {
     expect(view.callCommand).toBeCalled();
     expect(view.callCommand).toBeCalledWith(260, 260, 1);
   });
+
   test ('Click event: coord less then 0', () => {
     const smth = new MouseEvent('click', {
       clientY: 10
@@ -121,6 +142,7 @@ describe('Double slider', () => {
     expect(view.callCommand).toBeCalled();
     expect(view.callCommand).toBeCalledWith(260, 0, 0);
   });
+
   test('Transition duration', () => {
     const mousedown = new MouseEvent('mousedown');
     view.transitionDuration(mousedown);
@@ -128,6 +150,7 @@ describe('Double slider', () => {
   });
 
 });
+
 describe('One more slider', () => {
   const div = document.createElement('div');
   const options = {
@@ -145,11 +168,13 @@ describe('One more slider', () => {
     view.slider.thumblers[1].style.left = '80%';
     expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(1);
   });
+
   test('Call comand', () => {
     view.inputChanged.notify = jest.fn();
     view.callCommand(261, 100, 0);
     expect(view.inputChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
+
   test ('Click event', () => {
     const smth = new MouseEvent('click', {
       clientX: 100
@@ -166,6 +191,7 @@ describe('One more slider', () => {
     expect(view.callCommand).toBeCalledWith(260, 90, 0);
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0.5s');
   });
+
   test ('Click event: coord more then width of the element', () => {
     const smth = new MouseEvent('click', {
       clientX: 350
@@ -176,6 +202,7 @@ describe('One more slider', () => {
     expect(view.callCommand).toBeCalled();
     expect(view.callCommand).toBeCalledWith(260, 260, 1);
   });
+
   test ('Click event: coord less then 0', () => {
     const smth = new MouseEvent('click', {
       clientX: 10
@@ -186,10 +213,10 @@ describe('One more slider', () => {
     expect(view.callCommand).toBeCalled();
     expect(view.callCommand).toBeCalledWith(260, 0, 0);
   });
+
   test('Transition duration', () => {
     const mousedown = new MouseEvent('mousedown');
     view.transitionDuration(mousedown);
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0');
   });
 });
-

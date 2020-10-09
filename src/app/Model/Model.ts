@@ -6,7 +6,7 @@ import CreateOptions from './Options/CreateOptions';
 
 export default class Model {
   private options: IOptions;
-  private data: Array<Data>;
+  public data: Array<Data>;
   public modelChanged = new EventDispatcher(this);
   public optionsChanged = new EventDispatcher(this);
 

@@ -31,7 +31,7 @@ export default class Presenter {
     this.view.update(args);
   }
 
-  private updateViewOptions(args: IOptions): void {
+  public updateViewOptions(args: IOptions): void {
     this.view.updateOptions(args);
   }
 

@@ -20,14 +20,9 @@ describe('Creation of presenter', () => {
 
   test('Call model', () => {
     model.valueCalculation = jest.fn();
+    presenter.callModel(100, 260, 0);
     expect(model.valueCalculation).toBeCalled();
     expect(model.valueCalculation).toBeCalledWith(100, 260, 0);
-  });
-
-  test('View changed', () => {
-    presenter.callModel = jest.fn();
-    view.inputChanged.notify({trackWidth: 260, position: 50, index: 0});
-    expect(presenter.callModel).toBeCalled();
   });
 
   test('Model changed', () => {
@@ -35,5 +30,23 @@ describe('Creation of presenter', () => {
     model.modelChanged.notify([{value: '20', coord: 20}]);
     expect(presenter.updateViewData).toBeCalled();
     expect(presenter.updateViewData).toBeCalledWith([{value: '20', coord: 20}]);
+  });
+
+  test('Options changed', () => {
+    const newOptions = {
+      type: 2,
+      direction: 'vertical',
+      start: 0,
+      end: 100,
+      step: 50,
+      hasTagmark: false,
+      prefix: null,
+      color: null,
+      scalestep: 100,
+    };
+    presenter.updateViewOptions = jest.fn();
+    model.optionsChanged.notify(newOptions);
+    expect(presenter.updateViewOptions).toBeCalled();
+    expect(presenter.updateViewOptions).toBeCalledWith(newOptions);
   });
 });

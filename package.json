@@ -8,6 +8,7 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "start": "webpack-dev-server --mode development --open",
+    "jest": "jest",
     "test": "jest --coverage",
     "lint": "eslint --ext .js,.ts",
     "fix": "eslint . --ext .js,.ts --fix"
