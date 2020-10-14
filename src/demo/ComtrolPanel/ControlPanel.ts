@@ -38,7 +38,7 @@ export default class ControlPanel {
     this.createMinValueInput(settings.start);
     this.createMaxValueInput(settings.end);
     this.createSliderStepInput(settings.step);
-    this.createScaleStepInput(settings.scalestep);
+    this.createScaleStepInput(settings.scaleStep);
     this.createTagmarkInput(settings.hasTagmark);
     this.createValuesInput(settings.values);
     this.bindEvents();
@@ -156,7 +156,7 @@ export default class ControlPanel {
     this.settings.hasTagmark = this.tagmarkInput.checked;
     this.settings.start = Number(this.startInput.value);
     this.settings.end = Number(this.endInput.value);
-    this.settings.scalestep = Number(this.scalestepInput.value);
+    this.settings.scaleStep = Number(this.scalestepInput.value);
     this.settings.prefix = this.prefixInput.value;
     this.settings.step = Number(this.stepInput.value);
     this.settings.values = this.valueInput.value.split(',').filter((el) => el.length > 0);

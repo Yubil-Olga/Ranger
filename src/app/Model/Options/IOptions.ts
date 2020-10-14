@@ -4,7 +4,7 @@ export default interface IOptions {
   start?: number,
   end?: number,
   step?: number,
-  scalestep?: number,
+  scaleStep?: number,
   values?: Array<string>,
   prefix: string,
   hasTagmark: boolean,

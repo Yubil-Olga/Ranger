@@ -3,13 +3,13 @@ import CreateOptions from './CreateOptions';
 const arr = [];
 
 arr[0] = {
-  options : {start: -25, end: 100, step: 25, scalestep: 10, prefix: '%', color: 'frd'},
-  result : {type: 1, direction: null, start: -25, end: 100, step: 25, scalestep: 10, hasTagmark: true, prefix: '%', color: null},
+  options : {start: -25, end: 100, step: 25, scaleStep: 10, prefix: '%', color: 'frd'},
+  result : {type: 1, direction: null, start: -25, end: 100, step: 25, scaleStep: 10, hasTagmark: true, prefix: '%', color: null},
 };
 
 arr[1] = {
-  options : {start: 250, end: 100, step: 300, scalestep: 1000},
-  result : {type: 1, start: 0, end: 100, step: 100, hasTagmark: true, scalestep: 100, color: null, direction: null, prefix: null},
+  options : {start: 250, end: 100, step: 300, scaleStep: 1000},
+  result : {type: 1, start: 0, end: 100, step: 100, hasTagmark: true, scaleStep: 100, color: null, direction: null, prefix: null},
 };
 
 arr[2] = {
@@ -22,8 +22,8 @@ arr[3] = {
   result : {type: 2, direction: 'vertical', values: ['one', 'two', 'three'], color: 'red', hasTagmark: false, prefix: null},
 };
 arr[4] = {
-  options : {start: 250, end: 100, scalestep: 1000},
-  result : {type: 1, start: 0, end: 100, step: 1, hasTagmark: true, scalestep: 100, color: null, direction: null, prefix: null},
+  options : {start: 250, end: 100, scaleStep: 1000},
+  result : {type: 1, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: null, direction: null, prefix: null},
 };
 
 test('Set correct options', ( ) => {
@@ -37,7 +37,7 @@ test('Set correct options', ( ) => {
     expect(param.prefix).toBe(arr[i].result.prefix);
     if ('step' in param) {
       expect(param.step).toBe(arr[i].result.step);
-      expect(param.scalestep).toBe(arr[i].result.scalestep);
+      expect(param.scaleStep).toBe(arr[i].result.scaleStep);
     }
     if ('values' in param) {
       expect(param.values).toEqual(arr[i].result.values);

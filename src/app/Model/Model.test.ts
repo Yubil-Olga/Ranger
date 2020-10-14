@@ -48,7 +48,7 @@ describe('Number model', () => {
       hasTagmark: false,
       prefix: null,
       color: null,
-      scalestep: 100,
+      scaleStep: 100,
     };
     model.updateOptions(newOptions);
     expect(model.getOptions()).toEqual(result);

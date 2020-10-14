@@ -4,7 +4,7 @@ export default interface IUserSettings {
   start?: number,
   end?: number,
   step?: number,
-  scalestep?: number,
+  scaleStep?: number,
   color?: string,
   hasTagmark?: boolean,
   values?: Array<string>,

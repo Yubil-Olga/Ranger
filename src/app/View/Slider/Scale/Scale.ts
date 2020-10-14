@@ -34,11 +34,11 @@ export default class Scale {
         this.addMark(options.values[i].toString(), options.direction, position);
       }
     } else {
-      const count = Math.ceil((options.end - options.start)/options.scalestep);
-      const percent = (options.scalestep/(options.end - options.start))*100;
+      const count = Math.ceil((options.end - options.start)/options.scaleStep);
+      const percent = (options.scaleStep/(options.end - options.start))*100;
 
       for (let i=0; i<count+1; i++) {
-        let tag = (i*options.scalestep + options.start).toString();
+        let tag = (i*options.scaleStep + options.start).toString();
         let position = i*percent + '%';
         if (Number(tag) > options.end) {
           tag = options.end.toString();

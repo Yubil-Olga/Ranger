@@ -1,8 +1,8 @@
 import Scale from './Scale';
 
 const arr = [];
-arr[0] = {type: 1, direction: null, prefix: '$', start: 0, end: 100, step: 25, scalestep: 10, hasTagmark: true};
-arr[1] = {type: 2, direction: 'vertical', prefix: null, start: -3, end: 100, step: 1, scalestep: 10, hasTagmark: true};
+arr[0] = {type: 1, direction: null, prefix: '$', start: 0, end: 100, step: 25, scaleStep: 10, hasTagmark: true};
+arr[1] = {type: 2, direction: 'vertical', prefix: null, start: -3, end: 100, step: 1, scaleStep: 10, hasTagmark: true};
 
 describe('Create correct scale of slider', () => {
   test('Number of marks in first slider', () => {
