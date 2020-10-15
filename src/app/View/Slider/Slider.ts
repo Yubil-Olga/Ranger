@@ -1,6 +1,5 @@
 import Thumb from './Thumb/Tumb';
 import Scale from './Scale/Scale';
-import Data from '../../Model/Data/Data';
 import IOptions from '../../IOptions';
 
 export default class Slider {
@@ -72,50 +71,55 @@ export default class Slider {
     return this.thumblers;
   }
 
-  update(data: Array<Data>): void {
-    const arr = [];
+  update(data: {coord: number, index: number, value: string}): void {
+    const { coord, index, value } = data;
     const prefix = this.options.prefix ? ' ' + this.options.prefix : '';
-    for (let i=0; i<data.length; i++) {
-      this.tagmarks[i].textContent = data[i].value + prefix;
-      arr.push(data[i].value);
-      this.moveThumbs(data[i], i);
-    }
-    this.moveBar(data);
+    this.tagmarks[index].textContent = value + prefix;
+    this.moveThumbs(index, coord);
+    this.moveBar(index, coord);
+    const arr = [];
+    this.tagmarks.forEach(tagmark => {
+      arr.push(tagmark.textContent.split(' ')[0]);
+    });
     this.value.value = arr.join(';');
   }
 
-  moveThumbs(data: Data, index: number): void {
+  moveThumbs(index: number, coord: number): void {
     if (this.options.isVertical) {
-      this.thumblers[index].style.top = data.coord + '%';
-      this.tagmarks[index].style.top = data.coord - 3 + '%';
+      this.thumblers[index].style.top = coord + '%';
+      this.tagmarks[index].style.top = coord - 3 + '%';
     }
     else {
-      this.thumblers[index].style.left = data.coord + '%';
-      this.tagmarks[index].style.left = data.coord - (this.tagmarks[index].clientWidth/this.track.clientWidth)*50 + '%';
+      this.thumblers[index].style.left = coord + '%';
+      this.tagmarks[index].style.left = coord - (this.tagmarks[index].clientWidth/this.track.clientWidth)*50 + '%';
     }
   }
 
-  moveBar(data: Array<Data>): void {
-    let barStart: string;
-    let barEnd: string;
-    if (data.length > 1) {
-      barStart = data[0].coord + '%';
-      barEnd = 100 - data[1].coord + '%';
+  moveBar(index: number, coord: number): void {
+    if (this.options.isRange && index === 0) {
+      this.moveBarFrom(coord);
+    } else {
+      this.moveBarTo(coord);
     }
-    else {
-      barStart = 0 + '%';
-      barEnd = 100 - data[0].coord + '%';
-    }
+  }
+
+  moveBarFrom(coord: number) {
+    const barStart = coord + '%';
     if (this.options.isVertical) {
       this.barSelected.style.top = barStart;
-      this.barSelected.style.bottom = barEnd;
-    }
-    else {
+    } else {
       this.barSelected.style.left = barStart;
+    }
+  }
+
+  moveBarTo(coord: number) {
+    const barEnd = 100 - coord + '%';
+    if (this.options.isVertical) {
+      this.barSelected.style.bottom = barEnd;
+    } else {
       this.barSelected.style.right = barEnd;
     }
   }
-
   setColor(color: string) {
     this.container.style.setProperty('--active-color', color);
   }

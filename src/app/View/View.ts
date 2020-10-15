@@ -1,7 +1,6 @@
 import bind from 'bind-decorator';
 import Slider from './Slider/Slider';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
-import Data from '../Model/Data/Data';
 import IOptions from '../IOptions';
 
 export default class View {
@@ -85,7 +84,7 @@ export default class View {
 
     const index = this.selectedThumb(coord, width, this.slider.thumblers, event);
 
-    this.callCommand(width, coord, index);
+    this.callCommand({trackWidth: width, position: coord, index: index});
   }
 
   startSelect(): void {
@@ -127,11 +126,11 @@ export default class View {
     return index;
   }
 
-  callCommand(trackWidth: number, position: number, index: number): void {
-    this.inputChanged.notify({trackWidth: trackWidth, position: position, index: index});
+  callCommand(data: {trackWidth: number, position: number, index: number}): void {
+    this.inputChanged.notify(data);
   }
 
-  update(data: Array<Data>) {
+  update(data: {coord: number, index: number, value: string}) {
     this.slider.update(data);
   }
 }

@@ -18,15 +18,16 @@ describe('Number model', () => {
   });
 
   test('Position calculation return correct position in %', () => {
-    expect(model.positionCalculation(100, 25, 400)).toBe(25);
-    expect(model.positionCalculation(100, 30, 400)).toBe(30);
-    expect(model.positionCalculation(200, 10, 400)).toBe(50);
+    expect(model.positionCalculation({ position: 100, step:25, trackWidth: 400 })).toBe(25);
+    expect(model.positionCalculation({ position: 100, step: 30, trackWidth: 400 })).toBe(30);
+    expect(model.positionCalculation({ position: 200, step: 10, trackWidth: 400 })).toBe(50);
+    expect(model.positionCalculation({ position: 50, step: 120, trackWidth: 200 })).toBe(0);
   });
 
   test('Selected number value', () => {
-    expect(model.valueCalculation(0, 200, 0)).toMatchObject([{'coord': 0, 'value': '-25'}]);
-    expect(model.valueCalculation(25, 125, 0)).toMatchObject([{'coord': 20, 'value': '0'}]);
-    expect(model.valueCalculation(300, 300, 0)).toMatchObject([{'coord': 100, 'value': '100'}]);
+    expect(model.valueCalculation({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': '-25'}]);
+    expect(model.valueCalculation({ position: 25, trackWidth: 125, index: 0})).toMatchObject([{'coord': 20, 'value': '0'}]);
+    expect(model.valueCalculation({ position: 300, trackWidth: 300, index: 0})).toMatchObject([{'coord': 100, 'value': '100'}]);
   });
 
   test('Update options', () => {
@@ -67,8 +68,8 @@ describe('Value model', () => {
   slider.init();
 
   test ('Selected value', () => {
-    expect(slider.valueCalculation(0, 200, 0)).toMatchObject([{'coord': 0, 'value': 'one'}]);
-    expect(slider.valueCalculation(100, 200, 0)).toMatchObject([{'coord': 50, 'value': 'two'}]);
+    expect(slider.valueCalculation({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': 'one'}]);
+    expect(slider.valueCalculation({ position: 100, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 50, 'value': 'two'}]);
   });
 
   test('Init model', () => {

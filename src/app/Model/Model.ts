@@ -29,7 +29,7 @@ export default class Model {
 
   public init(): void {
     this.data = this.initData(this.options.isRange);
-    this.callCommand(this.data);
+    this.data.forEach((el) => this.callCommand(el));
   }
 
   private initData(isRange: boolean): Array<Data> {
@@ -47,11 +47,12 @@ export default class Model {
     return step;
   }
 
-  public positionCalculation(position: number, step: number, trackWidth:number): number {
+  public positionCalculation(data: {position: number, step: number, trackWidth:number}): number {
+    const { position, step, trackWidth } = data;
     const percent = (position/trackWidth)*100;
     let pos: number;
     if ((percent + step) > 100) {
-      pos = 100;
+      pos = percent > 50 ? 100 : 0;
     }
     else {
       pos = Math.round(percent/step)*step;
@@ -59,22 +60,25 @@ export default class Model {
     return pos;
   }
 
-  public valueCalculation(position: number, trackWidth: number, index: number): Array<Data> {
+  public valueCalculation(data: {position: number, trackWidth: number, index: number}): Array<Data> {
+    const { position, trackWidth, index } = data;
+
     if (this.options.values) {
       const step = 100/(this.options.values.length - 1);
-      const pos = this.positionCalculation(position, step, trackWidth);
+      const pos = this.positionCalculation({ position, step, trackWidth });
       this.data[index].update(this.options.values[pos/step], pos);
     } else {
       const step = this.stepCalculation();
-      const pos = this.positionCalculation(position, step, trackWidth);
+      const pos = this.positionCalculation({ position, step, trackWidth });
       const newValue = Math.round(pos*(this.options.end - this.options.start)/100 + this.options.start);
       this.data[index].update(newValue.toString(), pos);
     }
-    this.callCommand(this.data);
+
+    this.callCommand(this.data[index]);
     return this.data;
   }
 
-  public callCommand(data: Array<Data>): void {
+  public callCommand(data: {coord: number, index: number, value: string}): void {
     this.modelChanged.notify(data);
   }
 }

@@ -61,7 +61,7 @@ describe('Single slider', () => {
     const spy = jest.spyOn(view, 'callCommand');
     view.handleSliderClick(smth);
     expect(spy).toBeCalled();
-    expect(spy).toBeCalledWith(260, 90, 0);
+    expect(spy).toBeCalledWith({ trackWidth: 260, position: 90, index: 0 });
   });
 
   test('Update options', () => {
@@ -100,7 +100,7 @@ describe('Double slider', () => {
 
   test('Call comand', () => {
     view.inputChanged.notify = jest.fn();
-    view.callCommand(261, 100, 0);
+    view.callCommand({ trackWidth: 261, position: 100, index: 0 });
     expect(view.inputChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
 
@@ -117,7 +117,7 @@ describe('Double slider', () => {
     view.callCommand = jest.fn();
     view.handleSliderClick(smth);
     expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith(260, 50, 0);
+    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 50, index: 0 });
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0.5s');
   });
 
@@ -129,7 +129,7 @@ describe('Double slider', () => {
     view.callCommand = jest.fn();
     view.handleSliderClick(smth);
     expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith(260, 260, 1);
+    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 260, index: 1 });
   });
 
   test ('Click event: coord less then 0', () => {
@@ -140,7 +140,7 @@ describe('Double slider', () => {
     view.callCommand = jest.fn();
     view.handleSliderClick(smth);
     expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith(260, 0, 0);
+    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 0, index: 0 });
   });
 
   test('Transition duration', () => {
@@ -171,7 +171,7 @@ describe('One more slider', () => {
 
   test('Call comand', () => {
     view.inputChanged.notify = jest.fn();
-    view.callCommand(261, 100, 0);
+    view.callCommand({ trackWidth: 261, position: 100, index: 0 });
     expect(view.inputChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
 
@@ -188,7 +188,7 @@ describe('One more slider', () => {
     view.callCommand = jest.fn();
     view.handleSliderClick(smth);
     expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith(260, 90, 0);
+    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 90, index: 0 });
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0.5s');
   });
 
@@ -200,7 +200,7 @@ describe('One more slider', () => {
     view.callCommand = jest.fn();
     view.handleSliderClick(smth);
     expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith(260, 260, 1);
+    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 260, index: 1 });
   });
 
   test ('Click event: coord less then 0', () => {
@@ -211,7 +211,7 @@ describe('One more slider', () => {
     view.callCommand = jest.fn();
     view.handleSliderClick(smth);
     expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith(260, 0, 0);
+    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 0, index: 0 });
   });
 
   test('Transition duration', () => {
