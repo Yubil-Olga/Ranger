@@ -1,5 +1,5 @@
 import Options from './Options';
-import IUserSettings from '../../IUserSettings';
+import IOptions from '../../IOptions';
 
 export default class NumberSliderOptions extends Options {
   public start: number
@@ -7,7 +7,7 @@ export default class NumberSliderOptions extends Options {
   public step: number
   public scaleStep: number
 
-  constructor(options: IUserSettings) {
+  constructor(options: IOptions) {
     super(options);
     if (this.userSettingsInvalid(options)) {
       this.start = 0;
@@ -20,11 +20,11 @@ export default class NumberSliderOptions extends Options {
     this.scaleStep = this.checkScaleStep(options);
   }
 
-  userSettingsInvalid(options: IUserSettings) {
+  userSettingsInvalid(options: IOptions) {
     return (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start >= options.end);
   }
 
-  checkStep(options: IUserSettings) {
+  checkStep(options: IOptions) {
     if (typeof options.step !== 'number'|| options.step < 1) {
       return 1;
     }
@@ -36,14 +36,14 @@ export default class NumberSliderOptions extends Options {
     }
   }
 
-  checkScaleStep(options: IUserSettings) {
+  checkScaleStep(options: IOptions) {
     if (this.scalestepSettingsValid(options)) {
       return options.scaleStep;
     }
     return (this.end - this.start);
   }
 
-  scalestepSettingsValid(options: IUserSettings) {
+  scalestepSettingsValid(options: IOptions) {
     return (typeof options.scaleStep === 'number' && options.scaleStep > 1 && options.scaleStep < (this.end - this.start));
   }
 }

@@ -1,8 +1,7 @@
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 import Data from './Data/Data';
-import IOptions from './Options/IOptions';
-import IUserSettings from '../IUserSettings';
 import CreateOptions from './Options/CreateOptions';
+import IOptions from '../IOptions';
 
 export default class Model {
   private options: IOptions;
@@ -10,16 +9,16 @@ export default class Model {
   public modelChanged = new EventDispatcher(this);
   public optionsChanged = new EventDispatcher(this);
 
-  constructor(settings: IUserSettings) {
+  constructor(settings: IOptions) {
     this.createOptions(settings);
   }
 
-  public createOptions(settings: IUserSettings) {
-    this.options = CreateOptions.create(settings);
+  public createOptions(options: IOptions) {
+    this.options = CreateOptions.create(options);
   }
 
-  public updateOptions(settings: IUserSettings) {
-    this.createOptions(settings);
+  public updateOptions(options: IOptions) {
+    this.createOptions(options);
     this.optionsChanged.notify(this.options);
     this.init();
   }
@@ -29,13 +28,14 @@ export default class Model {
   }
 
   public init(): void {
-    this.data = this.initData(this.options.type);
+    this.data = this.initData(this.options.isRange);
     this.callCommand(this.data);
   }
 
-  private initData(type: number): Array<Data> {
+  private initData(isRange: boolean): Array<Data> {
     const arr = [];
-    for (let i=0; i<type; i++) {
+    const length = isRange ? 2 : 1;
+    for (let i=0; i<length; i++) {
       const data = new Data(i, this.options);
       arr.push(data);
     }

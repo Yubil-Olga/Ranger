@@ -1,10 +1,10 @@
 import Options from './Options';
-import IUserSettings from '../../IUserSettings';
+import IOptions from '../../IOptions';
 
 export default class ValueSliderOptions extends Options{
   public values: Array<string>
 
-  constructor(values: Array<string>, options: IUserSettings) {
+  constructor(values: Array<string>, options: IOptions) {
     super(options);
     this.values = values;
   }

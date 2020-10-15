@@ -4,8 +4,8 @@ import View from './View';
 describe('Single slider', () => {
   const div = document.createElement('div');
   const options = {
-    type: 1,
-    direction: null,
+    isRange: false,
+    isVertical: false,
     hasTagmark: true,
     prefix: null,
     start: 0,
@@ -66,8 +66,8 @@ describe('Single slider', () => {
 
   test('Update options', () => {
     const newOptions = {
-      type: 1,
-      direction: null,
+      isRange: false,
+      isVertical: false,
       hasTagmark: true,
       prefix: null,
       start: 0,
@@ -83,9 +83,9 @@ describe('Single slider', () => {
 describe('Double slider', () => {
   const div = document.createElement('div');
   const options = {
-    type: 2,
+    isRange: true,
     values: ['one', 'two', 'three', 'four', 'five'],
-    direction: 'vertical',
+    isVertical: true,
     hasTagmark: true,
     prefix: null
   };
@@ -154,9 +154,9 @@ describe('Double slider', () => {
 describe('One more slider', () => {
   const div = document.createElement('div');
   const options = {
-    type: 2,
+    isRange: true,
     values: ['one', 'two', 'three', 'four', 'five'],
-    direction: null,
+    isVertical: false,
     hasTagmark: true,
     prefix: null
   };

@@ -1,4 +1,4 @@
-import IOptions from '../../../Model/Options/IOptions';
+import IOptions from '../../../IOptions';
 
 export default class Scale {
   private scale: HTMLElement
@@ -11,11 +11,11 @@ export default class Scale {
     return this.scale;
   }
 
-  addMark(tag: string, direction: string, position: string): void {
+  addMark(tag: string, isVertical: boolean, position: string): void {
     const labelMark = document.createElement('span');
     labelMark.className = 'slider__label-mark';
     labelMark.setAttribute('data-text', tag);
-    if (direction == 'vertical') {
+    if (isVertical) {
       labelMark.style.top = position;
     } else {
       labelMark.style.left = position;
@@ -31,7 +31,7 @@ export default class Scale {
       const percent = 100/(count-1);
       for (let i=0; i<count; i++) {
         const position = i*percent + '%';
-        this.addMark(options.values[i].toString(), options.direction, position);
+        this.addMark(options.values[i].toString(), options.isVertical, position);
       }
     } else {
       const count = Math.ceil((options.end - options.start)/options.scaleStep);
@@ -44,7 +44,7 @@ export default class Scale {
           tag = options.end.toString();
           position = '100%';
         }
-        this.addMark(tag, options.direction, position);
+        this.addMark(tag, options.isVertical, position);
       }
     }
   }

@@ -1,15 +1,13 @@
 import './View/Slider/slider.scss';
 import jQuery from 'jquery';
-import IUserSettings from './IUserSettings';
-// import CreateOptions from './Options/CreateOptions';
 import Facade from './Presenter/Facade';
+import IOptions from './IOptions';
 
 (function( $ ) {
-  $.fn.perfectSlider = function(options: IUserSettings) {
+  $.fn.perfectSlider = function(options: IOptions) {
     const settings = $.extend({}, options);
     try {
       return this.map(function() {
-        // const options = CreateOptions.create(settings);
         const facade = new Facade(options, this);
         return facade;
       });

@@ -2,7 +2,7 @@ import Model from '../Model/Model';
 import View from '../View/View';
 import Data from '../Model/Data/Data';
 import IUserInput from '../View/IUserInput';
-import IOptions from '../Model/Options/IOptions';
+import IOptions from '../IOptions';
 
 export default class Presenter {
   private model: Model

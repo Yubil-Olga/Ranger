@@ -1,7 +1,7 @@
 import Thumb from './Thumb/Tumb';
 import Scale from './Scale/Scale';
-import IOptions from '../../Model/Options/IOptions';
 import Data from '../../Model/Data/Data';
+import IOptions from '../../IOptions';
 
 export default class Slider {
   public container: HTMLElement
@@ -22,7 +22,7 @@ export default class Slider {
 
   private createTemplate() {
     this.container = document.createElement('div');
-    this.container.className = this.options.direction === 'vertical' ? 'slider slider_vertical' : 'slider';
+    this.container.className = this.options.isVertical ? 'slider slider_vertical' : 'slider';
     this.tag = document.createElement('div');
     this.tag.className = this.options.hasTagmark ? 'slider__tag' : 'slider__tag slider__tag_hidden';
     this.value = this.createInput('text', 'slider__input');
@@ -30,8 +30,8 @@ export default class Slider {
     this.bar = this.createElement('div', 'slider__track-bar');
     this.barSelected = this.createElement('div', 'slider__track-bar_selected');
     this.label = new Scale(this.options).getElement();
-    this.thumblers = this.createThumblers(this.options.type);
-    this.tagmarks = this.createTagmarks(this.options.type);
+    this.thumblers = this.createThumblers(this.options.isRange);
+    this.tagmarks = this.createTagmarks(this.options.isRange);
     this.container.append(this.value, this.tag, this.track, this.label);
     this.track.append(this.bar, this.barSelected);
     this.tag.append(...this.tagmarks);
@@ -52,9 +52,10 @@ export default class Slider {
     return el;
   }
 
-  private createTagmarks(type: number): Array<HTMLElement> {
+  private createTagmarks(isRange: boolean): Array<HTMLElement> {
     this.tagmarks = [];
-    for (let i=0; i<type; i++) {
+    const amount = isRange ? 2 : 1;
+    for (let i=0; i<amount; i++) {
       const tagmark = document.createElement('span');
       tagmark.className = 'slider__tag-mark';
       this.tagmarks.push(tagmark);
@@ -62,9 +63,10 @@ export default class Slider {
     return this.tagmarks;
   }
 
-  private createThumblers(type: number): Array<HTMLElement> {
+  private createThumblers(isRange: boolean): Array<HTMLElement> {
     this.thumblers = [];
-    for (let i=0; i<type; i++) {
+    const amount = isRange ? 2 : 1;
+    for (let i=0; i<amount; i++) {
       this.thumblers.push(new Thumb().getElement());
     }
     return this.thumblers;
@@ -83,7 +85,7 @@ export default class Slider {
   }
 
   moveThumbs(data: Data, index: number): void {
-    if (this.options.direction === 'vertical') {
+    if (this.options.isVertical) {
       this.thumblers[index].style.top = data.coord + '%';
       this.tagmarks[index].style.top = data.coord - 3 + '%';
     }
@@ -104,7 +106,7 @@ export default class Slider {
       barStart = 0 + '%';
       barEnd = 100 - data[0].coord + '%';
     }
-    if (this.options.direction === 'vertical') {
+    if (this.options.isVertical) {
       this.barSelected.style.top = barStart;
       this.barSelected.style.bottom = barEnd;
     }

@@ -3,8 +3,8 @@ import Data from '../../Model/Data/Data';
 
 describe('Number slider', () => {
   const options = {
-    type: 1,
-    direction: null,
+    isRange: false,
+    isVertical: false,
     prefix: '$',
     start: 0,
     end: 100,
@@ -48,8 +48,8 @@ describe('Number slider', () => {
 
 describe('Value slider', () => {
   const options = {
-    type: 2,
-    direction: 'vertical',
+    isRange: true,
+    isVertical: true,
     values: ['one', 'two', 'three'],
     color: 'red',
     hasTagmark: false,
@@ -94,5 +94,3 @@ describe('Value slider', () => {
     expect(slider.moveThumbs).toBeCalled();
   });
 });
-
-

@@ -1,6 +1,6 @@
-export default interface IUserSettings {
-  type?: string,
-  direction?: string,
+export default interface ISettings {
+  isRange?: boolean,
+  isVertical?: boolean,
   start?: number,
   end?: number,
   step?: number,
@@ -8,5 +8,5 @@ export default interface IUserSettings {
   color?: string,
   hasTagmark?: boolean,
   values?: Array<string>,
-  prefix?: string
+  prefix?: string,
 }

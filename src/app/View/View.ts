@@ -1,8 +1,8 @@
 import bind from 'bind-decorator';
 import Slider from './Slider/Slider';
-import IOptions from '../Model/Options/IOptions';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 import Data from '../Model/Data/Data';
+import IOptions from '../IOptions';
 
 export default class View {
   private options: IOptions
@@ -68,7 +68,7 @@ export default class View {
     let width: number;
     let coord: number;
     this.transitionDuration(event);
-    if (this.options.direction == 'vertical') {
+    if (this.options.isVertical) {
       width = this.slider.track.clientHeight;
       coord = Math.round((<MouseEvent>event).clientY - this.slider.track.getBoundingClientRect().top);
     }
@@ -105,9 +105,9 @@ export default class View {
 
   selectedThumb(coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent): number {
     let index = 0;
-    if (this.options.type === 2) {
-      const min = this.options.direction === 'vertical' ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left);
-      const max = this.options.direction === 'vertical' ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left);
+    if (this.options.isRange) {
+      const min = this.options.isVertical ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left);
+      const max = this.options.isVertical ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left);
       const pos = coord*100/width;
       if (event.type === 'mousemove') {
         index = this.activeThumbNum;
@@ -135,4 +135,3 @@ export default class View {
     this.slider.update(data);
   }
 }
-

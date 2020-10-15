@@ -5,8 +5,8 @@ import Presenter from './Presenter';
 describe('Creation of presenter', () => {
   const div = document.createElement('div');
   const options = {
-    type: 'single',
-    direction: null,
+    isRange: false,
+    isVertical: false,
     start: -25,
     end: 100,
     step: 25,
@@ -34,8 +34,8 @@ describe('Creation of presenter', () => {
 
   test('Options changed', () => {
     const newOptions = {
-      type: 2,
-      direction: 'vertical',
+      isRange: true,
+      isVertical: true,
       start: 0,
       end: 100,
       step: 50,

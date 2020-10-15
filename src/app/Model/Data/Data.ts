@@ -1,4 +1,4 @@
-import IOptions from '../Options/IOptions';
+import IOptions from '../../IOptions';
 
 export default class Data {
   public value: string

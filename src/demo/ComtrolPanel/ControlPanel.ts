@@ -1,16 +1,16 @@
 import bind from 'bind-decorator';
-import IUserSettings from '../../app/IUserSettings';
 import '../../app/app';
 import Facade from '../../app/Presenter/Facade';
+import IOptions from '../../app/IOptions';
 
 export default class ControlPanel {
   private facade: Facade
-  private settings: IUserSettings
+  private options: IOptions
   private controlPanel: HTMLElement
   private colorInput: HTMLInputElement
   private prefixInput: HTMLInputElement
-  private typeInput: HTMLSelectElement
-  private directionInput: HTMLSelectElement
+  private rangeInput: HTMLInputElement
+  private directionInput: HTMLInputElement
   private startInput: HTMLInputElement
   private endInput: HTMLInputElement
   private stepInput: HTMLInputElement
@@ -18,29 +18,29 @@ export default class ControlPanel {
   private tagmarkInput: HTMLInputElement
   private valueInput: HTMLInputElement
 
-  constructor(settings: IUserSettings, facade: Facade) {
+  constructor(facade: Facade) {
     this.facade = facade[0];
-    this.settings = settings;
-    this.init(settings);
+    this.init();
   }
 
   getElement() {
     return this.controlPanel;
   }
 
-  init(settings: IUserSettings) {
+  init() {
+    this.options = this.facade.getOptions();
     this.controlPanel = document.createElement('div');
     this.controlPanel.classList.add('demo__control-panel');
-    this.createColorInput(settings.color);
-    this.createPrefixInput(settings.prefix);
-    this.createTypeInput(settings.type);
-    this.createDirectionInput(settings.direction);
-    this.createMinValueInput(settings.start);
-    this.createMaxValueInput(settings.end);
-    this.createSliderStepInput(settings.step);
-    this.createScaleStepInput(settings.scaleStep);
-    this.createTagmarkInput(settings.hasTagmark);
-    this.createValuesInput(settings.values);
+    this.createRangeInput(this.options.isRange);
+    this.createDirectionInput(this.options.isVertical);
+    this.createColorInput(this.options.color);
+    this.createPrefixInput(this.options.prefix);
+    this.createMinValueInput(this.options.start);
+    this.createMaxValueInput(this.options.end);
+    this.createSliderStepInput(this.options.step);
+    this.createScaleStepInput(this.options.scaleStep);
+    this.createTagmarkInput(this.options.hasTagmark);
+    this.createValuesInput(this.options.values);
     this.bindEvents();
   }
 
@@ -56,16 +56,20 @@ export default class ControlPanel {
     this.createLabel('Prefix', this.prefixInput);
   }
 
-  private createTypeInput(type: string) {
-    this.typeInput = this.createSelect(['single', 'double']);
-    this.typeInput.value = type ? type : 'single';
-    this.createLabel('Type', this.typeInput);
+  private createRangeInput(isRange: boolean) {
+    this.rangeInput = document.createElement('input');
+    this.rangeInput.type = 'checkbox';
+    this.rangeInput.classList.add('demo__checkbox');
+    this.rangeInput.checked = isRange;
+    this.createLabel('Is range', this.rangeInput);
   }
 
-  private createDirectionInput(direction: string) {
-    this.directionInput = this.createSelect(['horizontal', 'vertical']);
-    this.directionInput.value = direction ? direction : 'horizontal';
-    this.createLabel('Direction', this.directionInput);
+  private createDirectionInput(isVertical: boolean) {
+    this.directionInput = document.createElement('input');
+    this.directionInput.type = 'checkbox';
+    this.directionInput.classList.add('demo__checkbox');
+    this.directionInput.checked = isVertical;
+    this.createLabel('Is vertical', this.directionInput);
   }
 
   private createMinValueInput(start: number) {
@@ -95,9 +99,8 @@ export default class ControlPanel {
   private createTagmarkInput(hasTagmark: boolean) {
     this.tagmarkInput = document.createElement('input');
     this.tagmarkInput.type = 'checkbox';
-    this.tagmarkInput.placeholder = 'tagmark';
     this.tagmarkInput.classList.add('demo__checkbox');
-    this.tagmarkInput.checked = (hasTagmark === false) ? false : true;
+    this.tagmarkInput.checked = hasTagmark;
     this.createLabel('Show tagmark', this.tagmarkInput);
   }
 
@@ -115,18 +118,6 @@ export default class ControlPanel {
     return input;
   }
 
-  private createSelect(name: Array<string>) {
-    const select = document.createElement('select');
-    select.classList.add('demo__input');
-    for (let i=0; i<name.length; i++) {
-      const option = document.createElement('option');
-      option.value = name[i];
-      option.textContent = name[i];
-      select.append(option);
-    }
-    return select;
-  }
-
   private createLabel(name: string, input: HTMLElement) {
     const label = document.createElement('label');
     label.classList.add('demo__label');
@@ -135,9 +126,19 @@ export default class ControlPanel {
     this.controlPanel.append(label);
   }
 
+  private updateInputValues() {
+    this.startInput.value = this.facade.getOptions().start ? this.facade.getOptions().start.toString(): null;
+    this.endInput.value = this.facade.getOptions().end ? this.facade.getOptions().end.toString() : null;
+    this.stepInput.value = this.facade.getOptions().step ? this.facade.getOptions().step.toString(): null;
+    this.scalestepInput.value = this.facade.getOptions().scaleStep ? this.facade.getOptions().scaleStep.toString() : null;
+    this.colorInput.value = this.facade.getOptions().color;
+    this.prefixInput.value = this.facade.getOptions().prefix;
+    this.valueInput.value = this.facade.getOptions().values ? this.facade.getOptions().values.toString() : null;
+  }
+
   private bindEvents(): void {
     this.colorInput.addEventListener('change', this.handleInputChanged);
-    this.typeInput.addEventListener('change', this.handleInputChanged);
+    this.rangeInput.addEventListener('change', this.handleInputChanged);
     this.tagmarkInput.addEventListener('change', this.handleInputChanged);
     this.directionInput.addEventListener('change', this.handleInputChanged);
     this.startInput.addEventListener('change', this.handleInputChanged);
@@ -150,16 +151,17 @@ export default class ControlPanel {
 
   @bind
   private handleInputChanged(): void {
-    this.settings.color = this.colorInput.value;
-    this.settings.type = this.typeInput.value;
-    this.settings.direction = this.directionInput.value;
-    this.settings.hasTagmark = this.tagmarkInput.checked;
-    this.settings.start = Number(this.startInput.value);
-    this.settings.end = Number(this.endInput.value);
-    this.settings.scaleStep = Number(this.scalestepInput.value);
-    this.settings.prefix = this.prefixInput.value;
-    this.settings.step = Number(this.stepInput.value);
-    this.settings.values = this.valueInput.value.split(',').filter((el) => el.length > 0);
-    this.facade.updateOptions(this.settings);
+    this.options.isRange = this.rangeInput.checked;
+    this.options.isVertical = this.directionInput.checked;
+    this.options.color = this.colorInput.value;
+    this.options.hasTagmark = this.tagmarkInput.checked;
+    this.options.start = Number(this.startInput.value);
+    this.options.end = Number(this.endInput.value);
+    this.options.scaleStep = Number(this.scalestepInput.value);
+    this.options.prefix = this.prefixInput.value;
+    this.options.step = Number(this.stepInput.value);
+    this.options.values = this.valueInput.value.split(',').filter((el) => el.length > 0);
+    this.facade.updateOptions(this.options);
+    this.updateInputValues();
   }
 }

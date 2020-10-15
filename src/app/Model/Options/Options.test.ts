@@ -4,34 +4,34 @@ const arr = [];
 
 arr[0] = {
   options : {start: -25, end: 100, step: 25, scaleStep: 10, prefix: '%', color: 'frd'},
-  result : {type: 1, direction: null, start: -25, end: 100, step: 25, scaleStep: 10, hasTagmark: true, prefix: '%', color: null},
+  result : {isRange: false, isVertical: false, start: -25, end: 100, step: 25, scaleStep: 10, hasTagmark: true, prefix: '%', color: null},
 };
 
 arr[1] = {
   options : {start: 250, end: 100, step: 300, scaleStep: 1000},
-  result : {type: 1, start: 0, end: 100, step: 100, hasTagmark: true, scaleStep: 100, color: null, direction: null, prefix: null},
+  result : {isRange: false, start: 0, end: 100, step: 100, hasTagmark: true, scaleStep: 100, color: null, isVertical: false, prefix: null},
 };
 
 arr[2] = {
-  options : {type: 'double', start: 250, end: 100, values: ['one', 'two', 'three', 4], direction: 'vertical'},
-  result : {type: 2, direction: 'vertical', values: ['one', 'two', 'three'], hasTagmark: true, color: null, prefix: null},
+  options : {isRange: true, start: 250, end: 100, values: ['one', 'two', 'three', 4], isVertical: true},
+  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three'], hasTagmark: true, color: null, prefix: null},
 };
 
 arr[3] = {
-  options : {type: 'double', start: 250, end: 100, values: ['one', 'two', 'three', 4], direction: 'vertical', hasTagmark: false, color: 'red'},
-  result : {type: 2, direction: 'vertical', values: ['one', 'two', 'three'], color: 'red', hasTagmark: false, prefix: null},
+  options : {isRange: true, start: 250, end: 100, values: ['one', 'two', 'three', 4], isVertical: true, hasTagmark: false, color: 'red'},
+  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three'], color: 'red', hasTagmark: false, prefix: null},
 };
 arr[4] = {
   options : {start: 250, end: 100, scaleStep: 1000},
-  result : {type: 1, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: null, direction: null, prefix: null},
+  result : {isRange: false, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: null, isVertical: false, prefix: null},
 };
 
 test('Set correct options', ( ) => {
   for (let i=0; i<arr.length; i++) {
     let param = CreateOptions.create(arr[i].options);
     expect(param).toMatchObject(arr[i].result);
-    expect(param.type).toBe(arr[i].result.type);
-    expect(param.direction).toBe(arr[i].result.direction);
+    expect(param.isRange).toBe(arr[i].result.isRange);
+    expect(param.isVertical).toBe(arr[i].result.isVertical);
     expect(param.hasTagmark).toBe(arr[i].result.hasTagmark);
     expect(param.color).toBe(arr[i].result.color);
     expect(param.prefix).toBe(arr[i].result.prefix);
@@ -44,4 +44,3 @@ test('Set correct options', ( ) => {
     }
   }
 });
-

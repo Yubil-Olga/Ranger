@@ -2,8 +2,8 @@ import Model from './Model';
 
 describe('Number model', () => {
   const options = {
-    type: 'single',
-    direction: null,
+    isRange: false,
+    isVertical: false,
     start: -25,
     end: 100,
     step: 25,
@@ -31,8 +31,8 @@ describe('Number model', () => {
 
   test('Update options', () => {
     const newOptions = {
-      type: 'double',
-      direction: 'vertical',
+      isRange: true,
+      isVertical: true,
       start: 0,
       end: 100,
       step: 50,
@@ -40,8 +40,8 @@ describe('Number model', () => {
       prefix: null
     };
     const result = {
-      type: 2,
-      direction: 'vertical',
+      isRange: true,
+      isVertical: true,
       start: 0,
       end: 100,
       step: 50,
@@ -57,8 +57,8 @@ describe('Number model', () => {
 
 describe('Value model', () => {
   const options = {
-    type: 'single',
-    direction: null,
+    isRange: false,
+    isVertical: false,
     prefix: null,
     hasTagmark: true,
     values: ['one', 'two', 'three']
