@@ -30,6 +30,7 @@
     height: 6px;
     border-radius: 4px;
     background: var(--basic-color);
+    cursor: pointer;
 
     &_selected {
       position: absolute;
@@ -87,6 +88,7 @@
     width: 90%;
     position: relative;
     height: 25px;
+    user-select: none;
 
     &_hidden {
       visibility: hidden;

@@ -40,10 +40,12 @@
     border-radius: 4px;
     margin-left: 10px;
     min-width: 220px;
+    cursor: pointer;
   }
 
   &__checkbox {
     width: 20px;
     height: 20px;
+    cursor: pointer;
   }
 }
