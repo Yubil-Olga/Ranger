@@ -73,37 +73,37 @@ export default class ControlPanel {
   }
 
   private createRangeInput() {
-    this.rangeInput = this.createInput({ type: 'checkbox', className: 'demo__checkbox' });
+    this.rangeInput = this.createInput({ type: 'checkbox', name: 't', className: 'demo__checkbox' });
     this.createLabel('Is range', this.rangeInput);
   }
 
   private createDirectionInput() {
-    this.directionInput = this.createInput({ type: 'checkbox', className: 'demo__checkbox'});
+    this.directionInput = this.createInput({ type: 'checkbox', name: '', className: 'demo__checkbox'});
     this.createLabel('Is vertical', this.directionInput);
   }
 
   private createMinValueInput() {
-    this.startInput = this.createInput({ type: 'number', className: 'demo__input' });
+    this.startInput = this.createInput({ type: 'number', name: 'min value', className: 'demo__input' });
     this.createLabel('Min value', this.startInput);
   }
 
   private createMaxValueInput() {
-    this.endInput = this.createInput({ type: 'number', className: 'demo__input' });
+    this.endInput = this.createInput({ type: 'number', name: 'max value', className: 'demo__input' });
     this.createLabel('Max value', this.endInput);
   }
 
   private createSliderStepInput() {
-    this.stepInput = this.createInput({ type: 'number', className: 'demo__input'});
+    this.stepInput = this.createInput({ type: 'number', name: 'step', className: 'demo__input'});
     this.createLabel('Step of slider', this.stepInput);
   }
 
   private createScaleStepInput() {
-    this.scalestepInput = this.createInput({ type: 'number', className: 'demo__input'});
+    this.scalestepInput = this.createInput({ type: 'number', name: 'scale step', className: 'demo__input'});
     this.createLabel('Scale step', this.scalestepInput);
   }
 
   private createTagmarkInput() {
-    this.tagmarkInput = this.createInput({ type: 'checkbox', className: 'demo__checkbox'});
+    this.tagmarkInput = this.createInput({ type: 'checkbox', name: '', className: 'demo__checkbox'});
     this.createLabel('Show tagmark', this.tagmarkInput);
   }
 
@@ -112,7 +112,7 @@ export default class ControlPanel {
     this.createLabel('String values', this.valueInput);
   }
 
-  private createInput(data: { type: string, name?: string, className: string }) {
+  private createInput(data: { type: string, name: string, className: string }) {
     const { type, name, className } = data;
     const input = document.createElement('input');
     input.classList.add(className);
