@@ -27,6 +27,7 @@
   height: 6px;
   border-radius: 4px;
   background: var(--basic-color);
+  cursor: pointer;
 }
 .slider__track-bar_selected {
   position: absolute;
@@ -77,6 +78,7 @@
   width: 90%;
   position: relative;
   height: 25px;
+  user-select: none;
 }
 .slider__tag_hidden {
   visibility: hidden;
