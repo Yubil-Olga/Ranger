@@ -33,11 +33,11 @@
 }
 .demo__input {
   border: 1px solid #000;
-  padding: 5px 10px;
+  padding: 5px;
   box-sizing: border-box;
   border-radius: 4px;
   margin-left: 10px;
-  min-width: 200px;
+  min-width: 220px;
 }
 .demo__checkbox {
   width: 20px;
