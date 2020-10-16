@@ -23,96 +23,99 @@ export default class ControlPanel {
     this.init();
   }
 
+  init() {
+    this.createHTMLElements();
+    this.updateInputValues();
+  }
+
   getElement() {
     return this.controlPanel;
   }
 
-  init() {
-    this.options = this.facade.getOptions();
+  createHTMLElements() {
     this.controlPanel = document.createElement('div');
     this.controlPanel.classList.add('demo__control-panel');
-    this.createRangeInput(this.options.isRange);
-    this.createDirectionInput(this.options.isVertical);
-    this.createColorInput(this.options.color);
-    this.createPrefixInput(this.options.prefix);
-    this.createMinValueInput(this.options.start);
-    this.createMaxValueInput(this.options.end);
-    this.createSliderStepInput(this.options.step);
-    this.createScaleStepInput(this.options.scaleStep);
-    this.createTagmarkInput(this.options.hasTagmark);
-    this.createValuesInput(this.options.values);
+    this.createRangeInput();
+    this.createDirectionInput();
+    this.createColorInput();
+    this.createPrefixInput();
+    this.createMinValueInput();
+    this.createMaxValueInput();
+    this.createSliderStepInput();
+    this.createScaleStepInput();
+    this.createTagmarkInput();
+    this.createValuesInput();
     this.bindEvents();
   }
 
-  private createColorInput(color: string) {
-    this.colorInput = this.createInput('text', 'color');
-    this.colorInput.value = color !== undefined? color : '#53b6a8';
+  private updateInputValues() {
+    this.options = this.facade.getOptions();
+    this.colorInput.value = this.options.color || '#53b6a8';
+    this.prefixInput.value = this.options.prefix || null;
+    this.rangeInput.checked = this.options.isRange;
+    this.directionInput.checked = this.options.isVertical;
+    this.startInput.value = this.options.start? this.options.start.toString() : null;
+    this.endInput.value = this.options.end ? this.options.end.toString() : null;
+    this.stepInput.value = this.options.step? this.options.step.toString() : null;
+    this.scalestepInput.value = this.options.scaleStep? this.options.scaleStep.toString() : null;
+    this.tagmarkInput.checked = this.options.hasTagmark;
+    this.valueInput.value = this.options.values? this.options.values.join(',') : null;
+  }
+
+  private createColorInput() {
+    this.colorInput = this.createInput({ type: 'text', name: 'color', className: 'demo__input' });
     this.createLabel('Color', this.colorInput);
   }
 
-  private createPrefixInput(prefix: string) {
-    this.prefixInput = this.createInput('text', 'prefix');
-    this.prefixInput.value = prefix ? prefix : null;
+  private createPrefixInput() {
+    this.prefixInput = this.createInput({ type: 'text', name: 'prefix', className: 'demo__input' });
     this.createLabel('Prefix', this.prefixInput);
   }
 
-  private createRangeInput(isRange: boolean) {
-    this.rangeInput = document.createElement('input');
-    this.rangeInput.type = 'checkbox';
-    this.rangeInput.classList.add('demo__checkbox');
-    this.rangeInput.checked = isRange;
+  private createRangeInput() {
+    this.rangeInput = this.createInput({ type: 'checkbox', className: 'demo__checkbox' });
     this.createLabel('Is range', this.rangeInput);
   }
 
-  private createDirectionInput(isVertical: boolean) {
-    this.directionInput = document.createElement('input');
-    this.directionInput.type = 'checkbox';
-    this.directionInput.classList.add('demo__checkbox');
-    this.directionInput.checked = isVertical;
+  private createDirectionInput() {
+    this.directionInput = this.createInput({ type: 'checkbox', className: 'demo__checkbox'});
     this.createLabel('Is vertical', this.directionInput);
   }
 
-  private createMinValueInput(start: number) {
-    this.startInput = this.createInput('number', 'from');
-    this.startInput.value = start? start.toString() : null;
+  private createMinValueInput() {
+    this.startInput = this.createInput({ type: 'number', className: 'demo__input' });
     this.createLabel('Min value', this.startInput);
   }
 
-  private createMaxValueInput(end: number) {
-    this.endInput = this.createInput('number', 'to');
-    this.endInput.value = end ? end.toString() : null;
+  private createMaxValueInput() {
+    this.endInput = this.createInput({ type: 'number', className: 'demo__input' });
     this.createLabel('Max value', this.endInput);
   }
 
-  private createSliderStepInput(step: number) {
-    this.stepInput = this.createInput('number', 'step');
-    this.stepInput.value = step? step.toString() : null;
+  private createSliderStepInput() {
+    this.stepInput = this.createInput({ type: 'number', className: 'demo__input'});
     this.createLabel('Step of slider', this.stepInput);
   }
 
-  private createScaleStepInput(scalestep: number) {
-    this.scalestepInput = this.createInput('number', 'step of the scale');
-    this.scalestepInput.value = scalestep? scalestep.toString() : null;
+  private createScaleStepInput() {
+    this.scalestepInput = this.createInput({ type: 'number', className: 'demo__input'});
     this.createLabel('Scale step', this.scalestepInput);
   }
 
-  private createTagmarkInput(hasTagmark: boolean) {
-    this.tagmarkInput = document.createElement('input');
-    this.tagmarkInput.type = 'checkbox';
-    this.tagmarkInput.classList.add('demo__checkbox');
-    this.tagmarkInput.checked = hasTagmark;
+  private createTagmarkInput() {
+    this.tagmarkInput = this.createInput({ type: 'checkbox', className: 'demo__checkbox'});
     this.createLabel('Show tagmark', this.tagmarkInput);
   }
 
-  private createValuesInput(values: Array<string>) {
-    this.valueInput = this.createInput('text', 'A, B, C');
-    this.valueInput.value = values? values.join(',') : null;
+  private createValuesInput() {
+    this.valueInput = this.createInput({ type: 'text', name: 'A, B, C', className: 'demo__input' });
     this.createLabel('String values', this.valueInput);
   }
 
-  private createInput(type: string, name: string) {
+  private createInput(data: { type: string, name?: string, className: string }) {
+    const { type, name, className } = data;
     const input = document.createElement('input');
-    input.classList.add('demo__input');
+    input.classList.add(className);
     input.type = type;
     input.placeholder = name;
     return input;
@@ -124,16 +127,6 @@ export default class ControlPanel {
     label.textContent = name;
     label.append(input);
     this.controlPanel.append(label);
-  }
-
-  private updateInputValues() {
-    this.startInput.value = this.facade.getOptions().start ? this.facade.getOptions().start.toString(): null;
-    this.endInput.value = this.facade.getOptions().end ? this.facade.getOptions().end.toString() : null;
-    this.stepInput.value = this.facade.getOptions().step ? this.facade.getOptions().step.toString(): null;
-    this.scalestepInput.value = this.facade.getOptions().scaleStep ? this.facade.getOptions().scaleStep.toString() : null;
-    this.colorInput.value = this.facade.getOptions().color;
-    this.prefixInput.value = this.facade.getOptions().prefix;
-    this.valueInput.value = this.facade.getOptions().values ? this.facade.getOptions().values.toString() : null;
   }
 
   private bindEvents(): void {
