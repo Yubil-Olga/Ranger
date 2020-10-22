@@ -9,7 +9,7 @@ arr[0] = {
 
 arr[1] = {
   options : {start: 250, end: 100, step: 300, scaleStep: 1000},
-  result : {isRange: false, start: 0, end: 100, step: 100, hasTagmark: true, scaleStep: 100, color: null, isVertical: false, prefix: null},
+  result : {isRange: false, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: null, isVertical: false, prefix: null},
 };
 
 arr[2] = {

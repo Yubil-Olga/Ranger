@@ -29,7 +29,7 @@ export default class Model {
 
   public init(): void {
     this.data = this.initData(this.options.isRange);
-    this.data.forEach((el) => this.callCommand(el));
+    this.data.forEach((el) => this.modelChanged.notify(el));
   }
 
   private initData(isRange: boolean): Array<Data> {
@@ -74,11 +74,7 @@ export default class Model {
       this.data[index].update(newValue.toString(), pos);
     }
 
-    this.callCommand(this.data[index]);
+    this.modelChanged.notify(this.data[index]);
     return this.data;
-  }
-
-  public callCommand(data: {coord: number, index: number, value: string}): void {
-    this.modelChanged.notify(data);
   }
 }

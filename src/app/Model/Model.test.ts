@@ -73,8 +73,8 @@ describe('Value model', () => {
   });
 
   test('Init model', () => {
-    slider.callCommand = jest.fn();
+    slider.modelChanged.notify = jest.fn();
     slider.init();
-    expect(slider.callCommand).toBeCalled();
+    expect(slider.modelChanged.notify).toBeCalled();
   });
 });

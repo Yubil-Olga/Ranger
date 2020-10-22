@@ -9,41 +9,41 @@ export default class NumberSliderOptions extends Options {
 
   constructor(options: IOptions) {
     super(options);
-    if (this.userSettingsInvalid(options)) {
-      this.start = 0;
-      this.end = 100;
-    } else {
+    if (this.isUserSettingsValid(options)) {
       this.start = options.start;
       this.end = options.end;
+    } else {
+      this.start = 0;
+      this.end = 100;
     }
-    this.step = this.checkStep(options);
-    this.scaleStep = this.checkScaleStep(options);
+    this.step = this.getStep(options);
+    this.scaleStep = this.getScaleStep(options);
   }
 
-  userSettingsInvalid(options: IOptions) {
-    return (typeof options.start !== 'number' || typeof options.end !== 'number' || options.start >= options.end);
+  isUserSettingsValid(options: IOptions) {
+    return (typeof options.start === 'number' && typeof options.end === 'number' && options.start < options.end);
   }
 
-  checkStep(options: IOptions) {
-    if (typeof options.step !== 'number'|| options.step < 1) {
+  getStep(options: IOptions) {
+    if (this.isStepValid(options)) {
+      return options.step;
+    } else {
       return 1;
     }
-    if (options.step > Math.abs(options.end - options.start)) {
-      return Math.abs(this.end - this.start);
-    }
-    else {
-      return options.step;
-    }
   }
 
-  checkScaleStep(options: IOptions) {
-    if (this.scalestepSettingsValid(options)) {
+  isStepValid(options: IOptions) {
+    return (typeof options.step === 'number' && options.step > 1 && options.step < Math.abs(options.end - options.start));
+  }
+
+  getScaleStep(options: IOptions) {
+    if (this.isScaleStepValid(options)) {
       return options.scaleStep;
     }
     return (this.end - this.start);
   }
 
-  scalestepSettingsValid(options: IOptions) {
+  isScaleStepValid(options: IOptions) {
     return (typeof options.scaleStep === 'number' && options.scaleStep > 1 && options.scaleStep < (this.end - this.start));
   }
 }
