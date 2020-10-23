@@ -20,10 +20,10 @@ describe('Creation of presenter', () => {
   model.init();
 
   test('Call model', () => {
-    model.valueCalculation = jest.fn();
-    presenter.callModel({ position: 100, trackWidth: 260, index: 0 });
-    expect(model.valueCalculation).toBeCalled();
-    expect(model.valueCalculation).toBeCalledWith({ position: 100, trackWidth: 260, index: 0 });
+    model.updateModel = jest.fn();
+    presenter.updateModel({ position: 100, trackWidth: 260, index: 0 });
+    expect(model.updateModel).toBeCalled();
+    expect(model.updateModel).toBeCalledWith({ position: 100, trackWidth: 260, index: 0 });
   });
 
   test('Model changed', () => {

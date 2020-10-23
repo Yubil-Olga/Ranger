@@ -59,10 +59,10 @@ describe('Single slider', () => {
       }
     });
 
-    const spy = jest.spyOn(view, 'callCommand');
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(spy).toBeCalled();
-    expect(spy).toBeCalledWith({ trackWidth: 260, position: 90, index: 0 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 90, index: 0 });
   });
 
   test('Update options', () => {
@@ -101,7 +101,7 @@ describe('Double slider', () => {
 
   test('Call comand', () => {
     view.inputChanged.notify = jest.fn();
-    view.callCommand({ trackWidth: 261, position: 100, index: 0 });
+    view.inputChanged.notify({ trackWidth: 261, position: 100, index: 0 });
     expect(view.inputChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
 
@@ -115,10 +115,10 @@ describe('Double slider', () => {
         return { bottom: 0, height: 0, left: 10, right: 0, top: 50 };
       }
     });
-    view.callCommand = jest.fn();
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 50, index: 0 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 50, index: 0 });
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0.5s');
   });
 
@@ -127,10 +127,10 @@ describe('Double slider', () => {
       clientY: 350
     });
     Object.defineProperty(view.slider.track, 'clientHeight', {value: 260});
-    view.callCommand = jest.fn();
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 260, index: 1 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 260, index: 1 });
   });
 
   test ('Click event: coord less then 0', () => {
@@ -138,10 +138,10 @@ describe('Double slider', () => {
       clientY: 10
     });
     Object.defineProperty(view.slider.track, 'clientHeight', {value: 260});
-    view.callCommand = jest.fn();
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 0, index: 0 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 0, index: 0 });
   });
 
   test('Transition duration', () => {
@@ -172,7 +172,7 @@ describe('One more slider', () => {
 
   test('Call comand', () => {
     view.inputChanged.notify = jest.fn();
-    view.callCommand({ trackWidth: 261, position: 100, index: 0 });
+    view.inputChanged.notify({ trackWidth: 261, position: 100, index: 0 });
     expect(view.inputChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
 
@@ -186,10 +186,10 @@ describe('One more slider', () => {
         return { bottom: 0, height: 0, left: 10, right: 0, top: 50 };
       }
     });
-    view.callCommand = jest.fn();
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 90, index: 0 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 90, index: 0 });
     expect(view.slider.container.style.getPropertyValue('--transition')).toBe('0.5s');
   });
 
@@ -198,10 +198,10 @@ describe('One more slider', () => {
       clientX: 350
     });
     Object.defineProperty(view.slider.track, 'clientWidth', {value: 260});
-    view.callCommand = jest.fn();
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 260, index: 1 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 260, index: 1 });
   });
 
   test ('Click event: coord less then 0', () => {
@@ -209,10 +209,10 @@ describe('One more slider', () => {
       clientX: 10
     });
     Object.defineProperty(view.slider.track, 'clientWidth', {value: 260});
-    view.callCommand = jest.fn();
+    view.inputChanged.notify = jest.fn();
     view.handleSliderClick(smth);
-    expect(view.callCommand).toBeCalled();
-    expect(view.callCommand).toBeCalledWith({ trackWidth: 260, position: 0, index: 0 });
+    expect(view.inputChanged.notify).toBeCalled();
+    expect(view.inputChanged.notify).toBeCalledWith({ trackWidth: 260, position: 0, index: 0 });
   });
 
   test('Transition duration', () => {

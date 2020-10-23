@@ -60,7 +60,6 @@ describe('Value slider', () => {
     prefix: null
   };
   const slider = new Slider(options);
-  console.log('test!!!!!!!!!!!!!!', slider.container.style.getPropertyValue('--active-color'));
 
   test('Create value slider correctly', () => {
     expect(slider).toBeDefined();

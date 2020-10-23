@@ -25,9 +25,9 @@ describe('Number model', () => {
   });
 
   test('Selected number value', () => {
-    expect(model.valueCalculation({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': '-25'}]);
-    expect(model.valueCalculation({ position: 25, trackWidth: 125, index: 0})).toMatchObject([{'coord': 20, 'value': '0'}]);
-    expect(model.valueCalculation({ position: 300, trackWidth: 300, index: 0})).toMatchObject([{'coord': 100, 'value': '100'}]);
+    expect(model.updateModel({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': '-25'}]);
+    expect(model.updateModel({ position: 25, trackWidth: 125, index: 0})).toMatchObject([{'coord': 20, 'value': '0'}]);
+    expect(model.updateModel({ position: 300, trackWidth: 300, index: 0})).toMatchObject([{'coord': 100, 'value': '100'}]);
   });
 
   test('Update options', () => {
@@ -68,8 +68,8 @@ describe('Value model', () => {
   slider.init();
 
   test ('Selected value', () => {
-    expect(slider.valueCalculation({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': 'one'}]);
-    expect(slider.valueCalculation({ position: 100, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 50, 'value': 'two'}]);
+    expect(slider.updateModel({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': 'one'}]);
+    expect(slider.updateModel({ position: 100, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 50, 'value': 'two'}]);
   });
 
   test('Init model', () => {

@@ -84,7 +84,7 @@ export default class View {
 
     const index = this.selectedThumb(coord, width, this.slider.thumblers, event);
 
-    this.callCommand({trackWidth: width, position: coord, index: index});
+    this.inputChanged.notify({trackWidth: width, position: coord, index: index});
   }
 
   startSelect(): void {
@@ -124,10 +124,6 @@ export default class View {
       }
     }
     return index;
-  }
-
-  callCommand(data: {trackWidth: number, position: number, index: number}): void {
-    this.inputChanged.notify(data);
   }
 
   update(data: {coord: number, index: number, value: string}) {

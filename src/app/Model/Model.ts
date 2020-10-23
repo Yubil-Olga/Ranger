@@ -65,7 +65,7 @@ export default class Model {
     return pos;
   }
 
-  public valueCalculation(data: {position: number, trackWidth: number, index: number}): Array<Data> {
+  public updateModel(data: {position: number, trackWidth: number, index: number}): Array<Data> {
     const { position, trackWidth, index } = data;
 
     if (this.options.values) {

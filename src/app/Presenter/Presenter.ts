@@ -3,7 +3,7 @@ import View from '../View/View';
 import IOptions from '../IOptions';
 
 export default class Presenter {
-  private model: Model
+  public model: Model
   private view: View
 
   constructor(element: HTMLElement, model: Model) {
@@ -15,7 +15,7 @@ export default class Presenter {
     this.view = new View(this.model.getOptions(), element);
     const presenter = this;
     this.view.inputChanged.attach(function (sender: View, data: {trackWidth: number, position: number, index: number}) {
-      presenter.callModel(data);
+      presenter.updateModel(data);
     });
     this.model.modelChanged.attach(function(sender: Model, data: {coord: number, index: number, value: string}) {
       presenter.updateViewData(data);
@@ -25,15 +25,15 @@ export default class Presenter {
     });
   }
 
+  public updateModel(data: {trackWidth: number, position: number, index: number}) {
+    this.model.updateModel(data);
+  }
+
   public updateViewData(data: {coord: number, index: number, value: string}): void {
     this.view.update(data);
   }
 
   public updateViewOptions(args: IOptions): void {
     this.view.updateOptions(args);
-  }
-
-  public callModel(data: {position: number, trackWidth: number, index: number}): void {
-    this.model.valueCalculation(data);
   }
 }
