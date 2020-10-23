@@ -1,6 +1,7 @@
 import Model from '../Model/Model';
 import View from '../View/View';
 import Presenter from './Presenter';
+window.CSS = { escape: jest.fn(), supports: jest.fn()};
 
 describe('Creation of presenter', () => {
   const div = document.createElement('div');

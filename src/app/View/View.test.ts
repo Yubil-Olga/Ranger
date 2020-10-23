@@ -1,5 +1,6 @@
 import Slider from './Slider/Slider';
 import View from './View';
+window.CSS = { escape: jest.fn(), supports: jest.fn()};
 
 describe('Single slider', () => {
   const div = document.createElement('div');

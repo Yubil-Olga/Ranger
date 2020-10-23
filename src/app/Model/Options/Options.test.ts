@@ -1,10 +1,10 @@
-import CreateOptions from './CreateOptions';
+import Model from '../Model';
 
 const arr = [];
 
 arr[0] = {
-  options : {start: -25, end: 100, step: 25, scaleStep: 10, prefix: '%', color: 'frd'},
-  result : {isRange: false, isVertical: false, start: -25, end: 100, step: 25, scaleStep: 10, hasTagmark: true, prefix: '%', color: null},
+  options : {start: -25, end: 100, step: 25, scaleStep: 10, prefix: '%', color: 'red'},
+  result : {isRange: false, isVertical: false, start: -25, end: 100, step: 25, scaleStep: 10, hasTagmark: true, prefix: '%', color: 'red'},
 };
 
 arr[1] = {
@@ -28,7 +28,8 @@ arr[4] = {
 
 test('Set correct options', ( ) => {
   for (let i=0; i<arr.length; i++) {
-    let param = CreateOptions.create(arr[i].options);
+    const model = new Model(arr[i].options);
+    const param = model.getOptions();
     expect(param).toMatchObject(arr[i].result);
     expect(param.isRange).toBe(arr[i].result.isRange);
     expect(param.isVertical).toBe(arr[i].result.isVertical);

@@ -121,6 +121,8 @@ export default class Slider {
     }
   }
   setColor(color: string) {
-    this.container.style.setProperty('--active-color', color);
+    if (CSS.supports('background', color)) {
+      this.container.style.setProperty('--active-color', color);
+    }
   }
 }

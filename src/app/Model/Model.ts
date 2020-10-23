@@ -1,7 +1,8 @@
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 import Data from './Data/Data';
-import CreateOptions from './Options/CreateOptions';
 import IOptions from '../IOptions';
+import ValueSliderOptions from './Options/ValueSliderOptions';
+import NumberSliderOptions from './Options/NumberSliderOptions';
 
 export default class Model {
   private options: IOptions;
@@ -14,7 +15,11 @@ export default class Model {
   }
 
   public createOptions(options: IOptions) {
-    this.options = CreateOptions.create(options);
+    let values = [];
+    if (Array.isArray(options.values)) {
+      values = options.values.filter((el:any) => typeof el === 'string');
+    }
+    this.options = values.length > 1 ? new ValueSliderOptions(values, options) : new NumberSliderOptions(options);
   }
 
   public updateOptions(options: IOptions) {
