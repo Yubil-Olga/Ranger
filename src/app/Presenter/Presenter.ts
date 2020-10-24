@@ -3,7 +3,7 @@ import View from '../View/View';
 import IOptions from '../IOptions';
 
 export default class Presenter {
-  public model: Model
+  private model: Model
   private view: View
 
   constructor(element: HTMLElement, model: Model) {
