@@ -54,15 +54,10 @@ export default class Model {
 
   public positionCalculation(data: {position: number, step: number, trackWidth:number}): number {
     const { position, step, trackWidth } = data;
+
     const percent = (position/trackWidth)*100;
-    let pos: number;
-    if ((percent + step) > 100) {
-      pos = percent > 50 ? 100 : 0;
-    }
-    else {
-      pos = Math.round(percent/step)*step;
-    }
-    return pos;
+    const newPosition = Math.round(percent/step)*step;
+    return newPosition;
   }
 
   public updateModel(data: {position: number, trackWidth: number, index: number}): Array<Data> {

@@ -19,7 +19,7 @@ describe('Creation of presenter', () => {
   const view = new View(model.getOptions(), div);
   model.init();
 
-  test('Call model', () => {
+  test('Update model', () => {
     model.updateModel = jest.fn();
     presenter.updateModel({ position: 100, trackWidth: 260, index: 0 });
     expect(model.updateModel).toBeCalled();

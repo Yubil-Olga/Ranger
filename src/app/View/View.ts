@@ -82,7 +82,7 @@ export default class View {
       coord = width;
     }
 
-    const index = this.selectedThumb(coord, width, this.slider.thumblers, event);
+    const index = this.selectedThumb({ coord: coord, width: width, thumblers: this.slider.thumblers, event: event});
 
     this.inputChanged.notify({trackWidth: width, position: coord, index: index});
   }
@@ -102,7 +102,8 @@ export default class View {
     }
   }
 
-  selectedThumb(coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent): number {
+  selectedThumb(data: {coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent}): number {
+    const { coord, width, thumblers, event } = data;
     let index = 0;
     if (this.options.isRange) {
       const min = this.options.isVertical ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left);
@@ -123,6 +124,7 @@ export default class View {
         index = 1;
       }
     }
+
     return index;
   }
 

@@ -18,7 +18,7 @@ describe('Single slider', () => {
   test ('Selected thumbler', () => {
     const event = new MouseEvent('click');
     view.slider.thumblers[0].style.top = '5%';
-    expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(0);
+    expect(view.selectedThumb({ coord: 100, width: 120, thumblers: view.slider.thumblers, event })).toBe(0);
   });
 
   test ('Mousedown event', () => {
@@ -96,7 +96,7 @@ describe('Double slider', () => {
     const event = new MouseEvent('mousemove');
     view.slider.thumblers[0].style.top = '5%';
     view.slider.thumblers[1].style.top = '80%';
-    expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(1);
+    expect(view.selectedThumb({ coord: 100, width: 120, thumblers: view.slider.thumblers, event})).toBe(1);
   });
 
   test('Call comand', () => {
@@ -167,7 +167,7 @@ describe('One more slider', () => {
     const event = new MouseEvent('click');
     view.slider.thumblers[0].style.left = '5%';
     view.slider.thumblers[1].style.left = '80%';
-    expect(view.selectedThumb(100, 120, view.slider.thumblers, event)).toBe(1);
+    expect(view.selectedThumb({ coord: 100, width: 120, thumblers: view.slider.thumblers, event})).toBe(1);
   });
 
   test('Call comand', () => {
