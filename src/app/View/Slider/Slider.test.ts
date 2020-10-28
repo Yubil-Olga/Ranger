@@ -42,7 +42,7 @@ describe('Number slider', () => {
     slider.moveThumbs = jest.fn();
     const data = new Data(0, options);
     data.update('50', 50);
-    slider.update({ coord: 50, index: 0, value: '50'});
+    slider.update({ positionInPercents: 50, index: 0, value: '50'});
     expect(slider.value.value).toBe('50');
     expect(slider.tagmarks[0].textContent).toBe('50 $');
     expect(slider.moveBar).toBeCalledWith(0, 50);
@@ -93,8 +93,8 @@ describe('Value slider', () => {
     const data2 = new Data(1, options);
     data1.update('two', 50);
     data2.update('three', 100);
-    slider.update({ coord: 50, index: 0, value: 'two' });
-    slider.update({ coord: 100, index: 1, value: 'three' });
+    slider.update({ positionInPercents: 50, index: 0, value: 'two' });
+    slider.update({ positionInPercents: 100, index: 1, value: 'three' });
     expect(slider.value.value).toBe('two;three');
     expect(slider.tagmarks[0].textContent).toBe('two');
     expect(slider.tagmarks[1].textContent).toBe('three');

@@ -52,27 +52,30 @@ export default class Model {
     return step;
   }
 
-  public positionCalculation(data: {position: number, step: number, trackWidth:number}): number {
-    const { position, step, trackWidth } = data;
-
-    const percent = (position/trackWidth)*100;
-    const newPosition = Math.round(percent/step)*step;
+  public positionCalculation(data: {positionInPercents: number, step: number}): number {
+    const { positionInPercents, step } = data;
+    const newPosition = Math.round(positionInPercents/step)*step;
     return newPosition;
   }
 
-  public updateModel(data: {position: number, trackWidth: number, index: number}): Array<Data> {
-    const { position, trackWidth, index } = data;
+  public updateModel(data: {positionInPercents: number, index: number}): Array<Data> {
+    const { positionInPercents, index } = data;
+
+    let step: number;
+    let newPositionInPersents: number;
+    let newValue: string;
 
     if (this.options.values) {
-      const step = 100/(this.options.values.length - 1);
-      const pos = this.positionCalculation({ position, step, trackWidth });
-      this.data[index].update(this.options.values[pos/step], pos);
+      step = 100/(this.options.values.length - 1);
+      newPositionInPersents = this.positionCalculation({ positionInPercents, step });
+      newValue = this.options.values[newPositionInPersents/step];
     } else {
-      const step = this.stepCalculation();
-      const pos = this.positionCalculation({ position, step, trackWidth });
-      const newValue = Math.round(pos*(this.options.end - this.options.start)/100 + this.options.start);
-      this.data[index].update(newValue.toString(), pos);
+      step = this.stepCalculation();
+      newPositionInPersents = this.positionCalculation({ positionInPercents, step });
+      newValue = Math.round(newPositionInPersents*(this.options.end - this.options.start)/100 + this.options.start).toString();
     }
+
+    this.data[index].update(newValue, newPositionInPersents);
 
     this.modelChanged.notify(this.data[index]);
     return this.data;

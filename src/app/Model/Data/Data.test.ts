@@ -13,6 +13,6 @@ describe('Initial values and coords for double slider', () => {
   const data = new Data(1, options);
   test('Calculate coord', () => {
     expect(data.value).toBe('100');
-    expect(data.coord).toBe(50);
+    expect(data.positionInPercents).toBe(50);
   });
 });

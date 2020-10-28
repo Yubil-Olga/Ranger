@@ -2,7 +2,7 @@ import IOptions from '../../IOptions';
 
 export default class Data {
   public value: string
-  public coord: number
+  public positionInPercents: number
   public index: number
 
   constructor(i: number, options: IOptions) {
@@ -13,12 +13,12 @@ export default class Data {
   private init(options: IOptions) {
     if (options.values) {
       this.value = options.values[this.index].toString(),
-      this.coord = this.index*100/(options.values.length - 1);
+      this.positionInPercents = this.index*100/(options.values.length - 1);
     }
     else {
       const step = this.calculateStep({step: options.step, start: options.start, end: options.end});
       this.value = (options.start + this.index*step).toString(),
-      this.coord = this.index*step*100/(options.end - options.start);
+      this.positionInPercents = this.index*step*100/(options.end - options.start);
     }
   }
 
@@ -32,8 +32,8 @@ export default class Data {
     }
   }
 
-  public update(value: string, coord: number): void {
+  public update(value: string, positionInPercents: number): void {
     this.value = value;
-    this.coord = coord;
+    this.positionInPercents = positionInPercents;
   }
 }

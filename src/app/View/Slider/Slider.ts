@@ -71,12 +71,12 @@ export default class Slider {
     return this.thumblers;
   }
 
-  update(data: {coord: number, index: number, value: string}): void {
-    const { coord, index, value } = data;
+  update(data: {positionInPercents: number, index: number, value: string}): void {
+    const { positionInPercents, index, value } = data;
     const prefix = this.options.prefix ? ' ' + this.options.prefix : '';
     this.tagmarks[index].textContent = value + prefix;
-    this.moveThumbs(index, coord);
-    this.moveBar(index, coord);
+    this.moveThumbs(index, positionInPercents);
+    this.moveBar(index, positionInPercents);
     const arr = [];
     this.tagmarks.forEach(tagmark => {
       arr.push(tagmark.textContent.split(' ')[0]);
@@ -84,27 +84,28 @@ export default class Slider {
     this.value.value = arr.join(';');
   }
 
-  moveThumbs(index: number, coord: number): void {
+  moveThumbs(index: number, positionInPercents: number): void {
     if (this.options.isVertical) {
-      this.thumblers[index].style.top = coord + '%';
-      this.tagmarks[index].style.top = coord - 3 + '%';
+      this.thumblers[index].style.top = positionInPercents + '%';
+      this.tagmarks[index].style.top = positionInPercents - 3 + '%';
     }
     else {
-      this.thumblers[index].style.left = coord + '%';
-      this.tagmarks[index].style.left = coord - (this.tagmarks[index].clientWidth/this.track.clientWidth)*50 + '%';
+      this.thumblers[index].style.left = positionInPercents + '%';
+      this.tagmarks[index].style.left = positionInPercents - (this.tagmarks[index].clientWidth/this.track.clientWidth)*50 + '%';
     }
   }
 
-  moveBar(index: number, coord: number): void {
+  moveBar(index: number, positionInPercents: number): void {
     if (this.options.isRange && index === 0) {
-      this.moveBarFrom(coord);
+      this.moveBarFrom(positionInPercents);
     } else {
-      this.moveBarTo(coord);
+      this.moveBarTo(positionInPercents);
     }
   }
 
-  moveBarFrom(coord: number) {
-    const barStart = coord + '%';
+  moveBarFrom(positionInPercents: number) {
+    const barStart = positionInPercents + '%';
+
     if (this.options.isVertical) {
       this.barSelected.style.top = barStart;
     } else {
@@ -112,8 +113,8 @@ export default class Slider {
     }
   }
 
-  moveBarTo(coord: number) {
-    const barEnd = 100 - coord + '%';
+  moveBarTo(positionInPercents: number) {
+    const barEnd = 100 - positionInPercents + '%';
     if (this.options.isVertical) {
       this.barSelected.style.bottom = barEnd;
     } else {

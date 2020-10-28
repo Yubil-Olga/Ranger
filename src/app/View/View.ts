@@ -5,7 +5,7 @@ import IOptions from '../IOptions';
 
 export default class View {
   private options: IOptions
-  private activeThumbNum: number
+  private activeThumblerIndex: number
   public slider: Slider
   public inputChanged = new EventDispatcher(this)
   private parent: HTMLElement
@@ -53,7 +53,7 @@ export default class View {
   handleSliderMouseDown(event: MouseEvent): void {
     if ((<HTMLElement>event.target).className === 'slider__thumb-marker') {
       this.startSelect();
-      this.activeThumbNum = this.slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'));
+      this.activeThumblerIndex = this.slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'));
     }
   }
 
@@ -64,27 +64,26 @@ export default class View {
 
   @bind
   handleSliderClick(event: MouseEvent): void {
-    let width: number;
-    let coord: number;
-    this.transitionDuration(event);
-    if (this.options.isVertical) {
-      width = this.slider.track.clientHeight;
-      coord = Math.round((<MouseEvent>event).clientY - this.slider.track.getBoundingClientRect().top);
-    }
-    else {
-      width = this.slider.track.clientWidth;
-      coord = Math.round((<MouseEvent>event).clientX- this.slider.track.getBoundingClientRect().left);
-    }
-    if (coord < 0) {
-      coord = 0;
-    }
-    if (coord > width) {
-      coord = width;
-    }
+    this.setTransitionDuration(event);
 
-    const index = this.selectedThumb({ coord: coord, width: width, thumblers: this.slider.thumblers, event: event});
+    const width: number = this.options.isVertical
+      ? this.slider.track.clientHeight
+      : this.slider.track.clientWidth;
 
-    this.inputChanged.notify({trackWidth: width, position: coord, index: index});
+    const positionInPixels: number = this.options.isVertical
+      ? Math.round((<MouseEvent>event).clientY - this.slider.track.getBoundingClientRect().top)
+      : Math.round((<MouseEvent>event).clientX- this.slider.track.getBoundingClientRect().left);
+
+    const isPositionValid: boolean = positionInPixels >= 0
+      && positionInPixels <= width;
+
+    if (!isPositionValid) return;
+
+    const positionInPercents = positionInPixels*100/width;
+
+    this.activeThumblerIndex = this.getActiveThumblerIndex({ positionInPercents: positionInPercents, thumblers: this.slider.thumblers});
+
+    this.inputChanged.notify({ positionInPercents: positionInPercents, index: this.activeThumblerIndex});
   }
 
   startSelect(): void {
@@ -93,42 +92,31 @@ export default class View {
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }
 
-  transitionDuration(event: MouseEvent): void {
-    if (event.type === 'click') {
-      this.slider.container.style.setProperty('--transition', '0.5s');
-    }
-    else {
-      this.slider.container.style.setProperty('--transition', '0');
-    }
+  setTransitionDuration(event: MouseEvent): void {
+    const transition = event.type === 'click' ? '0.5s' : '0';
+    this.slider.container.style.setProperty('--transition', transition);
   }
 
-  selectedThumb(data: {coord: number, width: number, thumblers: Array<HTMLElement>, event: MouseEvent}): number {
-    const { coord, width, thumblers, event } = data;
+  getActiveThumblerIndex(data: {positionInPercents: number, thumblers: Array<HTMLElement>}): number {
+    const { positionInPercents, thumblers } = data;
+
     let index = 0;
+
     if (this.options.isRange) {
       const min = this.options.isVertical ? parseInt(thumblers[0].style.top) : parseInt(thumblers[0].style.left);
       const max = this.options.isVertical ? parseInt(thumblers[1].style.top) : parseInt(thumblers[1].style.left);
-      const pos = coord*100/width;
-      if (event.type === 'mousemove') {
-        index = this.activeThumbNum;
-      }
-      if ( (pos - min) < 0) {
-        this.activeThumbNum = 0;
-        index = 0;
-      }
-      if ( (pos - max) > 0) {
-        this.activeThumbNum = 1;
-        index = 1;
-      }
-      if ( (pos - min) > (max - pos) && event.type === 'click') {
-        index = 1;
-      }
+
+      const isMaxThumblerSelected: boolean =
+        (positionInPercents - max) > 0 ||
+        (positionInPercents - min) > (max - positionInPercents);
+
+      index = isMaxThumblerSelected ? 1 : 0;
     }
 
     return index;
   }
 
-  update(data: {coord: number, index: number, value: string}) {
+  update(data: {positionInPercents: number, index: number, value: string}) {
     this.slider.update(data);
   }
 }

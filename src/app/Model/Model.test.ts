@@ -18,16 +18,16 @@ describe('Number model', () => {
   });
 
   test('Position calculation return correct position in %', () => {
-    expect(model.positionCalculation({ position: 100, step:25, trackWidth: 400 })).toBe(25);
-    expect(model.positionCalculation({ position: 100, step: 30, trackWidth: 400 })).toBe(30);
-    expect(model.positionCalculation({ position: 200, step: 10, trackWidth: 400 })).toBe(50);
-    expect(model.positionCalculation({ position: 50, step: 120, trackWidth: 200 })).toBe(0);
+    expect(model.positionCalculation({ positionInPercents: 100, step:25, })).toBe(100);
+    expect(model.positionCalculation({ positionInPercents: 100, step: 30, })).toBe(90);
+    expect(model.positionCalculation({ positionInPercents: 50, step: 10, })).toBe(50);
+    expect(model.positionCalculation({ positionInPercents: 50, step: 120, })).toBe(0);
   });
 
   test('Selected number value', () => {
-    expect(model.updateModel({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': '-25'}]);
-    expect(model.updateModel({ position: 25, trackWidth: 125, index: 0})).toMatchObject([{'coord': 20, 'value': '0'}]);
-    expect(model.updateModel({ position: 300, trackWidth: 300, index: 0})).toMatchObject([{'coord': 100, 'value': '100'}]);
+    expect(model.updateModel({ positionInPercents: 0, index: 0 })).toMatchObject([{'positionInPercents': 0, 'value': '-25'}]);
+    expect(model.updateModel({ positionInPercents: 25, index: 0})).toMatchObject([{'positionInPercents': 20, 'value': '0'}]);
+    expect(model.updateModel({ positionInPercents: 100, index: 0})).toMatchObject([{'positionInPercents': 100, 'value': '100'}]);
   });
 
   test('Update options', () => {
@@ -68,8 +68,8 @@ describe('Value model', () => {
   slider.init();
 
   test ('Selected value', () => {
-    expect(slider.updateModel({ position: 0, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 0, 'value': 'one'}]);
-    expect(slider.updateModel({ position: 100, trackWidth: 200, index: 0 })).toMatchObject([{'coord': 50, 'value': 'two'}]);
+    expect(slider.updateModel({ positionInPercents: 0, index: 0 })).toMatchObject([{'positionInPercents': 0, 'value': 'one'}]);
+    expect(slider.updateModel({ positionInPercents: 100, index: 0 })).toMatchObject([{'positionInPercents': 100, 'value': 'three'}]);
   });
 
   test('Init model', () => {

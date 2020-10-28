@@ -14,12 +14,12 @@ arr[1] = {
 
 arr[2] = {
   options : {isRange: true, start: 250, end: 100, values: ['one', 'two', 'three', 4], isVertical: true},
-  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three'], hasTagmark: true, color: null, prefix: null},
+  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three', 4], hasTagmark: true, color: null, prefix: null},
 };
 
 arr[3] = {
   options : {isRange: true, start: 250, end: 100, values: ['one', 'two', 'three', 4], isVertical: true, hasTagmark: false, color: 'red'},
-  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three'], color: 'red', hasTagmark: false, prefix: null},
+  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three', 4], color: 'red', hasTagmark: false, prefix: null},
 };
 arr[4] = {
   options : {start: 250, end: 100, scaleStep: 1000},

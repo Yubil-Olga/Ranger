@@ -14,10 +14,10 @@ export default class Presenter {
   private init(element: HTMLElement) {
     this.view = new View(this.model.getOptions(), element);
     const presenter = this;
-    this.view.inputChanged.attach(function (sender: View, data: {trackWidth: number, position: number, index: number}) {
+    this.view.inputChanged.attach(function (sender: View, data: {positionInPercents: number, index: number}) {
       presenter.updateModel(data);
     });
-    this.model.modelChanged.attach(function(sender: Model, data: {coord: number, index: number, value: string}) {
+    this.model.modelChanged.attach(function(sender: Model, data: {positionInPercents: number, index: number, value: string}) {
       presenter.updateViewData(data);
     });
     this.model.optionsChanged.attach(function(sender: Model, args: IOptions) {
@@ -25,11 +25,11 @@ export default class Presenter {
     });
   }
 
-  public updateModel(data: {trackWidth: number, position: number, index: number}) {
+  public updateModel(data: {positionInPercents: number, index: number}) {
     this.model.updateModel(data);
   }
 
-  public updateViewData(data: {coord: number, index: number, value: string}): void {
+  public updateViewData(data: {positionInPercents: number, index: number, value: string}): void {
     this.view.update(data);
   }
 

@@ -21,9 +21,9 @@ describe('Creation of presenter', () => {
 
   test('Update model', () => {
     model.updateModel = jest.fn();
-    presenter.updateModel({ position: 100, trackWidth: 260, index: 0 });
+    presenter.updateModel({ positionInPercents: 100, index: 0 });
     expect(model.updateModel).toBeCalled();
-    expect(model.updateModel).toBeCalledWith({ position: 100, trackWidth: 260, index: 0 });
+    expect(model.updateModel).toBeCalledWith({ positionInPercents: 100, index: 0 });
   });
 
   test('Model changed', () => {
