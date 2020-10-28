@@ -17,7 +17,7 @@ export default class Model {
   public createOptions(options: IOptions) {
     let values = [];
     if (Array.isArray(options.values)) {
-      values = options.values.filter((el:any) => typeof el === 'string');
+      values = options.values;
     }
     this.options = values.length > 1 ? new ValueSliderOptions(values, options) : new NumberSliderOptions(options);
   }
