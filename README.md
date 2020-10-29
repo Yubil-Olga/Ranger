@@ -47,8 +47,8 @@ $('.myElement').slider({
 ### Настройки
 | Option        | Defaults      | Type   | Description                                                                     |
 | ------------- |:-------------:|:------:|---------------------------------------------------------------------------------|
-| direction     | horizintal    | string | Choose slider direction, could be horizontal or vertical                        |
-| type          | single        | string | Choose slider type, could be single - for one handle, or double for two handles |
+| isVertical    | false         | boolean| Choose slider direction                       |
+| isRange       | false         | boolean| Choose slider type, could be single - for one handle, or double for two handles |
 | start         | 0             | number | Set slider minimum value
 | end           | 100           | number | Set slider maximum value
 | step          | 1             | number | Set sliders step
@@ -56,5 +56,5 @@ $('.myElement').slider({
 | prefix        | -             | string | Set prefix for values
 | color         | #53b6a8       | string | Set actve color, could be gradient
 | tagmark       | true          | boolean| Set tagmark
-| values        | []            | array  | Set your own array of possible slider values. They should be strings.   
+| values        | []            | array  | Set your own array of possible slider values. They should be strings.
 

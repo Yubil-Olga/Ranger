@@ -10,8 +10,8 @@ export default class Slider {
   public bar: HTMLElement
   public barSelected: HTMLElement
   public label: HTMLElement
-  public thumblers: Array<HTMLElement>
-  public tagmarks: Array<HTMLElement>
+  public thumblers: Array<HTMLElement> = []
+  public tagmarks:Array<HTMLElement> = []
   public options: IOptions
 
   constructor(options: IOptions) {
@@ -30,7 +30,7 @@ export default class Slider {
     this.barSelected = this.createElement('div', 'slider__track-bar_selected');
     this.label = new Scale(this.options).getElement();
     this.thumblers = this.createThumblers(this.options.isRange);
-    this.tagmarks = this.createTagmarks(this.options.isRange);
+    this.tagmarks = this.createTagmarks();
     this.container.append(this.value, this.tag, this.track, this.label);
     this.track.append(this.bar, this.barSelected);
     this.tag.append(...this.tagmarks);
@@ -51,24 +51,21 @@ export default class Slider {
     return el;
   }
 
-  private createTagmarks(isRange: boolean): Array<HTMLElement> {
-    this.tagmarks = [];
-    const amount = isRange ? 2 : 1;
-    for (let i=0; i<amount; i++) {
+  private createThumblers(isRange: boolean): Array<HTMLElement> {
+    const data = isRange ? [0,1] : [0];
+    data.forEach(() => this.thumblers.push(new Thumb().getElement()));
+
+    return this.thumblers;
+  }
+
+  private createTagmarks(): Array<HTMLElement> {
+    this.thumblers.forEach(() => {
       const tagmark = document.createElement('span');
       tagmark.className = 'slider__tag-mark';
       this.tagmarks.push(tagmark);
-    }
-    return this.tagmarks;
-  }
+    });
 
-  private createThumblers(isRange: boolean): Array<HTMLElement> {
-    this.thumblers = [];
-    const amount = isRange ? 2 : 1;
-    for (let i=0; i<amount; i++) {
-      this.thumblers.push(new Thumb().getElement());
-    }
-    return this.thumblers;
+    return this.tagmarks;
   }
 
   update(data: {positionInPercents: number, index: number, value: string}): void {

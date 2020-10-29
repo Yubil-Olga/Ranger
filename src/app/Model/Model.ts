@@ -32,19 +32,23 @@ export default class Model {
     return this.options;
   }
 
+  public getData() {
+    return this.data;
+  }
+
   public init(): void {
-    this.data = this.initData(this.options.isRange);
+    this.initData(this.options.isRange);
     this.data.forEach((el) => this.modelChanged.notify(el));
   }
 
   private initData(isRange: boolean): Array<Data> {
-    const arr = [];
-    const length = isRange ? 2 : 1;
-    for (let i=0; i<length; i++) {
-      const data = new Data(i, this.options);
-      arr.push(data);
+    this.data = [];
+    this.data.push(new Data(0, this.options));
+    if (isRange) {
+      this.data.push(new Data(1, this.options));
     }
-    return arr;
+
+    return this.data;
   }
 
   public stepCalculation(): number {
