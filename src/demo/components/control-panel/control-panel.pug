@@ -1,0 +1,25 @@
+include ../checkbox/checkbox
+include ../text-field/text-field
+
+mixin control-panel()
+  .control-panel.js-control-panel
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'Is vertical', name: 'isVertical', })
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'Is range', name: 'isRange', })
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'Show tagmark', name: 'hasTagmark', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'Color', name: 'color', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'Prefix', name: 'prefix', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'Min value', type: 'number', name: 'start', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'Max value', type: 'number', name: 'end', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'Step of slider', type: 'number', name: 'step', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'Scale step', type: 'number', name: 'scaleStep', })
+    .control-panel__text-field.js-control-panel__text-field
+      +text-field({ text: 'String values', type: 'textarea', name: 'values', })

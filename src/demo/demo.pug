@@ -31,4 +31,38 @@ html(lang='en')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
   body
     block content
+      include ./components/sample/sample
+
       main.demo
+        .demo__item.js-demo__item
+          +sample({
+            settings: {
+              isRange: 'true',
+              start: -80,
+              end: 40,
+              step: 20,
+              scaleStep: 20,
+            }
+          })
+        .demo__item.js-demo__item
+          +sample({
+            settings: {
+              start: -80,
+              end: 40,
+              prefix: '$',
+            }
+          })
+        .demo__item.js-demo__item
+          +sample({
+            settings: {
+              values: ['jen', 'feb', 'march', 'apr', 'may'],
+              color: 'linear-gradient(yellow 0, red 100%)',
+            }
+          })
+        .demo__item.js-demo__item
+          +sample({
+            settings: {
+              isVertical: 'true',
+              hasTagmark: 'false',
+            }
+          })

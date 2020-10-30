@@ -1,0 +1,7 @@
+include ../control-panel/control-panel
+include ../range/range
+
+mixin sample({ settings } = {})
+  .sample.js-sample
+    +control-panel()
+    +range(settings)

@@ -4,10 +4,16 @@ import Facade from './Presenter/Facade';
 import IOptions from './IOptions';
 
 (function( $ ) {
-  $.fn.perfectSlider = function(options: IOptions) {
-    const settings = $.extend({}, options);
+  $.fn.perfectSlider = function(options?: IOptions) {
     try {
-      return this.map(function() {
+      return this.map(function(index: number, element: HTMLElement) {
+        if (typeof options === 'object' || !options) {
+          const data: IOptions = $(element).data();
+          const settings: IOptions = $.extend(data, options);
+          const facade = new Facade(settings, this);
+          return facade;
+        }
+
         const facade = new Facade(options, this);
         return facade;
       });

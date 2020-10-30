@@ -1,0 +1,8 @@
+mixin checkbox({ text = '', isChecked = false, name = '', } = {})
+  .checkbox
+    label.checkbox__label=text
+      input.checkbox__input.js-checkbox__input(
+        type='checkbox'
+        checked=isChecked
+        name=name
+      )

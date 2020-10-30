@@ -3,6 +3,7 @@ import Data from './Data/Data';
 import IOptions from '../IOptions';
 import ValueSliderOptions from './Options/ValueSliderOptions';
 import NumberSliderOptions from './Options/NumberSliderOptions';
+import Options from './Options/Options';
 
 export default class Model {
   private options: IOptions;
@@ -19,6 +20,7 @@ export default class Model {
     if (Array.isArray(options.values)) {
       values = options.values;
     }
+
     this.options = values.length > 1 ? new ValueSliderOptions(values, options) : new NumberSliderOptions(options);
   }
 
