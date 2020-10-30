@@ -17,12 +17,18 @@ export default class ControlPanel {
 
   init($container: JQuery<Object>) {
     this.$controlPanel = $container.find('.js-control-panel');
+    this.initCheckboxes();
+    this.initTextFields();
+  }
 
+  initCheckboxes() {
     this.$checkboxes = this.$controlPanel.find('.js-control-panel__checkbox');
     this.$checkboxes.each((index, element) => {
       this.checkboxes.push(new Checkbox($(element), this.range));
     });
+  }
 
+  initTextFields() {
     this.$textFields = this.$controlPanel.find('.js-control-panel__text-field');
     this.$textFields.each((index, element) => {
       this.textFields.push(new TextField($(element), this.range));
@@ -31,7 +37,6 @@ export default class ControlPanel {
     this.textFields.forEach((el) => {
       el.textFieldChanged.attach(() => this.updateValues());
     });
-
   }
 
   updateValues() {
