@@ -24,7 +24,7 @@ describe('Single slider', () => {
   test ('Mousedown event', () => {
     const spy = jest.spyOn(view, 'startSelect');
     const mousedown = new MouseEvent('mousedown');
-    view.slider.thumblers[0].querySelector('.slider__thumb-marker').dispatchEvent(mousedown);
+    view.slider.thumblers[0].querySelector('.perfect-slider__thumb-marker').dispatchEvent(mousedown);
     view.handleSliderMouseDown(mousedown);
     expect(spy).toBeCalled();
   });

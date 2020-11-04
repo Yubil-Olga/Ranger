@@ -10,11 +10,10 @@ import IOptions from './IOptions';
         if (typeof options === 'object' || !options) {
           const data: IOptions = $(element).data();
           const settings: IOptions = $.extend(data, options);
-          const facade = new Facade(settings, this);
+          const facade: Facade = new Facade(settings, this);
           return facade;
         }
-
-        const facade = new Facade(options, this);
+        const facade: Facade = new Facade(options, this);
         return facade;
       });
     }

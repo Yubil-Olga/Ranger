@@ -19,7 +19,7 @@ describe('Number slider', () => {
     expect(slider).toBeDefined();
     expect(slider.thumblers.length).toBe(1);
     expect(slider.tagmarks.length).toBe(1);
-    expect(slider.container.className).toBe('slider');
+    expect(slider.container.className).toBe('perfect-slider');
   });
 
   test('Move thumbs', () => {
@@ -65,7 +65,7 @@ describe('Value slider', () => {
     expect(slider).toBeDefined();
     expect(slider.thumblers.length).toBe(2);
     expect(slider.tagmarks.length).toBe(2);
-    expect(slider.container.className).toBe('slider slider_vertical');
+    expect(slider.container.className).toBe('perfect-slider perfect-slider_vertical');
   });
 
   test('Move thumbs', () => {

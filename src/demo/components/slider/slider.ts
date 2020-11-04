@@ -4,7 +4,7 @@ import Facade from '../../../app/Presenter/Facade';
 
 export default class Slider {
   public $slider: JQuery<Object>
-  public facade: Facade
+  public facade: Facade;
   public settings: IOptions
 
   constructor($container: JQuery<Object>, settings: IOptions) {
@@ -17,7 +17,8 @@ export default class Slider {
   }
 
   init(settings?: IOptions) {
-    this.facade = this.$slider.perfectSlider(settings)[0];
+    this.facade = (<Facade>this.$slider.perfectSlider(settings)[0]);
+
     this.settings = this.facade.getOptions();
   }
 

@@ -2,18 +2,15 @@ export default class EventDispatcher {
   private sender: any
   private listeners = []
 
-  constructor(sender: any) {
+  constructor(sender: object) {
     this.sender = sender;
   }
 
-  public attach(listener: any) {
+  public attach(listener: Function) {
     this.listeners.push(listener);
   }
 
   public notify(args: any) {
-    let index: number;
-    for (index = 0; index < this.listeners.length; index += 1) {
-      this.listeners[index](this.sender, args);
-    }
+    this.listeners.forEach((listener) => listener(this.sender, args));
   }
 }
