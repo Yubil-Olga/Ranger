@@ -51,9 +51,9 @@ export default class View {
 
   @bind
   handleSliderMouseDown(event: MouseEvent): void {
-    if ((<HTMLElement>event.target).className === 'slider__thumb-marker') {
+    if ((<HTMLElement>event.target).className === 'perfect-slider__thumb-marker') {
       this.startSelect();
-      this.activeThumblerIndex = this.slider.thumblers.indexOf((<HTMLElement>event.target).closest('.slider__thumb'));
+      this.activeThumblerIndex = this.slider.thumblers.indexOf((<HTMLElement>event.target).closest('.perfect-slider__thumb'));
     }
   }
 

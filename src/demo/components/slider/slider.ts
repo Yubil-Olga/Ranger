@@ -2,8 +2,8 @@ import '../../../app/app';
 import IOptions from '../../../app/IOptions';
 import Facade from '../../../app/Presenter/Facade';
 
-export default class Range {
-  public $range: JQuery<Object>
+export default class Slider {
+  public $slider: JQuery<Object>
   public facade: Facade
   public settings: IOptions
 
@@ -13,11 +13,11 @@ export default class Range {
   }
 
   findHTMLElement($container: JQuery<Object>) {
-    this.$range = $container.find('.js-range');
+    this.$slider = $container.find('.js-slider');
   }
 
   init(settings?: IOptions) {
-    this.facade = this.$range.perfectSlider(settings)[0];
+    this.facade = this.$slider.perfectSlider(settings)[0];
     this.settings = this.facade.getOptions();
   }
 
@@ -27,7 +27,6 @@ export default class Range {
 
   setPropertyValue(name: string, value: string | number | boolean |string[] ) {
     this.settings[name] = value;
-
     this.facade.updateOptions(this.settings);
   }
 }

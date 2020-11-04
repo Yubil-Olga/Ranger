@@ -13,7 +13,7 @@ export default class Scale {
 
   addMark(tag: string, isVertical: boolean, position: string): void {
     const labelMark = document.createElement('span');
-    labelMark.className = 'slider__label-mark';
+    labelMark.className = 'perfect-slider__label-mark';
     labelMark.setAttribute('data-text', tag);
     if (isVertical) {
       labelMark.style.top = position;
@@ -25,7 +25,7 @@ export default class Scale {
 
   addScale(options: IOptions): void {
     this.scale = document.createElement('div');
-    this.scale.className = 'slider__label';
+    this.scale.className = 'perfect-slider__label';
     if (options.values) {
       const count = options.values.length;
       const percent = 100/(count-1);

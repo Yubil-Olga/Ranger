@@ -1,5 +1,5 @@
 import bind from 'bind-decorator';
-import Range from '../range/range';
+import Range from '../slider/slider';
 
 export default class Checkbox {
   public $checkbox: JQuery<Object>;

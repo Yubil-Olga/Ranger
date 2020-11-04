@@ -1,11 +1,11 @@
-import Range from '../range/range';
+import Slider from '../slider/slider';
 import ControlPanel from '../control-panel/control-panel';
 import IOptions from '../../../app/IOptions';
 
 export default class Sample {
   public $sample: JQuery<Object>;
   public settings: IOptions;
-  public range: Range;
+  public slider: Slider;
   public controlPanel: ControlPanel;
 
   constructor($container: JQuery<Object>, settings?: IOptions) {
@@ -19,7 +19,7 @@ export default class Sample {
   }
 
   initSlider() {
-    this.range = new Range(this.$sample, this.settings);
-    this.controlPanel = new ControlPanel(this.$sample, this.range);
+    this.slider = new Slider(this.$sample, this.settings);
+    this.controlPanel = new ControlPanel(this.$sample, this.slider);
   }
 }

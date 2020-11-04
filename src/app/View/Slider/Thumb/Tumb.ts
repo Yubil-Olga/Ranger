@@ -11,9 +11,9 @@ export default class Thumb {
 
   private createThumb(): void {
     this.thumb = document.createElement('div');
-    this.thumb.className = 'slider__thumb';
+    this.thumb.className = 'perfect-slider__thumb';
     const thumbmark = document.createElement('span');
-    thumbmark.className = 'slider__thumb-marker';
+    thumbmark.className = 'perfect-slider__thumb-marker';
     this.thumb.append(thumbmark);
   }
 }

@@ -1,4 +1,4 @@
-import Range from '../range/range';
+import Range from '../slider/slider';
 import Checkbox from '../checkbox/checkbox';
 import TextField from '../text-field/text-field';
 

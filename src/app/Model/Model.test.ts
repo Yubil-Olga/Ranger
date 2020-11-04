@@ -13,6 +13,10 @@ describe('Number model', () => {
   const model = new Model(options);
   model.init();
 
+  test('Model returns correct data', () => {
+    expect(model.getData()).toEqual([{ value: '-25', positionInPercents: 0, index: 0}]);
+  });
+
   test('Step calculation return size of one step in %', () => {
     expect(model.stepCalculation()).toBe(20);
   });

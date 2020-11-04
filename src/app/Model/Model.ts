@@ -68,20 +68,20 @@ export default class Model {
     const { positionInPercents, index } = data;
 
     let step: number;
-    let newPositionInPersents: number;
+    let newPositionInPercents: number;
     let newValue: string;
 
     if (this.options.values) {
       step = 100/(this.options.values.length - 1);
-      newPositionInPersents = this.positionCalculation({ positionInPercents, step });
-      newValue = this.options.values[newPositionInPersents/step];
+      newPositionInPercents = this.positionCalculation({ positionInPercents, step });
+      newValue = this.options.values[newPositionInPercents/step];
     } else {
       step = this.stepCalculation();
-      newPositionInPersents = this.positionCalculation({ positionInPercents, step });
-      newValue = Math.round(newPositionInPersents*(this.options.end - this.options.start)/100 + this.options.start).toString();
+      newPositionInPercents = this.positionCalculation({ positionInPercents, step });
+      newValue = Math.round(newPositionInPercents*(this.options.end - this.options.start)/100 + this.options.start).toString();
     }
 
-    this.data[index].update(newValue, newPositionInPersents);
+    this.data[index].update(newValue, newPositionInPercents);
 
     this.modelChanged.notify(this.data[index]);
     return this.data;

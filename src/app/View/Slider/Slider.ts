@@ -21,13 +21,13 @@ export default class Slider {
 
   private createTemplate() {
     this.container = document.createElement('div');
-    this.container.className = this.options.isVertical ? 'slider slider_vertical' : 'slider';
+    this.container.className = this.options.isVertical ? 'perfect-slider perfect-slider_vertical' : 'perfect-slider';
     this.tag = document.createElement('div');
-    this.tag.className = this.options.hasTagmark ? 'slider__tag' : 'slider__tag slider__tag_hidden';
-    this.value = this.createInput('text', 'slider__input');
-    this.track = this.createElement('div', 'slider__track');
-    this.bar = this.createElement('div', 'slider__track-bar');
-    this.barSelected = this.createElement('div', 'slider__track-bar_selected');
+    this.tag.className = this.options.hasTagmark ? 'perfect-slider__tag' : 'perfect-slider__tag perfect-slider__tag_hidden';
+    this.value = this.createInput('text', 'perfect-slider__input');
+    this.track = this.createElement('div', 'perfect-slider__track');
+    this.bar = this.createElement('div', 'perfect-slider__track-bar');
+    this.barSelected = this.createElement('div', 'perfect-slider__track-bar_selected');
     this.label = new Scale(this.options).getElement();
     this.thumblers = this.createThumblers(this.options.isRange);
     this.tagmarks = this.createTagmarks();
@@ -61,7 +61,7 @@ export default class Slider {
   private createTagmarks(): Array<HTMLElement> {
     this.thumblers.forEach(() => {
       const tagmark = document.createElement('span');
-      tagmark.className = 'slider__tag-mark';
+      tagmark.className = 'perfect-slider__tag-mark';
       this.tagmarks.push(tagmark);
     });
 
