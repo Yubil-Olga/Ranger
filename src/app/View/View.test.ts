@@ -11,7 +11,8 @@ describe('Single slider', () => {
     prefix: null,
     start: 0,
     end: 200,
-    step: 10
+    step: 10,
+    scaleStep: 10,
   };
   const view = new View(options, div);
 
@@ -73,7 +74,8 @@ describe('Single slider', () => {
       prefix: null,
       start: 0,
       end: 200,
-      step: 10
+      step: 10,
+      scaleStep: 10,
     };
     const sliderUpdated = new Slider(newOptions);
     view.updateOptions(newOptions);

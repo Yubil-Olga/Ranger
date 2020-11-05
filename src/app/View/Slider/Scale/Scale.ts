@@ -27,25 +27,23 @@ export default class Scale {
     this.scale = document.createElement('div');
     this.scale.className = 'perfect-slider__label';
     if (options.values) {
-      const count = options.values.length;
-      const percent = 100/(count-1);
-      for (let i=0; i<count; i++) {
-        const position = i*percent + '%';
-        this.addMark(options.values[i].toString(), options.isVertical, position);
-      }
+      const percent = 100/(options.values.length-1);
+      options.values.forEach((el, index) => {
+        const position = index*percent + '%';
+        this.addMark(el, options.isVertical, position);
+      });
     } else {
-      const count = Math.ceil((options.end - options.start)/options.scaleStep);
+      const count: number = Math.ceil((options.end - options.start)/options.scaleStep + 1);
       const percent = (options.scaleStep/(options.end - options.start))*100;
-
-      for (let i=0; i<count+1; i++) {
-        let tag = (i*options.scaleStep + options.start).toString();
-        let position = i*percent + '%';
+      Array(count).fill('').forEach((el,index) => {
+        let tag = (index*options.scaleStep + options.start).toString();
+        let position = index*percent + '%';
         if (Number(tag) > options.end) {
           tag = options.end.toString();
           position = '100%';
         }
         this.addMark(tag, options.isVertical, position);
-      }
+      });
     }
   }
 }

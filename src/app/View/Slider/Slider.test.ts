@@ -10,7 +10,7 @@ describe('Number slider', () => {
     start: 0,
     end: 100,
     step: 25,
-    scalestep: 10,
+    scaleStep: 10,
     hasTagmark: true
   };
   const slider = new Slider(options);
@@ -108,6 +108,9 @@ describe('Horizontal double slider: move bar', () => {
   const options = {
     isRange: true,
     isVertical: false,
+    start: 0,
+    end: 100,
+    scaleStep: 10,
   };
   const slider = new Slider(options);
 
