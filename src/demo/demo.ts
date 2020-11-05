@@ -7,5 +7,3 @@ $(() => {
     new Sample($container);
   });
 });
-
-

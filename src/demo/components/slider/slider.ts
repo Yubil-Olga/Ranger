@@ -17,17 +17,16 @@ export default class Slider {
   }
 
   init(settings?: IOptions) {
-    this.facade = (<Facade>this.$slider.perfectSlider(settings)[0]);
-
-    this.settings = this.facade.getOptions();
+    this.$slider.perfectSlider(settings);
+    this.settings = this.$slider.perfectSlider('getOptions').get(0);
   }
 
   getPropertyValue(name: string) {
-    return this.facade.getOptions()[name];
+    return this.$slider.perfectSlider('getOptions').get(0)[name];
   }
 
   setPropertyValue(name: string, value: string | number | boolean |string[] ) {
     this.settings[name] = value;
-    this.facade.updateOptions(this.settings);
+    this.$slider.perfectSlider('setOptions', this.settings);
   }
 }

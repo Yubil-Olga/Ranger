@@ -1,13 +1,13 @@
 import bind from 'bind-decorator';
-import Range from '../slider/slider';
+import Slider from '../slider/slider';
 
 export default class Checkbox {
   public $checkbox: JQuery<Object>;
   public name: string
-  public range: Range;
+  public slider: Slider;
 
-  constructor($container: JQuery<Object>, range: Range) {
-    this.range = range;
+  constructor($container: JQuery<Object>, slider: Slider) {
+    this.slider = slider;
     this.init($container);
     this.bindEventListeners();
   }
@@ -23,7 +23,7 @@ export default class Checkbox {
   }
 
   updateValue() {
-    const newValue = this.range.getPropertyValue(this.name);
+    const newValue = this.slider.getPropertyValue(this.name);
     this.$checkbox.prop('checked', newValue);
   }
 
@@ -33,6 +33,6 @@ export default class Checkbox {
 
   @bind
   handleCheckboxChange() {
-    this.range.setPropertyValue(this.name, this.isChecked());
+    this.slider.setPropertyValue(this.name, this.isChecked());
   }
 }

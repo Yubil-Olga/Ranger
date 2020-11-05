@@ -6,7 +6,10 @@ declare global {
   }
 
   interface JQuery {
-    perfectSlider(options?: IOptions): JQuery<Object>;
+    perfectSlider: (
+      options?: IOptions | 'setOptions' | 'getOptions',
+      newOptions?: IOptions | Function
+    ) => JQuery<Object>;
   }
 }
 

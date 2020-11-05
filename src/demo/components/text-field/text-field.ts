@@ -1,15 +1,15 @@
 import bind from 'bind-decorator';
-import Range from '../slider/slider';
+import Slider from '../slider/slider';
 import EventDispatcher from '../../../app/EventDispatcher/EventDispatcher';
 
 export default class TextField {
   public $textField: JQuery<Object>;
   public name: string
-  public range: Range;
+  public slider: Slider;
   public textFieldChanged = new EventDispatcher(this)
 
-  constructor($container: JQuery<Object>, range: Range) {
-    this.range = range;
+  constructor($container: JQuery<Object>, slider: Slider) {
+    this.slider = slider;
     this.init($container);
     this.bindEventListeners();
   }
@@ -28,7 +28,7 @@ export default class TextField {
   }
 
   updateValue() {
-    const newValue = this.range.getPropertyValue(this.name);
+    const newValue = this.slider.getPropertyValue(this.name);
     this.$textField.val(newValue);
     this.updateStyle(newValue);
   }
@@ -53,7 +53,7 @@ export default class TextField {
 
   @bind
   handleInputChange() {
-    this.range.setPropertyValue(this.name, this.getValue());
+    this.slider.setPropertyValue(this.name, this.getValue());
     this.textFieldChanged.notify(this);
   }
 }

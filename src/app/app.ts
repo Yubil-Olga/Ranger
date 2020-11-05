@@ -4,17 +4,25 @@ import Facade from './Presenter/Facade';
 import IOptions from './IOptions';
 
 (function( $ ) {
-  $.fn.perfectSlider = function(options?: IOptions) {
+  $.fn.perfectSlider = function(options?, newOptions?) {
     try {
       return this.map(function(index: number, element: HTMLElement) {
         if (typeof options === 'object' || !options) {
           const data: IOptions = $(element).data();
           const settings: IOptions = $.extend(data, options);
           const facade: Facade = new Facade(settings, this);
-          return facade;
+          $(this).data('facade', facade);
+
+          return this;
         }
-        const facade: Facade = new Facade(options, this);
-        return facade;
+        const facade: Facade = $(this).data('facade');
+
+        if (typeof options === 'string' && facade) {
+          if (facade[options]) {
+            return facade[options].call(facade, newOptions);
+          }
+        }
+
       });
     }
     catch(err) {

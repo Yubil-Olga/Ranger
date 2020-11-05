@@ -18,7 +18,7 @@ export default class Facade {
     this.model.init();
   }
 
-  public updateOptions(options: IOptions) {
+  public setOptions(options: IOptions) {
     this.model.updateOptions(options);
   }
 
