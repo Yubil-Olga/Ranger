@@ -1,4 +1,4 @@
-export default interface ISettings {
+export interface IOptions {
   isRange?: boolean,
   isVertical?: boolean,
   start?: number,

@@ -1,6 +1,6 @@
 import Model from '../Model/Model';
 import View from '../View/View';
-import IOptions from '../IOptions';
+import { IOptions } from '../IOptions';
 
 export default class Presenter {
   private model: Model

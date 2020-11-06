@@ -1,9 +1,8 @@
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 import Data from './Data/Data';
-import IOptions from '../IOptions';
+import { IOptions } from '../IOptions';
 import ValueSliderOptions from './Options/ValueSliderOptions';
 import NumberSliderOptions from './Options/NumberSliderOptions';
-import Options from './Options/Options';
 
 export default class Model {
   private options: IOptions;

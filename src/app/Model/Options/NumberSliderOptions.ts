@@ -1,5 +1,5 @@
 import Options from './Options';
-import IOptions from '../../IOptions';
+import { IOptions } from '../../IOptions';
 
 export default class NumberSliderOptions extends Options {
   public start: number

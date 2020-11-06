@@ -1,5 +1,5 @@
 import '../../../app/app';
-import IOptions from '../../../app/IOptions';
+import { IOptions } from '../../../app/IOptions';
 
 export default class Slider {
   public $slider: JQuery<Object>

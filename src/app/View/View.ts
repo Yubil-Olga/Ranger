@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
 import Slider from './Slider/Slider';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
-import IOptions from '../IOptions';
+import { IOptions } from '../IOptions';
 
 export default class View {
   private options: IOptions

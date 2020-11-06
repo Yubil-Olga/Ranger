@@ -1,6 +1,6 @@
 import Thumb from './Thumb/Tumb';
 import Scale from './Scale/Scale';
-import IOptions from '../../IOptions';
+import { IOptions } from '../../IOptions';
 
 export default class Slider {
   public container: HTMLElement

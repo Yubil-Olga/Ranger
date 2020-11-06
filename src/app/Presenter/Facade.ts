@@ -1,6 +1,6 @@
 import Model  from '../Model/Model';
 import Presenter from '../Presenter/Presenter';
-import IOptions from '../IOptions';
+import { IOptions } from '../IOptions';
 
 export default class Facade {
   private model: Model

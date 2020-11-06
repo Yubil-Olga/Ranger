@@ -1,7 +1,7 @@
 import './View/Slider/slider.scss';
 import jQuery from 'jquery';
 import Facade from './Presenter/Facade';
-import IOptions from './IOptions';
+import { IOptions } from './IOptions';
 
 (function( $ ) {
   $.fn.perfectSlider = function(options?, newOptions?) {

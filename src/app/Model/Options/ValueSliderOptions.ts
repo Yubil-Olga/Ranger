@@ -1,5 +1,5 @@
 import Options from './Options';
-import IOptions from '../../IOptions';
+import { IOptions } from '../../IOptions';
 
 export default class ValueSliderOptions extends Options {
   public values: Array<string>

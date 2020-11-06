@@ -1,4 +1,4 @@
-import IOptions from '../../IOptions';
+import { IOptions } from '../../IOptions';
 
 export default class Options implements IOptions  {
   public isRange: boolean
