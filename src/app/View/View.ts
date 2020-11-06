@@ -8,18 +8,18 @@ export default class View {
   private activeThumblerIndex: number
   public slider: Slider
   public inputChanged = new EventDispatcher(this)
-  private parent: HTMLElement
+  private rootElement: HTMLElement
 
-  constructor(options: IOptions, elem: HTMLElement) {
+  constructor(options: IOptions, element: HTMLElement) {
     this.options = options;
-    this.initSlider(elem);
+    this.initSlider(element);
     this.bindEventListeners();
   }
 
-  initSlider(elem: HTMLElement) {
-    this.parent = elem;
+  initSlider(element: HTMLElement) {
+    this.rootElement = element;
     this.slider = new Slider(this.options);
-    elem.append(this.slider.container);
+    element.append(this.slider.container);
   }
 
   updateOptions(options: IOptions) {
@@ -27,7 +27,7 @@ export default class View {
     this.removeEventListeners();
     this.slider.container.remove();
     this.slider = new Slider(options);
-    this.parent.append(this.slider.container);
+    this.rootElement.append(this.slider.container);
     this.bindEventListeners();
   }
 
