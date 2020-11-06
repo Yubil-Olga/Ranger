@@ -52,11 +52,11 @@ describe('Number model', () => {
       step: 50,
       hasTagmark: false,
       prefix: null,
-      color: null,
+      color: '#53b6a8',
       scaleStep: 100,
     };
     model.updateOptions(newOptions);
-    expect(model.getOptions()).toEqual(result);
+    expect(model.getOptions()).toMatchObject(result);
   });
 });
 

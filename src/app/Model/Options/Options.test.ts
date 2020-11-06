@@ -9,12 +9,12 @@ arr[0] = {
 
 arr[1] = {
   options : {start: 250, end: 100, step: 300, scaleStep: 1000},
-  result : {isRange: false, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: null, isVertical: false, prefix: null},
+  result : {isRange: false, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: '#53b6a8', isVertical: false, prefix: null},
 };
 
 arr[2] = {
   options : {isRange: true, start: 250, end: 100, values: ['one', 'two', 'three', 4], isVertical: true},
-  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three', 4], hasTagmark: true, color: null, prefix: null},
+  result : {isRange: true, isVertical: true, values: ['one', 'two', 'three', 4], hasTagmark: true, color: '#53b6a8', prefix: null},
 };
 
 arr[3] = {
@@ -23,7 +23,7 @@ arr[3] = {
 };
 arr[4] = {
   options : {start: 250, end: 100, scaleStep: 1000},
-  result : {isRange: false, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: null, isVertical: false, prefix: null},
+  result : {isRange: false, start: 0, end: 100, step: 1, hasTagmark: true, scaleStep: 100, color: '#53b6a8', isVertical: false, prefix: null},
 };
 
 test('Set correct options', ( ) => {

@@ -9,27 +9,21 @@ export default class NumberSliderOptions extends Options {
 
   constructor(options: IOptions) {
     super(options);
+
     if (this.isUserSettingsValid(options)) {
       this.start = options.start;
       this.end = options.end;
     } else {
-      this.start = 0;
-      this.end = 100;
+      this.start = this.defaultOptions.start;
+      this.end = this.defaultOptions.end;
     }
-    this.step = this.getStep(options);
+
+    this.step = this.isStepValid(options) ? options.step : this.defaultOptions.step;
     this.scaleStep = this.getScaleStep(options);
   }
 
   isUserSettingsValid(options: IOptions) {
     return (typeof options.start === 'number' && typeof options.end === 'number' && options.start < options.end);
-  }
-
-  getStep(options: IOptions) {
-    if (this.isStepValid(options)) {
-      return options.step;
-    } else {
-      return 1;
-    }
   }
 
   isStepValid(options: IOptions) {
