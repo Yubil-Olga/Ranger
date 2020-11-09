@@ -14,13 +14,13 @@ export default class Presenter {
   private init(element: HTMLElement) {
     this.view = new View(this.model.getOptions(), element);
     const presenter = this;
-    this.view.inputChanged.attach(function (sender: View, data: {positionInPercents: number, index: number}) {
+    this.view.viewChanged.attach(function (data: {positionInPercents: number, index: number}) {
       presenter.updateModel(data);
     });
-    this.model.modelChanged.attach(function(sender: Model, data: {positionInPercents: number, index: number, value: string}) {
+    this.model.modelChanged.attach(function(data: {positionInPercents: number, index: number, value: string}) {
       presenter.updateViewData(data);
     });
-    this.model.optionsChanged.attach(function(sender: Model, args: IOptions) {
+    this.model.optionsChanged.attach(function(args: IOptions) {
       presenter.updateViewOptions(args);
     });
   }
@@ -34,6 +34,6 @@ export default class Presenter {
   }
 
   public updateViewOptions(args: IOptions): void {
-    this.view.updateOptions(args);
+    this.view.render(args);
   }
 }

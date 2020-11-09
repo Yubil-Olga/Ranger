@@ -1,9 +1,8 @@
 export default class EventDispatcher {
-  private sender: any
-  private listeners = []
+  private listeners: Array<Function>
 
-  constructor(sender: object) {
-    this.sender = sender;
+  constructor() {
+    this.listeners = [];
   }
 
   public attach(listener: Function) {
@@ -11,6 +10,6 @@ export default class EventDispatcher {
   }
 
   public notify(args: any) {
-    this.listeners.forEach((listener) => listener(this.sender, args));
+    this.listeners.forEach((listener) => listener(args));
   }
 }

@@ -6,7 +6,7 @@ export default class TextField {
   public $textField: JQuery<Object>;
   public name: string
   public slider: Slider;
-  public textFieldChanged = new EventDispatcher(this)
+  public textFieldChanged = new EventDispatcher()
 
   constructor($container: JQuery<Object>, slider: Slider) {
     this.slider = slider;

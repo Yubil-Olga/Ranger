@@ -1,126 +1,139 @@
-import Thumb from './Thumb/Tumb';
+import bind from 'bind-decorator';
+import Handle from './Handle/Handle';
 import Scale from './Scale/Scale';
+import Bar from './Bar/Bar';
+import EventDispatcher from '../../EventDispatcher/EventDispatcher';
 import { IOptions } from '../../IOptions';
 
 export default class Slider {
-  public container: HTMLElement
-  public value: HTMLInputElement
-  public tag: HTMLElement
-  public track: HTMLElement
-  public bar: HTMLElement
-  public barSelected: HTMLElement
-  public label: HTMLElement
-  public thumblers: Array<HTMLElement> = []
-  public tagmarks:Array<HTMLElement> = []
+  public slider: HTMLElement
+  public bar: Bar
+  public scale: Scale
   public options: IOptions
+  public handles: Array<Handle>
+  public activeHandleIndex: number
+  public dispatcher: EventDispatcher = new EventDispatcher();
 
   constructor(options: IOptions) {
     this.options = options;
     this.createTemplate();
+    this.bindEventListeners();
+  }
+
+  getElement() {
+    return this.slider;
   }
 
   private createTemplate() {
-    this.container = document.createElement('div');
-    this.container.className = this.options.isVertical ? 'perfect-slider perfect-slider_vertical' : 'perfect-slider';
-    this.tag = document.createElement('div');
-    this.tag.className = this.options.hasTagmark ? 'perfect-slider__tag' : 'perfect-slider__tag perfect-slider__tag_hidden';
-    this.value = this.createInput('text', 'perfect-slider__input');
-    this.track = this.createElement('div', 'perfect-slider__track');
-    this.bar = this.createElement('div', 'perfect-slider__track-bar');
-    this.barSelected = this.createElement('div', 'perfect-slider__track-bar_selected');
-    this.label = new Scale(this.options).getElement();
-    this.thumblers = this.createThumblers(this.options.isRange);
-    this.tagmarks = this.createTagmarks();
-    this.container.append(this.value, this.tag, this.track, this.label);
-    this.track.append(this.bar, this.barSelected);
-    this.tag.append(...this.tagmarks);
-    this.track.append(...this.thumblers);
-    this.setColor(this.options.color);
+    this.slider = document.createElement('div');
+    this.slider.className = 'perfect-slider__track';
+    this.bar = new Bar(this.slider);
+    this.scale = new Scale(this.slider, this.options);
+    this.handles = this.createHandles(this.options.isRange);
   }
 
-  private createInput(type: string, className: string): HTMLInputElement {
-    const el = document.createElement('input');
-    el.type = type;
-    el.className = className;
-    return el;
+  bindEventListeners() {
+    this.slider.addEventListener('click', this.handleSliderClick);
+    this.handles.forEach((handle) => handle.handle.addEventListener('mousedown', this.handleHandleMouseDown));
+    this.slider.addEventListener('dragstart', this.stopDrag);
   }
 
-  private createElement(tag: string, className: string): HTMLElement {
-    const el = document.createElement(tag);
-    el.className = className;
-    return el;
+  removeEventListeners() {
+    this.slider.removeEventListener('click', this.handleSliderClick);
+    this.handles.forEach((handle) => handle.handle.removeEventListener('mousedown', this.handleHandleMouseDown));
+    this.slider.removeEventListener('dragstart', this.stopDrag);
   }
 
-  private createThumblers(isRange: boolean): Array<HTMLElement> {
-    const data = isRange ? [0,1] : [0];
-    data.forEach(() => this.thumblers.push(new Thumb().getElement()));
-
-    return this.thumblers;
+  stopDrag(event: MouseEvent) {
+    event.preventDefault();
   }
 
-  private createTagmarks(): Array<HTMLElement> {
-    this.thumblers.forEach(() => {
-      const tagmark = document.createElement('span');
-      tagmark.className = 'perfect-slider__tag-mark';
-      this.tagmarks.push(tagmark);
+  @bind
+  handleSliderClick(event: MouseEvent) {
+    this.setTransitionDuration(event);
+
+    const width: number = this.options.isVertical
+      ? this.slider.clientHeight
+      : this.slider.clientWidth;
+
+    const positionInPixels: number = this.options.isVertical
+      ? Math.round((<MouseEvent>event).clientY - this.slider.getBoundingClientRect().top)
+      : Math.round((<MouseEvent>event).clientX- this.slider.getBoundingClientRect().left);
+
+    const isPositionValid: boolean = positionInPixels >= 0
+    && positionInPixels <= width;
+
+    if (!isPositionValid) return;
+
+    const positionInPercents = positionInPixels*100/width;
+
+    this.activeHandleIndex = this.getActiveHandleIndex({
+      positionInPercents: positionInPercents,
+      handles: this.handles
     });
 
-    return this.tagmarks;
+    this.dispatcher.notify({ positionInPercents: positionInPercents, index: this.activeHandleIndex });
+  }
+
+  @bind
+  handleHandleMouseDown() {
+    document.addEventListener('mousemove', this.handleSliderClick);
+    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+  }
+
+  @bind
+  handleDocumentMouseUp() {
+    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
+    document.removeEventListener('mousemove', this.handleSliderClick);
+  }
+
+  getActiveHandleIndex(data: {positionInPercents: number, handles: any}): number {
+    const { positionInPercents, handles } = data;
+
+    let index = 0;
+
+    if (this.options.isRange) {
+      const min = handles[0].getCurrentPosition();
+      const max = handles[1].getCurrentPosition();
+
+      const isMaxThumblerSelected: boolean =
+        (positionInPercents - max) > 0 ||
+        (positionInPercents - min) > (max - positionInPercents);
+
+      index = isMaxThumblerSelected ? 1 : 0;
+    }
+
+    return index;
+  }
+
+  private createHandles(isRange: boolean): Array<Handle> {
+    const data = isRange ? [0,1] : [0];
+    this.handles = [];
+    data.forEach(() => this.handles.push(new Handle(this.slider, this.options.hasTagmark)));
+    return this.handles;
   }
 
   update(data: {positionInPercents: number, index: number, value: string}): void {
     const { positionInPercents, index, value } = data;
     const prefix = this.options.prefix ? ' ' + this.options.prefix : '';
-    this.tagmarks[index].textContent = value + prefix;
-    this.moveThumbs(index, positionInPercents);
-    this.moveBar(index, positionInPercents);
-    const arr = [];
-    this.tagmarks.forEach(tagmark => {
-      arr.push(tagmark.textContent.split(' ')[0]);
+    const tagmark = value + prefix;
+
+    this.handles[index].updateHandlePosition({
+      positionInPercents: positionInPercents,
+      isVertical: this.options.isVertical,
+      tagmark: tagmark
     });
-    this.value.value = arr.join(';');
+
+    this.bar.moveBar({
+      index: index,
+      positionInPercents: positionInPercents,
+      isRange: this.options.isRange,
+      isVertical: this.options.isVertical
+    });
   }
 
-  moveThumbs(index: number, positionInPercents: number): void {
-    if (this.options.isVertical) {
-      this.thumblers[index].style.top = positionInPercents + '%';
-      this.tagmarks[index].style.top = positionInPercents - 3 + '%';
-    }
-    else {
-      this.thumblers[index].style.left = positionInPercents + '%';
-      this.tagmarks[index].style.left = positionInPercents - (this.tagmarks[index].clientWidth/this.track.clientWidth)*50 + '%';
-    }
-  }
-
-  moveBar(index: number, positionInPercents: number): void {
-    if (this.options.isRange && index === 0) {
-      this.moveBarFrom(positionInPercents);
-    } else {
-      this.moveBarTo(positionInPercents);
-    }
-  }
-
-  moveBarFrom(positionInPercents: number) {
-    const barStart = positionInPercents + '%';
-
-    if (this.options.isVertical) {
-      this.barSelected.style.top = barStart;
-    } else {
-      this.barSelected.style.left = barStart;
-    }
-  }
-
-  moveBarTo(positionInPercents: number) {
-    const barEnd = 100 - positionInPercents + '%';
-    if (this.options.isVertical) {
-      this.barSelected.style.bottom = barEnd;
-    } else {
-      this.barSelected.style.right = barEnd;
-    }
-  }
-  setColor(color: string) {
-    if (CSS.supports('background', color)) {
-      this.container.style.setProperty('--active-color', color);
-    }
+  setTransitionDuration(event: MouseEvent): void {
+    const transition = event.type === 'click' ? '0.5s' : '0';
+    this.slider.style.setProperty('--transition', transition);
   }
 }

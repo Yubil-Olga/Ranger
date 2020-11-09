@@ -7,8 +7,8 @@ import NumberSliderOptions from './Options/NumberSliderOptions';
 export default class Model {
   private options: IOptions;
   public data: Array<Data>;
-  public modelChanged = new EventDispatcher(this);
-  public optionsChanged = new EventDispatcher(this);
+  public modelChanged = new EventDispatcher();
+  public optionsChanged = new EventDispatcher();
 
   constructor(settings: IOptions) {
     this.createOptions(settings);

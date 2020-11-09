@@ -1,75 +1,60 @@
 .perfect-slider {
   --active-color: #53b6a8;
   --basic-color: #e5e5e5;
-  --transition: 0.5s;
   $root: &;
   width: 100%;
   min-width: 320px;
-  padding: 20px;
+  margin: 40px 0;
   box-sizing: border-box;
-  display: grid;
+  display: flex;
   justify-items: center;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
 
-  &__input {
-    position: absolute;
-    opacity: 0;
-  }
-
   &__track {
-    width: 90%;
-    height: 30px;
-    position: relative;
+    --transition: 0.5s;
     display: flex;
     align-items: center;
-  }
-
-  &__track-bar {
-    width: 100%;
+    position: relative;
+    width: 90%;
     height: 6px;
+    margin: 15px;
     border-radius: 4px;
     background: var(--basic-color);
     cursor: pointer;
-
-    &_selected {
-      position: absolute;
-      height: 6px;
-      border-radius: 4px;
-      background: var(--active-color);
-      left: 0;
-      right: 100%;
-      transition: var(--transition);
-    }
   }
 
-  &__thumb {
-    width: 1px;
-    height: 100%;
+  &__bar {
     position: absolute;
+    height: 6px;
+    border-radius: 4px;
+    background: var(--active-color);
     left: 0;
-    top: 0;
-    display: grid;
-    align-content: center;
-    justify-content: center;
+    right: 100%;
     transition: var(--transition);
   }
 
-  &__thumb-marker {
+  &__handle {
+    position: absolute;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background: var(--active-color);
     cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  &__label {
-    width: 90%;
+  &__scale {
+    width: 100%;
     position: relative;
     font-size: 12px;
+    top: 200%;
   }
 
-  &__label-mark {
+  &__scale-mark {
     width: 1px;
     height: 4px;
     background: var(--active-color);
@@ -84,31 +69,19 @@
     }
   }
 
-  &__tag {
-    width: 90%;
-    position: relative;
-    height: 25px;
-    user-select: none;
-
-    &_hidden {
-      visibility: hidden;
-    }
-  }
-
-  &__tag-mark {
+  &__tagmark {
     min-width: 30px;
     white-space: nowrap;
     padding: 5px;
     background: var(--active-color);
     border-radius: 4px;
-    position: absolute;
-    top: 0;
     color: #fff;
     font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--transition);
+    top: -150%;
+    position: absolute;
 
     &:after {
       content: "";
@@ -120,77 +93,62 @@
       bottom: -2px;
       z-index: -1;
     }
+
+    &_hidden {
+      display: none;
+    }
   }
 
   &_vertical {
-    display: flex;
     width: unset;
     min-width: unset;
     min-height: 200px;
-    height: 100%;
+    margin: 0 60px 0 80px;
 
     #{$root}__track {
-      width: 30px;
+      width: 6px;
       height: 90%;
       flex-direction: column;
     }
 
-    #{$root}__track-bar {
+    #{$root}__bar {
       width: 6px;
-      height: 100%;
-
-      &_selected {
-        --bar-width: 6px;
-        width: var(--bar-width);
-        height: unset;
-        right: 0;
-        left: calc(50% - (var(--bar-width)/2));
-        top: 0;
-        bottom: 100%;
-      }
+      height: auto;
+      top: 0;
+      bottom: 100%;
     }
 
-    #{$root}__thumb {
-      align-content: unset;
-      width: 100%;
-      height: 1px;
-      display: flex;
-      align-items: center;
-    }
-
-    #{$root}__tag {
-      width: 60px;
-      height: 90%;
-      margin-right: 10px;
-    }
-
-    #{$root}__tag-mark {
-      right: 0;
-      white-space: normal;
-      word-break: break-all;
+    #{$root}__tagmark {
+      left: 30px;
+      top: 0;
       transition: var(--transition);
+      box-sizing: border-box;
 
       &:after {
-        top: 8px;
+        top: 7px;
         left: unset;
-        right: -2px;
+        left: -3px;
       }
     }
 
-    #{$root}__label {
+    #{$root}__scale {
       width: unset;
-      height: 90%;
+      height: 100%;
+      top: 0;
+      left: 200%;
     }
 
-    #{$root}__label-mark {
+    #{$root}__scale-mark {
       width: 4px;
       height: 1px;
-      justify-content: unset;
+      justify-content: flex-end;
       align-items: center;
+      left: -30px;
 
       &:before {
+        left: -30px;
         padding-top: 0;
-        padding-left: 10px;
+        padding-right: 10px;
       }
     }
   }
