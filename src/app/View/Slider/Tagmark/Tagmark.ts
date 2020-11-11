@@ -2,14 +2,14 @@ export default class Tagmark {
   public handleElement: HTMLElement
   public tagmark: HTMLElement
 
-  constructor(handleElement: HTMLElement, hasTagmark: boolean) {
+  constructor(handleElement: HTMLElement) {
     this.handleElement = handleElement;
-    this.createTemplate(hasTagmark);
+    this.createTemplate();
   }
 
-  private createTemplate(hasTagmark: boolean) {
+  private createTemplate() {
     this.tagmark = document.createElement('div');
-    this.tagmark.className = hasTagmark ? 'perfect-slider__tagmark' : 'perfect-slider__tagmark_hidden';
+    this.tagmark.className = 'perfect-slider__tagmark';
     this.handleElement.append(this.tagmark);
   }
 

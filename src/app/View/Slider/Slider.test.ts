@@ -94,8 +94,8 @@ describe('Value slider', () => {
     data2.update('three', 100);
     slider.update({ positionInPercents: 50, index: 0, value: 'two' });
     slider.update({ positionInPercents: 100, index: 1, value: 'three' });
-    expect(slider.handles[0].tagmark.tagmark.textContent).toBe('two');
-    expect(slider.handles[1].tagmark.tagmark.textContent).toBe('three');
+    expect(slider.handles[0].tagmark).toBeNull;
+    expect(slider.handles[1].tagmark).toBeNull;
     expect(slider.bar.moveBar). toBeCalledWith({ index: 0, positionInPercents: 50, isRange: true, isVertical: true });
     expect(slider.bar.moveBar).toBeCalledWith({ index: 1, positionInPercents: 100, isRange: true, isVertical: true });
   });

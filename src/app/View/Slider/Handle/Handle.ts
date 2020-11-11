@@ -9,7 +9,7 @@ export default class Handle {
   constructor(trackElement: HTMLElement, hasTagmark: boolean) {
     this.trackElement = trackElement;
     this.createTemplate();
-    this.tagmark = new Tagmark(this.handle, hasTagmark);
+    this.tagmark = hasTagmark ? new Tagmark(this.handle) : null;
   }
 
   private createTemplate(): void {
@@ -38,6 +38,8 @@ export default class Handle {
   updateHandlePosition(data: {positionInPercents: number, isVertical: boolean, tagmark: string}) {
     const { positionInPercents, isVertical, tagmark } = data;
     this.moveHandle(positionInPercents, isVertical);
-    this.tagmark.setTextContent(tagmark);
+    if (this.tagmark) {
+      this.tagmark.setTextContent(tagmark);
+    }
   }
 }
