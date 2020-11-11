@@ -35,16 +35,16 @@ export default class Slider {
   bindEventListeners() {
     this.slider.addEventListener('click', this.handleSliderClick);
     this.handles.forEach((handle) => handle.handle.addEventListener('mousedown', this.handleHandleMouseDown));
-    this.slider.addEventListener('dragstart', this.stopDrag);
+    this.slider.addEventListener('dragstart', this.handleSliderStopDrag);
   }
 
   removeEventListeners() {
     this.slider.removeEventListener('click', this.handleSliderClick);
     this.handles.forEach((handle) => handle.handle.removeEventListener('mousedown', this.handleHandleMouseDown));
-    this.slider.removeEventListener('dragstart', this.stopDrag);
+    this.slider.removeEventListener('dragstart', this.handleSliderStopDrag);
   }
 
-  stopDrag(event: MouseEvent) {
+  handleSliderStopDrag(event: MouseEvent) {
     event.preventDefault();
   }
 
