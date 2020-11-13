@@ -61,7 +61,7 @@ export default class Slider {
       : Math.round((<MouseEvent>event).clientX- this.slider.getBoundingClientRect().left);
 
     const isPositionValid: boolean = positionInPixels >= 0
-    && positionInPixels <= width;
+      && positionInPixels <= width;
 
     if (!isPositionValid) return;
 

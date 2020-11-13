@@ -38,28 +38,28 @@ export default class Model {
   }
 
   public init(): void {
-    this.initData(this.options.isRange);
+    this.initData();
     this.data.forEach((el) => this.modelChanged.notify(el));
   }
 
-  private initData(isRange: boolean): Array<Data> {
+  initData(): Array<Data> {
     this.data = [];
-    this.data.push(new Data(0, this.options));
-    if (isRange) {
-      this.data.push(new Data(1, this.options));
+    if (this.options.isRange) {
+      this.data.push(new Data(0, this.options, this.options.from), new Data(1, this.options, this.options.to));
+    } else {
+      this.data.push(new Data(0, this.options, this.options.to));
     }
-
     return this.data;
   }
 
   public stepCalculation(): number {
-    const step = (this.options.step/(this.options.end - this.options.start))*100;
+    const step = (this.options.step / (this.options.end - this.options.start)) * 100;
     return step;
   }
 
   public positionCalculation(data: {positionInPercents: number, step: number}): number {
     const { positionInPercents, step } = data;
-    const newPosition = Math.round(positionInPercents/step)*step;
+    const newPosition = Math.round(positionInPercents / step) * step;
     return newPosition;
   }
 
@@ -71,18 +71,24 @@ export default class Model {
     let newValue: string;
 
     if (this.options.values) {
-      step = 100/(this.options.values.length - 1);
+      step = 100 / (this.options.values.length - 1);
       newPositionInPercents = this.positionCalculation({ positionInPercents, step });
-      newValue = this.options.values[newPositionInPercents/step];
+      newValue = this.options.values[newPositionInPercents / step];
     } else {
       step = this.stepCalculation();
       newPositionInPercents = this.positionCalculation({ positionInPercents, step });
-      newValue = Math.round(newPositionInPercents*(this.options.end - this.options.start)/100 + this.options.start).toString();
+      newValue = Math.round(newPositionInPercents * (this.options.end - this.options.start) /100 + this.options.start).toString();
     }
 
     this.data[index].update(newValue, newPositionInPercents);
+    this.updateValues(index, newValue);
 
     this.modelChanged.notify(this.data[index]);
     return this.data;
+  }
+
+  public updateValues(index: number, value: string | number) {
+    const attributes = this.options.isRange ? ['from', 'to'] : ['to'];
+    this.options[attributes[index]] = value;
   }
 }

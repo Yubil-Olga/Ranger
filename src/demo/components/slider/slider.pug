@@ -1,4 +1,4 @@
-mixin slider({ isRange, isVertical, start, end, step, scaleStep, color, prefix, hasTagmark, values,  } = {})
+mixin slider({ isRange, isVertical, start, end, step, scaleStep, color, prefix, hasTagmark, values, from, to, } = {})
   .slider.js-slider(
     data-is-range=isRange
     data-is-vertical=isVertical
@@ -10,4 +10,6 @@ mixin slider({ isRange, isVertical, start, end, step, scaleStep, color, prefix, 
     data-prefix=prefix
     data-has-tagmark=hasTagmark
     data-values=values
+    data-from=from
+    data-to=to
   )

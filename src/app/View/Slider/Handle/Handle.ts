@@ -25,13 +25,13 @@ export default class Handle {
   public moveHandle( positionInPercents: number, isVertical: boolean ) {
     this.currentPositionInPercents = positionInPercents;
 
-    const widthInPercents = (this.handle.clientWidth/this.trackElement.clientWidth) * 100;
-    const heightInPercents = (this.handle.clientHeight/this.trackElement.clientHeight) * 100;
+    const widthInPercents = (this.handle.clientWidth / this.trackElement.clientWidth) * 100;
+    const heightInPercents = (this.handle.clientHeight / this.trackElement.clientHeight) * 100;
 
     if (isVertical) {
-      this.handle.style.top = (positionInPercents - heightInPercents/2) + '%';
+      this.handle.style.top = (positionInPercents - heightInPercents / 2) + '%';
     } else {
-      this.handle.style.left = (positionInPercents - widthInPercents/2) + '%';
+      this.handle.style.left = (positionInPercents - widthInPercents / 2) + '%';
     }
   }
 

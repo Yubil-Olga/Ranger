@@ -9,4 +9,6 @@ export interface IOptions {
   hasTagmark?: boolean,
   values?: Array<string>,
   prefix?: string,
+  from?: number | string,
+  to?: number | string
 }

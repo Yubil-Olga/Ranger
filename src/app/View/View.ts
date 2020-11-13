@@ -20,6 +20,7 @@ export default class View {
     this.slider = new Slider(this.options);
     this.rootElement.classList.add('perfect-slider');
     this.setDirection(this.options.isVertical);
+    this.setColor(this.options.color);
     this.rootElement.append(this.slider.getElement());
   }
 
@@ -32,6 +33,13 @@ export default class View {
     this.setDirection(options.isVertical);
     this.setColor(options.color);
     this.addDispatcher();
+    this.rootElement.removeAttribute('data-from');
+    this.rootElement.removeAttribute('data-to');
+    Object.keys(options).forEach((key) => {
+      if (key !== 'defaultOptions') {
+        this.setDataAttributes(key, options[key]);
+      }
+    });
   }
 
   addDispatcher() {
@@ -42,12 +50,13 @@ export default class View {
 
   update(data: {positionInPercents: number, index: number, value: string}) {
     this.slider.update(data);
-    this.setDataAttributes(data.index, data.value);
+    const attributes = this.options.isRange ? [ 'from', 'to'] : ['to'];
+    this.setDataAttributes(attributes[data.index], data.value);
+    this.rootElement.dispatchEvent(new Event('changeHandle'));
   }
 
-  setDataAttributes(index: number, value: string) {
-    const data = this.options.isRange ? [ 'data-from', 'data-to'] : ['data-to'];
-    this.rootElement.setAttribute(data[index], value);
+  setDataAttributes(key: string, value: string) {
+    this.rootElement.dataset[key] = value;
   }
 
   setDirection(isVertical: boolean) {

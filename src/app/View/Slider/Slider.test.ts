@@ -23,7 +23,7 @@ describe('Number slider', () => {
   });
 
   test('Move bar', () => {
-    const data1 = new Data(0, options);
+    const data1 = new Data(0, options, 0);
     data1.update('80', 80);
     slider.bar.moveBar({ index: 0, positionInPercents: 80, isRange: options.isRange, isVertical: options.isVertical });
     expect(slider.bar.bar.style.left).toBe('');
@@ -32,7 +32,7 @@ describe('Number slider', () => {
 
   test('Update function', () => {
     slider.bar.moveBar = jest.fn();
-    const data = new Data(0, options);
+    const data = new Data(0, options, 0);
     data.update('50', 50);
     slider.update({ positionInPercents: 50, index: 0, value: '50'});
     expect(slider.handles[0].tagmark.tagmark.textContent).toBe('50 $');
@@ -112,8 +112,8 @@ describe('Horizontal double slider: move bar', () => {
   const slider = new Slider(options);
 
   test('Move bar', () => {
-    const data1 = new Data(0, options);
-    const data2 = new Data(1, options);
+    const data1 = new Data(0, options, 0);
+    const data2 = new Data(1, options, 1);
     data1.update('30', 30);
     data2.update('100', 100);
     slider.bar.moveBar({ index: 0, positionInPercents: 30, isRange: options.isRange, isVertical: options.isVertical });

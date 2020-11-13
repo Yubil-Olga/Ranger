@@ -1,4 +1,4 @@
-import IOptions from './app/IOptions';
+import { IOptions } from './app/IOptions';
 
 declare global {
   interface Window {

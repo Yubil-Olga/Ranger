@@ -8,9 +8,12 @@ describe('Initial values and coords for double slider', () => {
     prefix: null,
     start: 0,
     end: 200,
-    step: 10
+    step: 10,
+    from: 0,
+    to: 100,
   };
-  const data = new Data(1, options);
+  const data = new Data(1, options, 100);
+
   test('Calculate coord', () => {
     expect(data.value).toBe('100');
     expect(data.positionInPercents).toBe(50);

@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import Slider from '../slider/slider';
 import Checkbox from '../checkbox/checkbox';
 import TextField from '../text-field/text-field';
@@ -8,17 +9,30 @@ export default class ControlPanel {
   public $checkboxes: JQuery<Object>;
   public checkboxes: Checkbox[] = [];
   public $textFields: JQuery<Object>;
-  public textFields: TextField[] = []
+  public textFields: {[name: string]: TextField} ={};
 
   constructor($container: JQuery<Object>, slider: Slider) {
     this.slider = slider;
     this.init($container);
+    this.bindEventListeners();
   }
 
   init($container: JQuery<Object>) {
     this.$controlPanel = $container.find('.js-control-panel');
     this.initCheckboxes();
     this.initTextFields();
+  }
+
+  bindEventListeners() {
+    this.slider.$slider.on('changeHandle', this.handleSliderChangeHandle);
+  }
+
+  @bind
+  handleSliderChangeHandle() {
+    if (this.textFields.from && this.textFields.to) {
+      this.textFields.from.updateValue();
+      this.textFields.to.updateValue();
+    }
   }
 
   initCheckboxes() {
@@ -31,15 +45,9 @@ export default class ControlPanel {
   initTextFields() {
     this.$textFields = this.$controlPanel.find('.js-control-panel__text-field');
     this.$textFields.each((index, element) => {
-      this.textFields.push(new TextField($(element), this.slider));
+      const textField = new TextField($(element), this.slider);
+      this.textFields[textField.name] = textField;
+      this.textFields[textField.name].updateValue();
     });
-
-    this.textFields.forEach((el) => {
-      el.textFieldChanged.attach(() => this.updateValues());
-    });
-  }
-
-  updateValues() {
-    this.textFields.forEach((el) => el.updateValue());
   }
 }

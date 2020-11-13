@@ -58,6 +58,11 @@ describe('Number model', () => {
     model.updateOptions(newOptions);
     expect(model.getOptions()).toMatchObject(result);
   });
+
+  test('Update values from and to', () => {
+    model.updateValues(0, 50);
+    expect(model.getOptions().to).toBe(50);
+  });
 });
 
 describe('Value model', () => {
