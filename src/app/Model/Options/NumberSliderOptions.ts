@@ -21,23 +21,26 @@ export default class NumberSliderOptions extends Options {
   }
 
   getFromValue(from: number | string) {
-    const isFromValueValid = Number(from) >= this.start
+    const isFromValueValid = from !== ''
+      && from !== null
+      && Number(from) >= this.start
       && Number(from) < this.end
       && Number(from) % this.step === 0;
-    const fromValue = isFromValueValid ? Number(from) : this.start;
 
-    return fromValue;
+    return isFromValueValid ? Number(from) : this.start;
   }
 
   getToValue(to: number | string) {
     if (this.isRange) {
       const isToValueValid = to !== ''
+        && to !== null
         && Number(to) <= this.end
         && Number(to) > this.from
         && Number(to) % this.step === 0;
       return isToValueValid ? Number(to) : Number(this.from) + this.step;
     } else {
       const isToValueValid = to !== ''
+        && to !== null
         && Number(to) > this.start
         && Number(to) < this.end
         && Number(to) % this.step === 0;

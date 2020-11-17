@@ -25,12 +25,12 @@ export default class Scale {
       const count: number = Math.ceil((options.end - options.start) / options.scaleStep) + 1;
       const percent = (options.scaleStep / (options.end - options.start)) * 100;
       Array(count).fill('').forEach((el,index) => {
-        let tag = (index * options.scaleStep + options.start).toString();
-        let position = index * percent + '%';
-        if (Number(tag) > options.end) {
-          tag = options.end.toString();
-          position = '100%';
-        }
+        const tag = index * options.scaleStep + options.start < options.end
+          ? (index * options.scaleStep + options.start).toString()
+          : options.end.toString();
+        const position = index * percent < 100
+          ? index * percent + '%'
+          : '100%';
         this.addMark(tag, options.isVertical, position);
       });
     }

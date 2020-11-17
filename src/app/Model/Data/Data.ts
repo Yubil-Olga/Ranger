@@ -11,14 +11,10 @@ export default class Data {
   }
 
   private init(options: IOptions, value: string | number) {
-    if (options.values) {
-      this.value = <string>value;
-      this.positionInPercents = options.values.indexOf(<string>value)/(options.values.length - 1) * 100;
-    }
-    else {
-      this.value = value.toString();
-      this.positionInPercents = (<number>value - options.start)/(options.end - options.start) * 100;
-    }
+    this.value = value.toString();
+    this.positionInPercents = options.values
+      ? options.values.indexOf(<string>value)/(options.values.length - 1) * 100
+      : (<number>value - options.start)/(options.end - options.start) * 100;
   }
 
   public update(value: string, positionInPercents: number): void {

@@ -17,11 +17,7 @@ export default class ValueSliderOptions extends Options {
     const isFromValueValid = this.values.includes(from)
       && this.values.indexOf(from) < this.values.length -1;
 
-    const fromValue =  isFromValueValid
-      ? from
-      : this.values[0];
-
-    return fromValue;
+    return isFromValueValid ? from : this.values[0];
   }
 
   getToValue(to: string) {

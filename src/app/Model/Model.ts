@@ -57,28 +57,23 @@ export default class Model {
     return newPosition;
   }
 
-  public updateModel(data: {positionInPercents: number, index: number}): Array<Data> {
+  public updateModel(data: {positionInPercents: number, index: number}) {
     const { positionInPercents, index } = data;
 
-    let step: number;
-    let newPositionInPercents: number;
-    let newValue: string;
+    const step = this.options.values
+      ? 100 / (this.options.values.length - 1)
+      : this.stepCalculation();
 
-    if (this.options.values) {
-      step = 100 / (this.options.values.length - 1);
-      newPositionInPercents = this.positionCalculation({ positionInPercents, step });
-      newValue = this.options.values[newPositionInPercents / step];
-    } else {
-      step = this.stepCalculation();
-      newPositionInPercents = this.positionCalculation({ positionInPercents, step });
-      newValue = Math.round(newPositionInPercents * (this.options.end - this.options.start) /100 + this.options.start).toString();
-    }
+    const newPositionInPercents = this.positionCalculation({ positionInPercents, step });
+
+    const newValue = this.options.values
+      ? this.options.values[newPositionInPercents / step]
+      : Math.round(newPositionInPercents * (this.options.end - this.options.start) /100 + this.options.start).toString();
 
     this.data[index].update(newValue, newPositionInPercents);
     this.updateValues(index, newValue);
 
     this.modelChanged.notify(this.data[index]);
-    return this.data;
   }
 
   public updateValues(index: number, value: string | number) {
