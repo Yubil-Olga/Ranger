@@ -12,14 +12,8 @@ export default class NumberSliderOptions extends Options {
   constructor(options: IOptions) {
     super(options);
 
-    if (this.isUserSettingsValid(options)) {
-      this.start = options.start;
-      this.end = options.end;
-    } else {
-      this.start = this.defaultOptions.start;
-      this.end = this.defaultOptions.end;
-    }
-
+    this.start = this.isUserSettingsValid(options) ? options.start : this.defaultOptions.start;
+    this.end = this.isUserSettingsValid(options) ? options.end : this.defaultOptions.end;
     this.step = this.isStepValid(options) ? options.step : this.defaultOptions.step;
     this.scaleStep = this.getScaleStep(options);
     this.from = this.isRange ? this.getFromValue(options.from) : null;
@@ -36,23 +30,19 @@ export default class NumberSliderOptions extends Options {
   }
 
   getToValue(to: number | string) {
-    let toValue: number;
-
     if (this.isRange) {
       const isToValueValid = to !== ''
         && Number(to) <= this.end
         && Number(to) > this.from
         && Number(to) % this.step === 0;
-      toValue = isToValueValid ? Number(to) : Number(this.from) + this.step;
+      return isToValueValid ? Number(to) : Number(this.from) + this.step;
     } else {
       const isToValueValid = to !== ''
         && Number(to) > this.start
         && Number(to) < this.end
         && Number(to) % this.step === 0;
-      toValue = isToValueValid ? Number(to) : this.start;
+      return isToValueValid ? Number(to) : this.start;
     }
-
-    return toValue;
   }
 
   isUserSettingsValid(options: IOptions) {

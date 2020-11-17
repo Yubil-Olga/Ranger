@@ -25,18 +25,14 @@ export default class ValueSliderOptions extends Options {
   }
 
   getToValue(to: string) {
-    let toValue: string;
-
     if (this.isRange) {
-      toValue = this.values.indexOf(to) > this.values.indexOf(this.from)
+      return this.values.indexOf(to) > this.values.indexOf(this.from)
         ? to
         : this.values[this.values.indexOf(this.from) + 1];
     } else {
-      toValue = this.values.includes(to)
+      return this.values.includes(to)
         ? to
         : this.values[1];
     }
-
-    return toValue;
   }
 }

@@ -16,7 +16,9 @@ export default class Model {
 
   public createOptions(options: IOptions) {
     const values = Array.isArray(options.values) ? options.values : [];
-    this.options = values.length > 1 ? new ValueSliderOptions(values, options) : new NumberSliderOptions(options);
+    this.options = values.length > 1
+      ? new ValueSliderOptions(values, options)
+      : new NumberSliderOptions(options);
   }
 
   public updateOptions(options: IOptions) {
@@ -38,12 +40,10 @@ export default class Model {
     this.data.forEach((el) => this.modelChanged.notify(el));
   }
 
-  initData(): Array<Data> {
+  initData() {
     this.data = this.options.isRange
       ? [new Data(0, this.options, this.options.from), new Data(1, this.options, this.options.to)]
       : [new Data(0, this.options, this.options.to)];
-
-    return this.data;
   }
 
   public stepCalculation(): number {
