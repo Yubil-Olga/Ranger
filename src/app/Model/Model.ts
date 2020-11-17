@@ -15,11 +15,7 @@ export default class Model {
   }
 
   public createOptions(options: IOptions) {
-    let values = [];
-    if (Array.isArray(options.values)) {
-      values = options.values;
-    }
-
+    const values = Array.isArray(options.values) ? options.values : [];
     this.options = values.length > 1 ? new ValueSliderOptions(values, options) : new NumberSliderOptions(options);
   }
 
@@ -43,12 +39,10 @@ export default class Model {
   }
 
   initData(): Array<Data> {
-    this.data = [];
-    if (this.options.isRange) {
-      this.data.push(new Data(0, this.options, this.options.from), new Data(1, this.options, this.options.to));
-    } else {
-      this.data.push(new Data(0, this.options, this.options.to));
-    }
+    this.data = this.options.isRange
+      ? [new Data(0, this.options, this.options.from), new Data(1, this.options, this.options.to)]
+      : [new Data(0, this.options, this.options.to)];
+
     return this.data;
   }
 

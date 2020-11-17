@@ -6,8 +6,8 @@ export default class NumberSliderOptions extends Options {
   public end: number
   public step: number
   public scaleStep: number
-  public from: number | string
-  public to: number | string
+  public from: number
+  public to: number
 
   constructor(options: IOptions) {
     super(options);
@@ -27,26 +27,25 @@ export default class NumberSliderOptions extends Options {
   }
 
   getFromValue(from: number | string) {
-    const isFromValueValid = typeof from === 'number'
-      && Number(from) >= this.start
+    const isFromValueValid = Number(from) >= this.start
       && Number(from) < this.end
       && Number(from) % this.step === 0;
-    const fromValue = isFromValueValid ? from : this.start;
+    const fromValue = isFromValueValid ? Number(from) : this.start;
 
     return fromValue;
   }
 
-  getToValue(to: string | number) {
+  getToValue(to: number | string) {
     let toValue: number;
 
     if (this.isRange) {
-      const isToValueValid = typeof to === 'number'
-        && to <= this.end
+      const isToValueValid = to !== ''
+        && Number(to) <= this.end
         && Number(to) > this.from
         && Number(to) % this.step === 0;
       toValue = isToValueValid ? Number(to) : Number(this.from) + this.step;
     } else {
-      const isToValueValid = typeof to === 'number'
+      const isToValueValid = to !== ''
         && Number(to) > this.start
         && Number(to) < this.end
         && Number(to) % this.step === 0;
