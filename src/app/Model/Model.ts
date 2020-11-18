@@ -68,7 +68,7 @@ export default class Model {
 
     const newValue = this.options.values
       ? this.options.values[newPositionInPercents / step]
-      : Math.round(newPositionInPercents * (this.options.end - this.options.start) /100 + this.options.start).toString();
+      : Math.round(newPositionInPercents * (this.options.end - this.options.start) /100 + this.options.start);
 
     this.data[index].update(newValue, newPositionInPercents);
     this.updateValues(index, newValue);

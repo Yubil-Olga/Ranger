@@ -3,6 +3,7 @@ import Scale from './Scale';
 const arr = [];
 arr[0] = {isRange: false, isVertical: false, prefix: '$', start: 0, end: 100, step: 25, scaleStep: 10, hasTagmark: true};
 arr[1] = {isRange: true, isVertical: true, prefix: null, start: -3, end: 100, step: 1, scaleStep: 10, hasTagmark: true};
+
 const div = document.createElement('div');
 
 describe('Create correct scale of slider', () => {

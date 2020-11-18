@@ -1,10 +1,8 @@
 import Slider from './Slider';
-import Data from '../../Model/Data/Data';
-window.CSS = { escape: jest.fn(), supports: jest.fn()};
 
 describe('Number slider', () => {
   const options = {
-    isRange: false,
+    isRange: true,
     isVertical: false,
     prefix: '$',
     start: 0,
@@ -17,26 +15,27 @@ describe('Number slider', () => {
 
   test('Create number slider correctly', () => {
     expect(slider).toBeDefined();
-    expect(slider.handles.length).toBe(1);
-    expect(slider.handles.length).toBe(1);
+    expect(slider.slider.tagName).toBe('DIV');
     expect(slider.getElement().className).toBe('perfect-slider__track');
   });
 
-  test('Move bar', () => {
-    const data1 = new Data(0, options, 0);
-    data1.update('80', 80);
-    slider.bar.moveBar({ index: 0, positionInPercents: 80, isRange: options.isRange, isVertical: options.isVertical });
-    expect(slider.bar.bar.style.left).toBe('');
-    expect(slider.bar.bar.style.right).toBe('20%');
+  test('Range slider should have two handles', () => {
+    expect(slider.handles.length).toBe(2);
   });
 
-  test('Update function', () => {
-    slider.bar.moveBar = jest.fn();
-    const data = new Data(0, options, 0);
-    data.update('50', 50);
-    slider.update({ positionInPercents: 50, index: 0, value: '50'});
-    expect(slider.handles[0].tagmark.tagmark.textContent).toBe('50 $');
-    expect(slider.bar.moveBar).toBeCalledWith({ index: 0, positionInPercents: 50, isRange: false, isVertical: false });
+  test ('Selected handle', () => {
+    slider.handles[0].handle.style.top = '5%';
+    expect(slider.getActiveHandleIndex({ positionInPercents: 100, handles: slider.handles })).toBe(0);
+  });
+
+  test ('Click event: coord more then width of the element', () => {
+    const click = new MouseEvent('click', {
+      clientX: 410
+    });
+    Object.defineProperty(slider.getElement(), 'clientWidth', {value: 360, configurable: true});
+    slider.dispatcher.notify = jest.fn();
+    slider.handleSliderClick(click);
+    expect(slider.dispatcher.notify).not.toBeCalled();
   });
 
   test ('Mousemove', () => {
@@ -59,67 +58,20 @@ describe('Number slider', () => {
   });
 });
 
-describe('Value slider', () => {
+describe('Value slider with range', () => {
   const options = {
     isRange: true,
+    values: ['one', 'two', 'three', 'four', 'five'],
     isVertical: true,
-    values: ['one', 'two', 'three'],
-    color: 'red',
-    hasTagmark: false,
+    hasTagmark: true,
     prefix: null
   };
   const slider = new Slider(options);
 
-  test('Create value slider correctly', () => {
-    expect(slider).toBeDefined();
-    expect(slider.handles.length).toBe(2);
-  });
+  test ('Selected handle', () => {
+    slider.handles[0].moveHandle(5, true);
+    slider.handles[1].moveHandle(80, true);
 
-  test('Move bar', () => {
-    const data1 = new Data(0, options);
-    const data2 = new Data(1, options);
-    data1.update('two', 50);
-    data2.update('three', 100);
-    slider.bar.moveBar({ index: 0, positionInPercents: 50, isRange: options.isRange, isVertical: options.isVertical });
-    slider.bar.moveBar({ index: 1, positionInPercents: 100, isRange: options.isRange, isVertical: options.isVertical });
-    expect(slider.bar.bar.style.top).toBe('50%');
-    expect(slider.bar.bar.style.bottom).toBe('0%');
-  });
-
-  test('Update function', () => {
-    slider.bar.moveBar = jest.fn();
-    const data1 = new Data(0, options);
-    const data2 = new Data(1, options);
-    data1.update('two', 50);
-    data2.update('three', 100);
-    slider.update({ positionInPercents: 50, index: 0, value: 'two' });
-    slider.update({ positionInPercents: 100, index: 1, value: 'three' });
-    expect(slider.handles[0].tagmark).toBeNull;
-    expect(slider.handles[1].tagmark).toBeNull;
-    expect(slider.bar.moveBar). toBeCalledWith({ index: 0, positionInPercents: 50, isRange: true, isVertical: true });
-    expect(slider.bar.moveBar).toBeCalledWith({ index: 1, positionInPercents: 100, isRange: true, isVertical: true });
+    expect(slider.getActiveHandleIndex({ positionInPercents: 100, handles: slider.handles })).toBe(1);
   });
 });
-
-describe('Horizontal double slider: move bar', () => {
-  const options = {
-    isRange: true,
-    isVertical: false,
-    start: 0,
-    end: 100,
-    scaleStep: 10,
-  };
-  const slider = new Slider(options);
-
-  test('Move bar', () => {
-    const data1 = new Data(0, options, 0);
-    const data2 = new Data(1, options, 1);
-    data1.update('30', 30);
-    data2.update('100', 100);
-    slider.bar.moveBar({ index: 0, positionInPercents: 30, isRange: options.isRange, isVertical: options.isVertical });
-    slider.bar.moveBar({ index: 1, positionInPercents: 100, isRange: options.isRange, isVertical: options.isVertical });
-    expect(slider.bar.bar.style.left).toBe('30%');
-    expect(slider.bar.bar.style.right).toBe('0%');
-  });
-});
-

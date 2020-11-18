@@ -1,7 +1,7 @@
 import { IOptions } from '../../IOptions';
 
 export default class Data {
-  public value: string
+  public value: string | number
   public positionInPercents: number
   public index: number
 
@@ -17,7 +17,7 @@ export default class Data {
       : (<number>value - options.start)/(options.end - options.start) * 100;
   }
 
-  public update(value: string, positionInPercents: number): void {
+  public update(value: string | number, positionInPercents: number): void {
     this.value = value;
     this.positionInPercents = positionInPercents;
   }

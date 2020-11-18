@@ -33,14 +33,12 @@ export default class NumberSliderOptions extends Options {
   getToValue(to: number | string) {
     if (this.isRange) {
       const isToValueValid = to !== ''
-        && to !== null
         && Number(to) <= this.end
         && Number(to) > this.from
         && Number(to) % this.step === 0;
       return isToValueValid ? Number(to) : Number(this.from) + this.step;
     } else {
       const isToValueValid = to !== ''
-        && to !== null
         && Number(to) > this.start
         && Number(to) < this.end
         && Number(to) % this.step === 0;

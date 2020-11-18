@@ -1,4 +1,6 @@
 import Model from './Model';
+import NumberSliderOptions from './Options/NumberSliderOptions';
+import ValueSliderOptions from './Options/ValueSliderOptions';
 
 describe('Number model', () => {
   const options = {
@@ -12,6 +14,10 @@ describe('Number model', () => {
   };
   const model = new Model(options);
   model.init();
+
+  test('Model without range should have one data', () => {
+    expect(model.data.length).toBe(1);
+  });
 
   test('Model returns correct data', () => {
     expect(model.getData()).toEqual([{ value: '-25', positionInPercents: 0, index: 0}]);
@@ -28,62 +34,61 @@ describe('Number model', () => {
     expect(model.positionCalculation({ positionInPercents: 50, step: 120, })).toBe(0);
   });
 
-  test('Selected number value', () => {
-    expect(model.updateModel({ positionInPercents: 0, index: 0 })).toMatchObject([{'positionInPercents': 0, 'value': '-25'}]);
-    expect(model.updateModel({ positionInPercents: 25, index: 0})).toMatchObject([{'positionInPercents': 20, 'value': '0'}]);
-    expect(model.updateModel({ positionInPercents: 100, index: 0})).toMatchObject([{'positionInPercents': 100, 'value': '100'}]);
-  });
-
-  test('Update options', () => {
-    const newOptions = {
-      isRange: true,
-      isVertical: true,
-      start: 0,
-      end: 100,
-      step: 50,
-      hasTagmark: false,
-      prefix: null
-    };
-    const result = {
-      isRange: true,
-      isVertical: true,
-      start: 0,
-      end: 100,
-      step: 50,
-      hasTagmark: false,
-      prefix: null,
-      color: '#53b6a8',
-      scaleStep: 100,
-    };
-    model.updateOptions(newOptions);
-    expect(model.getOptions()).toMatchObject(result);
-  });
-
-  test('Update values from and to', () => {
+  test('Update values "from" and "to"', () => {
     model.updateValues(0, 50);
     expect(model.getOptions().to).toBe(50);
   });
+
+  test('Updated model calls method update values', () => {
+    model.updateValues = jest.fn();
+    model.updateModel({index: 0, positionInPercents: 40});
+    expect(model.updateValues).toBeCalled();
+    expect(model.updateValues).toBeCalledWith(0, 25);
+  });
+
+  test('Method update options calls create options', () => {
+    model.createOptions = jest.fn();
+    model.updateOptions(options);
+    expect(model.createOptions).toBeCalled();
+  });
+
+  test('Method create options set NumberSliderOptions', () => {
+    expect(model.getOptions()).toBeInstanceOf(NumberSliderOptions);
+  });
 });
 
-describe('Value model', () => {
+describe('Value model with range', () => {
   const options = {
-    isRange: false,
+    isRange: true,
     isVertical: false,
     prefix: null,
     hasTagmark: true,
-    values: ['one', 'two', 'three']
+    values: ['one', 'two', 'three', 'four', 'five']
   };
-  const slider = new Model(options);
-  slider.init();
-
-  test ('Selected value', () => {
-    expect(slider.updateModel({ positionInPercents: 0, index: 0 })).toMatchObject([{'positionInPercents': 0, 'value': 'one'}]);
-    expect(slider.updateModel({ positionInPercents: 100, index: 0 })).toMatchObject([{'positionInPercents': 100, 'value': 'three'}]);
-  });
+  const model = new Model(options);
+  model.init();
 
   test('Init model', () => {
-    slider.modelChanged.notify = jest.fn();
-    slider.init();
-    expect(slider.modelChanged.notify).toBeCalled();
+    model.modelChanged.notify = jest.fn();
+    model.init();
+    expect(model.modelChanged.notify).toBeCalled();
+  });
+
+  test('Method create options set NumberSliderOptions', () => {
+    expect(model.getOptions()).toBeInstanceOf(ValueSliderOptions);
+  });
+
+  test('Update values "from" and "to"', () => {
+    model.updateValues(0, 'two');
+    model.updateValues(1, 'five');
+    expect(model.getOptions().from).toBe('two');
+    expect(model.getOptions().to).toBe('five');
+  });
+
+  test('Updated model calls method update values', () => {
+    model.updateValues = jest.fn();
+    model.updateModel({index: 0, positionInPercents: 40});
+    expect(model.updateValues).toBeCalled();
+    expect(model.updateValues).toBeCalledWith(0, 'three');
   });
 });

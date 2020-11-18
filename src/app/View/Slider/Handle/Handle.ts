@@ -35,11 +35,12 @@ export default class Handle {
     }
   }
 
-  updateHandlePosition(data: {positionInPercents: number, isVertical: boolean, tagmark: string}) {
-    const { positionInPercents, isVertical, tagmark } = data;
+  updateHandlePosition(data: {positionInPercents: number, isVertical: boolean}) {
+    const { positionInPercents, isVertical } = data;
     this.moveHandle(positionInPercents, isVertical);
-    if (this.tagmark) {
-      this.tagmark.setTextContent(tagmark);
-    }
+  }
+
+  updateTagmarkValue(value: string) {
+    this.tagmark.setTextContent(value);
   }
 }

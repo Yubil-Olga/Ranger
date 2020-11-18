@@ -115,14 +115,17 @@ export default class Slider {
 
   update(data: {positionInPercents: number, index: number, value: string}): void {
     const { positionInPercents, index, value } = data;
-    const prefix = this.options.prefix ? ' ' + this.options.prefix : '';
-    const tagmark = value + prefix;
 
     this.handles[index].updateHandlePosition({
       positionInPercents: positionInPercents,
-      isVertical: this.options.isVertical,
-      tagmark: tagmark
+      isVertical: this.options.isVertical
     });
+
+    if (this.options.hasTagmark) {
+      const prefix = this.options.prefix ? ' ' + this.options.prefix : '';
+      const tagmark = value + prefix;
+      this.handles[index].updateTagmarkValue(tagmark);
+    }
 
     this.bar.moveBar({
       index: index,

@@ -16,12 +16,6 @@ describe('Single slider', () => {
   };
   const view = new View(options, div);
 
-  test ('Selected thumbler', () => {
-    const event = new MouseEvent('click');
-    view.slider.handles[0].handle.style.top = '5%';
-    expect(view.slider.getActiveHandleIndex({ positionInPercents: 100, handles: view.slider.handles })).toBe(0);
-  });
-
   test ('Click event', () => {
     const smth = new MouseEvent('click', {
       clientX: 140
@@ -72,13 +66,6 @@ describe('Double slider', () => {
   };
   const view = new View(options, div);
 
-  test ('Selected thumbler', () => {
-    view.slider.handles[0].moveHandle(5, true);
-    view.slider.handles[1].moveHandle(80, true);
-
-    expect(view.slider.getActiveHandleIndex({ positionInPercents: 100, handles: view.slider.handles })).toBe(1);
-  });
-
   test('Call comand', () => {
     view.viewChanged.notify = jest.fn();
     view.viewChanged.notify({ trackWidth: 261, position: 100, index: 0 });
@@ -100,28 +87,6 @@ describe('Double slider', () => {
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 30, index: 0 });
     expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0.5s');
-  });
-
-  test ('Click event: coord more then width of the element', () => {
-    const smth = new MouseEvent('click', {
-      clientY: 410
-    });
-    Object.defineProperty(view.slider.getElement(), 'clientHeight', {value: 360, configurable: true});
-    view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
-    expect(view.viewChanged.notify).toBeCalled();
-    expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 100, index: 1 });
-  });
-
-  test ('Click event: coord less then 0', () => {
-    const smth = new MouseEvent('click', {
-      clientY: 180
-    });
-    Object.defineProperty(view.slider.getElement(), 'clientHeight', {value: 260, configurable: true});
-    view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
-    expect(view.viewChanged.notify).toBeCalled();
-    expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 50, index: 1 });
   });
 
   test('Transition duration', () => {
