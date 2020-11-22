@@ -11,10 +11,10 @@ export default class Model {
   public optionsChanged = new EventDispatcher();
 
   constructor(settings: IOptions) {
-    this.createOptions(settings);
+    this.validateOptions(settings);
   }
 
-  public createOptions(options: IOptions) {
+  public validateOptions(options: IOptions) {
     const values = Array.isArray(options.values) ? options.values : [];
     this.options = values.length > 1
       ? new ValueSliderOptions(values, options)
@@ -22,7 +22,10 @@ export default class Model {
   }
 
   public updateOptions(options: IOptions) {
-    this.createOptions(options);
+    Object.keys(options).forEach((el) => {
+      this.options[el] = options[el];
+    });
+    this.validateOptions(this.options);
     this.optionsChanged.notify(this.options);
     this.init();
   }

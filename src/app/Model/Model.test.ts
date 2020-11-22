@@ -47,9 +47,9 @@ describe('Number model', () => {
   });
 
   test('Method update options calls create options', () => {
-    model.createOptions = jest.fn();
+    model.validateOptions = jest.fn();
     model.updateOptions(options);
-    expect(model.createOptions).toBeCalled();
+    expect(model.validateOptions).toBeCalled();
   });
 
   test('Method create options set NumberSliderOptions', () => {

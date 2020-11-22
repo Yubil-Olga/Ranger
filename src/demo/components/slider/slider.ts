@@ -22,7 +22,7 @@ export default class Slider {
   }
 
   setPropertyValue(name: string, value: string | number | boolean |string[]) {
-    const settings = this.$slider.perfectSlider('getOptions').get(0);
+    const settings: IOptions = {};
     settings[name] = value;
     this.$slider.perfectSlider('setOptions', settings);
   }
