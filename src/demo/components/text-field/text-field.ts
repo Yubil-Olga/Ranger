@@ -1,10 +1,12 @@
 import bind from 'bind-decorator';
 import Slider from '../slider/slider';
+import EventDispatcher from '../../../app/EventDispatcher/EventDispatcher';
 
 export default class TextField {
   public $textField: JQuery<Object>;
   public name: string
   public slider: Slider;
+  public textFieldChanged = new EventDispatcher();
 
   constructor($container: JQuery<Object>, slider: Slider) {
     this.slider = slider;
@@ -29,6 +31,9 @@ export default class TextField {
     const newValue = this.slider.getPropertyValue(this.name);
     this.$textField.val(newValue);
     this.updateStyle(newValue);
+
+    const isDisabled = this.name === 'from' && !this.slider.getPropertyValue('isRange');
+    (<HTMLInputElement>this.$textField[0]).disabled = isDisabled;
   }
 
   updateStyle(newValue: string) {
@@ -51,5 +56,6 @@ export default class TextField {
   @bind
   handleInputChange() {
     this.slider.setPropertyValue(this.name, this.getValue());
+    this.textFieldChanged.notify(this);
   }
 }

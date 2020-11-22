@@ -9,25 +9,28 @@ export default class ValueSliderOptions extends Options {
   constructor(values: Array<string>, options: IOptions) {
     super(options);
     this.values = values;
-    this.from = this.isRange ? this.getFromValue(<string>options.from) : null;
-    this.to = this.getToValue(<string>options.to);
+    this.from = this.isRange ? this.getFromValue(options) : null;
+    this.to = this.getToValue(options);
   }
 
-  getFromValue(from: string) {
-    const isFromValueValid = this.values.includes(from)
-      && this.values.indexOf(from) < this.values.length -1;
+  getFromValue(options: IOptions) {
+    const isFromValueValid = typeof options.from === 'string'
+      && this.values.includes(options.from)
+      && this.values.indexOf(options.from) < this.values.length -1;
 
-    return isFromValueValid ? from : this.values[0];
+    return isFromValueValid ? <string>options.from : this.values[0];
   }
 
-  getToValue(to: string) {
+  getToValue(options: IOptions) {
     if (this.isRange) {
-      return this.values.indexOf(to) > this.values.indexOf(this.from)
-        ? to
+      const isToValueValid = typeof options.to === 'string' && this.values.indexOf(options.to) > this.values.indexOf(this.from);
+      return isToValueValid
+        ? <string>options.to
         : this.values[this.values.indexOf(this.from) + 1];
     } else {
-      return this.values.includes(to)
-        ? to
+      const isToValueValid = typeof options.to === 'string' && this.values.includes(options.to);
+      return isToValueValid
+        ? <string>options.to
         : this.values[1];
     }
   }

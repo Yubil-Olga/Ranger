@@ -48,6 +48,11 @@ export default class ControlPanel {
       const textField = new TextField($(element), this.slider);
       this.textFields[textField.name] = textField;
       this.textFields[textField.name].updateValue();
+      this.textFields[textField.name].textFieldChanged.attach(() => this.updateFields());
     });
+  }
+
+  updateFields() {
+    Object.values(this.textFields).forEach((field) => field.updateValue());
   }
 }
