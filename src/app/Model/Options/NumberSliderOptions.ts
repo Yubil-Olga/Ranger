@@ -16,33 +16,37 @@ export default class NumberSliderOptions extends Options {
     this.end = this.isUserSettingsValid(options) ? options.end : this.defaultOptions.end;
     this.step = this.isStepValid(options) ? options.step : this.defaultOptions.step;
     this.scaleStep = this.getScaleStep(options);
-    this.from = this.isRange ? this.getFromValue(options.from) : null;
-    this.to = this.getToValue(options.to);
+    this.from = this.isRange ? this.getFromValue(options) : null;
+    this.to = this.getToValue(options);
   }
 
-  getFromValue(from: number | string) {
-    const isFromValueValid = from !== ''
-      && from !== null
-      && Number(from) >= this.start
-      && Number(from) < this.end
-      && Number(from) % this.step === 0;
+  getFromValue(options: IOptions) {
+    if (typeof options.from === 'number') {
+      const isFromValueValid = options.from >= this.start
+      && options.from < this.end
+      && options.from % this.step === 0;
 
-    return isFromValueValid ? Number(from) : this.start;
-  }
-
-  getToValue(to: number | string) {
-    if (this.isRange) {
-      const isToValueValid = to !== ''
-        && Number(to) <= this.end
-        && Number(to) > this.from
-        && Number(to) % this.step === 0;
-      return isToValueValid ? Number(to) : Number(this.from) + this.step;
+      return isFromValueValid ? options.from : this.start;
     } else {
-      const isToValueValid = to !== ''
-        && Number(to) > this.start
-        && Number(to) < this.end
-        && Number(to) % this.step === 0;
-      return isToValueValid ? Number(to) : this.start;
+      return this.start;
+    }
+  }
+
+  getToValue(options: IOptions) {
+    if (this.isRange) {
+      const isToValueValid = typeof options.to === 'number'
+        && options.to <= this.end
+        && options.to > this.from
+        && options.to % this.step === 0;
+
+      return isToValueValid ? options.to as number : this.from + this.step;
+    } else {
+      const isToValueValid = typeof options.to === 'number'
+        && options.to > this.start
+        && options.to < this.end
+        && options.to % this.step === 0;
+
+      return isToValueValid ? options.to as number : this.start;
     }
   }
 

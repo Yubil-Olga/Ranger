@@ -28,12 +28,26 @@ export default class TextField {
   }
 
   updateValue() {
-    const newValue = this.slider.getPropertyValue(this.name);
-    this.$textField.val(newValue);
-    this.updateStyle(newValue);
+    if (this.name === 'from' || this.name === 'to') {
+      this.updateType();
+    }
 
     const isDisabled = this.name === 'from' && !this.slider.getPropertyValue('isRange');
     (<HTMLInputElement>this.$textField[0]).disabled = isDisabled;
+
+    const newValue = this.slider.getPropertyValue(this.name);
+    this.$textField.val(newValue);
+    this.updateStyle(newValue);
+  }
+
+  updateType() {
+    if (!this.slider.getPropertyValue('values')) {
+      this.$textField.attr('type', 'number');
+      this.$textField.attr('step', this.slider.getPropertyValue('step'));
+    } else {
+      this.$textField.attr('type', 'string');
+      this.$textField.removeAttr('step');
+    }
   }
 
   updateStyle(newValue: string) {
