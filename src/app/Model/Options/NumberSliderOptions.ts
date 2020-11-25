@@ -39,14 +39,14 @@ export default class NumberSliderOptions extends Options {
         && options.to > this.from
         && options.to % this.step === 0;
 
-      return isToValueValid ? options.to as number : this.from + this.step;
+      return isToValueValid && typeof options.to === 'number' ? options.to : this.from + this.step;
     } else {
       const isToValueValid = typeof options.to === 'number'
         && options.to > this.start
         && options.to < this.end
         && options.to % this.step === 0;
 
-      return isToValueValid ? options.to as number : this.start;
+      return isToValueValid && typeof options.to === 'number' ? options.to as number : this.start;
     }
   }
 
