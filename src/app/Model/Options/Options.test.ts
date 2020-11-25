@@ -120,9 +120,7 @@ describe('Options validation', () => {
     expect(model.getOptions().from).toBe('three');
   });
 
-  test('Set "to"-value for handle', () => {
-    expect(model.getOptions().to).toBe(0);
-
+  test('Set "to"-value for handle, when number-slider is range', () => {
     model.validateOptions({start: 10, end: 50, isRange: true});
     expect(model.getOptions().to).toBe(11);
 
@@ -134,16 +132,24 @@ describe('Options validation', () => {
 
     model.validateOptions({start: 10, end: 50, isRange: true, step: 5});
     expect(model.getOptions().to).toBe(15);
+  });
+
+  test('Set "to"-value for handle, when number-slider is not range', () => {
+    expect(model.getOptions().to).toBe(0);
 
     model.validateOptions({start: 10, end: 50, isRange: false, to: 30});
     expect(model.getOptions().to).toBe(30);
+  });
 
+  test('Set "to"-value for handle, when value-slider is range', () => {
     model.validateOptions({values: ['one', 'two', 'three', 'four', 'five'], isRange: true, to: 'three'});
     expect(model.getOptions().to).toBe('three');
 
     model.validateOptions({values: ['one', 'two', 'three', 'four', 'five'], isRange: true, to: 'ten'});
     expect(model.getOptions().to).toBe('two');
+  });
 
+  test('Set "to"-value for handle, when value-slider is not range', () => {
     model.validateOptions({values: ['one', 'two', 'three', 'four', 'five'], isRange: false, to: 'five'});
     expect(model.getOptions().to).toBe('five');
   });
