@@ -28,7 +28,7 @@ describe('Number slider', () => {
     expect(slider.getActiveHandleIndex({ positionInPercents: 100, handles: slider.handles })).toBe(0);
   });
 
-  test ('Click event: coord more then width of the element', () => {
+  test ('Click event: coordinate more then width of the element', () => {
     const click = new MouseEvent('click', {
       clientX: 410
     });

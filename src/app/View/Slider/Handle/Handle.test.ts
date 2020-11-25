@@ -29,7 +29,7 @@ describe('Handle without tagmark', () => {
 describe('Handle: test methods', () => {
   const handle = new Handle(trackElement, true);
 
-  test('Horisontal slider: move handle', () => {
+  test('Horizontal slider: move handle', () => {
     Object.defineProperty(trackElement, 'clientWidth', {value: 300, configurable: true});
     Object.defineProperty(handle.handle, 'clientWidth', {value: 30, configurable: true});
     handle.moveHandle(20, false);

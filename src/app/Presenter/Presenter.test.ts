@@ -28,9 +28,9 @@ describe('Creation of presenter', () => {
 
   test('Model changed', () => {
     presenter.updateViewData = jest.fn();
-    model.modelChanged.notify([{value: '20', coord: 20}]);
+    model.modelChanged.notify([{value: '20', coordinate: 20}]);
     expect(presenter.updateViewData).toBeCalled();
-    expect(presenter.updateViewData).toBeCalledWith([{value: '20', coord: 20}]);
+    expect(presenter.updateViewData).toBeCalledWith([{value: '20', coordinate: 20}]);
   });
 
   test('Options changed', () => {
@@ -43,7 +43,7 @@ describe('Creation of presenter', () => {
       hasTagmark: false,
       prefix: null,
       color: null,
-      scalestep: 100,
+      scaleStep: 100,
     };
     presenter.updateViewOptions = jest.fn();
     model.optionsChanged.notify(newOptions);

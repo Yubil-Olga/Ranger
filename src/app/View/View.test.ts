@@ -17,7 +17,7 @@ describe('Single slider', () => {
   const view = new View(options, div);
 
   test ('Click event', () => {
-    const smth = new MouseEvent('click', {
+    const click = new MouseEvent('click', {
       clientX: 140
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260, configurable: true});
@@ -28,7 +28,7 @@ describe('Single slider', () => {
     });
 
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
+    view.slider.handleSliderClick(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 50, index: 0 });
   });
@@ -66,14 +66,14 @@ describe('Double slider', () => {
   };
   const view = new View(options, div);
 
-  test('Call comand', () => {
+  test('Call command', () => {
     view.viewChanged.notify = jest.fn();
     view.viewChanged.notify({ trackWidth: 261, position: 100, index: 0 });
     expect(view.viewChanged.notify).toBeCalledWith({trackWidth: 261, position: 100, index: 0});
   });
 
   test ('Click event', () => {
-    const smth = new MouseEvent('click', {
+    const click = new MouseEvent('click', {
       clientY: 128
     });
     Object.defineProperty(view.slider.getElement(), 'clientHeight', {value: 260, configurable: true});
@@ -83,7 +83,7 @@ describe('Double slider', () => {
       }
     });
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
+    view.slider.handleSliderClick(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 30, index: 0 });
     expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0.5s');
@@ -108,7 +108,7 @@ describe('One more slider', () => {
   };
   const view = new View(options, div);
 
-  test ('Selected thumbler', () => {
+  test ('Selected handle', () => {
     view.slider.handles[0].moveHandle(5, true);
     view.slider.handles[1].moveHandle(80, true);
 
@@ -122,7 +122,7 @@ describe('One more slider', () => {
   });
 
   test ('Click event', () => {
-    const smth = new MouseEvent('click', {
+    const click = new MouseEvent('click', {
       clientX: 140
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260});
@@ -132,30 +132,30 @@ describe('One more slider', () => {
       }
     });
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
+    view.slider.handleSliderClick(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 50, index: 1 });
     expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0.5s');
   });
 
-  test ('Click event: coord more then width of the element', () => {
-    const smth = new MouseEvent('click', {
+  test ('Click event: coordinate more then width of the element', () => {
+    const click = new MouseEvent('click', {
       clientX: 270
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260});
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
+    view.slider.handleSliderClick(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 100, index: 1 });
   });
 
-  test ('Click event: coord less then 0', () => {
-    const smth = new MouseEvent('click', {
+  test ('Click event: coordinate less then 0', () => {
+    const click = new MouseEvent('click', {
       clientX: 10
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260});
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(smth);
+    view.slider.handleSliderClick(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 0, index: 0 });
   });

@@ -20,12 +20,12 @@ describe('Bar', () => {
     expect(bar.bar.style.bottom).toBe('20%');
   });
 
-  test('Horisontal slider without range: move bar to', () => {
+  test('Horizontal slider without range: move bar to', () => {
     bar.moveBar({index: 0, positionInPercents: 70, isRange: false, isVertical: false});
     expect(bar.bar.style.right).toBe('30%');
   });
 
-  test('Horisontal slider with range: move bar from', () => {
+  test('Horizontal slider with range: move bar from', () => {
     bar.moveBar({index: 0, positionInPercents: 10, isRange: true, isVertical: false});
     expect(bar.bar.style.left).toBe('10%');
   });

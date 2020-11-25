@@ -96,11 +96,11 @@ export default class Slider {
       const min = handles[0].getCurrentPosition();
       const max = handles[1].getCurrentPosition();
 
-      const isMaxThumblerSelected: boolean =
+      const isMaxHandleSelected: boolean =
         (positionInPercents - max) > 0 ||
         (positionInPercents - min) > (max - positionInPercents);
 
-      index = isMaxThumblerSelected ? 1 : 0;
+      index = isMaxHandleSelected ? 1 : 0;
     }
 
     return index;
