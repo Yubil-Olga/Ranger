@@ -57,7 +57,8 @@ export default class Model {
   public positionCalculation(data: {positionInPercents: number, step: number}): number {
     const { positionInPercents, step } = data;
     const newPosition = Math.round(positionInPercents / step) * step;
-    return newPosition;
+
+    return newPosition < 100 ? newPosition : 100;
   }
 
   public updateModel(data: {positionInPercents: number, index: number}) {
