@@ -1,5 +1,4 @@
 import Model from '../Model/Model';
-import View from '../View/View';
 import Presenter from './Presenter';
 window.CSS = { escape: jest.fn(), supports: jest.fn()};
 
@@ -16,7 +15,6 @@ describe('Creation of presenter', () => {
   };
   const model = new Model(options);
   const presenter = new Presenter(div, model);
-  const view = new View(model.getOptions(), div);
   model.init();
 
   test('Update model', () => {
