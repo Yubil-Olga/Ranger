@@ -46,7 +46,7 @@ export default class NumberSliderOptions extends Options {
         && options.to < this.end
         && options.to % this.step === 0;
 
-      return isToValueValid && typeof options.to === 'number' ? options.to as number : this.start;
+      return isToValueValid && typeof options.to === 'number' ? options.to : this.start;
     }
   }
 
