@@ -22,7 +22,9 @@ export default class Handle {
     return this.currentPositionInPercents;
   }
 
-  public moveHandle( positionInPercents: number, isVertical: boolean ) {
+  public moveHandle( data: {positionInPercents: number, isVertical: boolean} ) {
+    const { positionInPercents, isVertical } = data;
+
     this.currentPositionInPercents = positionInPercents;
 
     const widthInPercents = (this.handle.clientWidth / this.trackElement.clientWidth) * 100;
@@ -33,11 +35,6 @@ export default class Handle {
     } else {
       this.handle.style.left = (positionInPercents - widthInPercents / 2) + '%';
     }
-  }
-
-  updateHandlePosition(data: {positionInPercents: number, isVertical: boolean}) {
-    const { positionInPercents, isVertical } = data;
-    this.moveHandle(positionInPercents, isVertical);
   }
 
   updateTagmarkValue(value: string) {

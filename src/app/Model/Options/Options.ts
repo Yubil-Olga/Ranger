@@ -15,10 +15,12 @@ export default class Options implements IOptions  {
   }
 
   init(settings: IOptions): void {
-    this.isRange = typeof settings.isRange === 'boolean' ? settings.isRange : this.defaultOptions.isRange;
-    this.isVertical = typeof settings.isVertical === 'boolean' ? settings.isVertical : this.defaultOptions.isVertical;
-    this.prefix = typeof settings.prefix === 'string' ? settings.prefix : this.defaultOptions.prefix;
-    this.color = typeof settings.color === 'string' ? settings.color : this.defaultOptions.color;
-    this.hasTagmark = typeof settings.hasTagmark === 'boolean' ? settings.hasTagmark : this.defaultOptions.hasTagmark;
+    const {isRange, isVertical, prefix, color, hasTagmark} = settings;
+
+    this.isRange = typeof isRange === 'boolean' ? isRange : this.defaultOptions.isRange;
+    this.isVertical = typeof isVertical === 'boolean' ? isVertical : this.defaultOptions.isVertical;
+    this.prefix = typeof prefix === 'string' ? prefix : this.defaultOptions.prefix;
+    this.color = typeof color === 'string' ? color : this.defaultOptions.color;
+    this.hasTagmark = typeof hasTagmark === 'boolean' ? hasTagmark : this.defaultOptions.hasTagmark;
   }
 }

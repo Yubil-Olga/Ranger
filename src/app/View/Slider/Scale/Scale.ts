@@ -15,28 +15,32 @@ export default class Scale {
   }
 
   init(options: IOptions) {
-    if (options.values) {
-      const percent = 100 / (options.values.length - 1);
-      options.values.forEach((el, index) => {
+    const {isVertical, start, end, scaleStep, values} = options;
+
+    if (values) {
+      const percent = 100 / (values.length - 1);
+      values.forEach((el, index) => {
         const position = index * percent + '%';
-        this.addMark(el, options.isVertical, position);
+        this.addMark({tag: el, isVertical: isVertical, position: position});
       });
     } else {
-      const count: number = Math.ceil((options.end - options.start) / options.scaleStep) + 1;
-      const percent = (options.scaleStep / (options.end - options.start)) * 100;
+      const count: number = Math.ceil((end - start) / scaleStep) + 1;
+      const percent = (scaleStep / (end - start)) * 100;
       Array(count).fill('').forEach((el,index) => {
-        const tag = index * options.scaleStep + options.start < options.end
-          ? (index * options.scaleStep + options.start).toString()
-          : options.end.toString();
+        const tag = index * scaleStep + start < end
+          ? (index * scaleStep + start).toString()
+          : end.toString();
         const position = index * percent < 100
           ? index * percent + '%'
           : '100%';
-        this.addMark(tag, options.isVertical, position);
+        this.addMark({tag: tag, isVertical: isVertical, position: position});
       });
     }
   }
 
-  addMark(tag: string, isVertical: boolean, position: string): void {
+  addMark(data : {tag: string, isVertical: boolean, position: string}): void {
+    const {tag, isVertical, position} = data;
+
     const labelMark = document.createElement('span');
     labelMark.className = 'perfect-slider__scale-mark';
     labelMark.setAttribute('data-text', tag);

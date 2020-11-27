@@ -109,8 +109,8 @@ describe('One more slider', () => {
   const view = new View(options, div);
 
   test ('Selected handle', () => {
-    view.slider.handles[0].moveHandle(5, true);
-    view.slider.handles[1].moveHandle(80, true);
+    view.slider.handles[0].moveHandle({positionInPercents: 5, isVertical: true});
+    view.slider.handles[1].moveHandle({positionInPercents: 80, isVertical: true});
 
     expect(view.slider.getActiveHandleIndex({ positionInPercents: 100, handles: view.slider.handles })).toBe(1);
   });

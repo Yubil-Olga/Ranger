@@ -69,8 +69,8 @@ describe('Value slider with range', () => {
   const slider = new Slider(options);
 
   test ('Selected handle', () => {
-    slider.handles[0].moveHandle(5, true);
-    slider.handles[1].moveHandle(80, true);
+    slider.handles[0].moveHandle({positionInPercents: 5, isVertical: true});
+    slider.handles[1].moveHandle({positionInPercents: 80, isVertical: true});
 
     expect(slider.getActiveHandleIndex({ positionInPercents: 100, handles: slider.handles })).toBe(1);
   });

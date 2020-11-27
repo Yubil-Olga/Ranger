@@ -116,7 +116,7 @@ export default class Slider {
   update(data: {positionInPercents: number, index: number, value: string}): void {
     const { positionInPercents, index, value } = data;
 
-    this.handles[index].updateHandlePosition({
+    this.handles[index].moveHandle({
       positionInPercents: positionInPercents,
       isVertical: this.options.isVertical
     });

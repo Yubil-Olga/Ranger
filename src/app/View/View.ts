@@ -49,9 +49,11 @@ export default class View {
   }
 
   update(data: {positionInPercents: number, index: number, value: string}) {
+    const {index, value} = data;
+
     this.slider.update(data);
     const attributes = this.options.isRange ? [ 'from', 'to'] : ['to'];
-    this.setDataAttributes(attributes[data.index], data.value);
+    this.setDataAttributes(attributes[index], value);
     this.rootElement.dispatchEvent(new Event('changeHandle'));
   }
 

@@ -20,7 +20,7 @@ describe('Number model', () => {
   });
 
   test('Model returns correct data', () => {
-    expect(model.getData()).toEqual([{ value: '-25', positionInPercents: 0, index: 0}]);
+    expect(model.getData()).toEqual([{ value: -25, positionInPercents: 0, index: 0}]);
   });
 
   test('Step calculation return size of one step in %', () => {
@@ -29,9 +29,9 @@ describe('Number model', () => {
 
   test('Position calculation return correct position in %', () => {
     expect(model.positionCalculation({ positionInPercents: 100, step:25, })).toBe(100);
-    expect(model.positionCalculation({ positionInPercents: 100, step: 30, })).toBe(90);
+    expect(model.positionCalculation({ positionInPercents: 100, step: 30, })).toBe(100);
     expect(model.positionCalculation({ positionInPercents: 50, step: 10, })).toBe(50);
-    expect(model.positionCalculation({ positionInPercents: 50, step: 120, })).toBe(0);
+    expect(model.positionCalculation({ positionInPercents: 50, step: 120, })).toBe(100);
   });
 
   test('Update values "from" and "to"', () => {

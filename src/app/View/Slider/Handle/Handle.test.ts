@@ -32,21 +32,14 @@ describe('Handle: test methods', () => {
   test('Horizontal slider: move handle', () => {
     Object.defineProperty(trackElement, 'clientWidth', {value: 300, configurable: true});
     Object.defineProperty(handle.handle, 'clientWidth', {value: 30, configurable: true});
-    handle.moveHandle(20, false);
+    handle.moveHandle({positionInPercents: 20, isVertical: false});
     expect(handle.handle.style.left).toBe('15%');
   });
 
   test('Vertical slider: move handle', () => {
     Object.defineProperty(trackElement, 'clientHeight', {value: 300, configurable: true});
     Object.defineProperty(handle.handle, 'clientHeight', {value: 30, configurable: true});
-    handle.moveHandle(50, true);
+    handle.moveHandle({positionInPercents: 50, isVertical: true});
     expect(handle.handle.style.top).toBe('45%');
-  });
-
-  test('Update handle position: move handle is called', () => {
-    handle.moveHandle = jest.fn();
-    handle.updateHandlePosition({positionInPercents: 20, isVertical: true});
-    expect(handle.moveHandle).toBeCalled();
-    expect(handle.moveHandle).toBeCalledWith(20, true);
   });
 });

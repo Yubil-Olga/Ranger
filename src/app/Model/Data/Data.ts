@@ -11,10 +11,12 @@ export default class Data {
   }
 
   private init(options: IOptions, value: string | number) {
-    this.value = value.toString();
-    this.positionInPercents = options.values
-      ? options.values.indexOf(<string>value)/(options.values.length - 1) * 100
-      : (<number>value - options.start)/(options.end - options.start) * 100;
+    const {values, start, end} = options;
+
+    this.value = value;
+    this.positionInPercents = !values && typeof value === 'number'
+      ? (value - options.start)/(end - start) * 100
+      : options.values.indexOf(value.toString())/(values.length - 1) * 100;
   }
 
   public update(value: string | number, positionInPercents: number): void {
