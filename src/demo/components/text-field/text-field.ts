@@ -44,6 +44,7 @@ export default class TextField {
     if (!this.slider.getPropertyValue('values')) {
       this.$textField.attr('type', 'number');
       this.$textField.attr('step', this.slider.getPropertyValue('step'));
+      this.$textField.attr('min', this.slider.getPropertyValue('start'));
     } else {
       this.$textField.attr('type', 'string');
       this.$textField.removeAttr('step');
