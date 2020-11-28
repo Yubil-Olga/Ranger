@@ -41,7 +41,7 @@ describe('Number slider', () => {
   test ('Mousemove', () => {
     const spy = jest.spyOn(slider, 'handleSliderClick');
     const mousemove = new MouseEvent('mousemove');
-    slider.handleHandleMouseDown();
+    slider.handleHandleMouseDown(mousemove);
     document.dispatchEvent(mousemove);
     expect(spy).toBeCalled();
   });

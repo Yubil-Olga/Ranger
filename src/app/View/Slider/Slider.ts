@@ -76,7 +76,8 @@ export default class Slider {
   }
 
   @bind
-  handleHandleMouseDown() {
+  handleHandleMouseDown(event: MouseEvent) {
+    event.preventDefault();
     document.addEventListener('mousemove', this.handleSliderClick);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }
