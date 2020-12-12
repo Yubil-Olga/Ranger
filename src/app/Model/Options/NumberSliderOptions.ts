@@ -33,29 +33,27 @@ export default class NumberSliderOptions extends Options {
   }
 
   getToValue(to: number | string) {
+    if (typeof to === 'number') {
+      if (this.isToValueValid(to)) return to;
+      if (to > this.end) return this.end;
+    }
+    return this.isRange ? this.from + this.step : this.start;
+  }
+
+  private isToValueValid(to: number) {
     if (this.isRange) {
-      const isToValueValid = typeof to === 'number'
-        && to <= this.end
-        && to > this.from
-        && (to - this.start) % this.step === 0;
-
-      return isToValueValid && typeof to === 'number' ? to : this.from + this.step;
+      return (to <= this.end && to > this.from && (to - this.start) % this.step === 0);
     } else {
-      const isToValueValid = typeof to === 'number'
-        && to > this.start
-        && to < this.end
-        && (to - this.start) % this.step === 0;
-
-      return isToValueValid && typeof to === 'number' ? to : this.start;
+      return (to <= this.end && to > this.start && (to - this.start) % this.step === 0);
     }
   }
 
-  isUserSettingsValid(options: IOptions) {
+  private isUserSettingsValid(options: IOptions) {
     const {start, end} = options;
     return (typeof start === 'number' && typeof end === 'number' && start < end);
   }
 
-  isStepValid(options: IOptions) {
+  private isStepValid(options: IOptions) {
     const {start, end, step} = options;
     return (typeof step === 'number' && step > 1 && step < Math.abs(end - start));
   }
@@ -67,7 +65,7 @@ export default class NumberSliderOptions extends Options {
     return (this.end - this.start);
   }
 
-  isScaleStepValid(scaleStep: number) {
+  private isScaleStepValid(scaleStep: number) {
     return (typeof scaleStep === 'number' && scaleStep > 1 && scaleStep < (this.end - this.start));
   }
 }

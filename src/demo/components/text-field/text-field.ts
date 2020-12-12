@@ -46,7 +46,7 @@ export default class TextField {
       this.$textField.attr('step', this.slider.getPropertyValue('step'));
       this.$textField.attr('min', this.slider.getPropertyValue('start'));
     } else {
-      this.$textField.attr('type', 'string');
+      this.$textField.attr('type', 'text');
       this.$textField.removeAttr('step');
     }
   }
@@ -70,7 +70,6 @@ export default class TextField {
 
   @bind
   handleInputChange() {
-    this.slider.setPropertyValue(this.name, this.getValue());
     this.textFieldChanged.notify(this);
   }
 }

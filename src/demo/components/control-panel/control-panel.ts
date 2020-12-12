@@ -48,7 +48,15 @@ export default class ControlPanel {
       const textField = new TextField($(element), this.slider);
       this.textFields[textField.name] = textField;
       this.textFields[textField.name].updateValue();
-      this.textFields[textField.name].textFieldChanged.attach(() => this.updateFields());
+      this.textFields[textField.name].textFieldChanged.attach((field: TextField) => {
+        const isToUpdate = !this.slider.getPropertyValue('isRange')
+          || this.textFields['from'].getValue() !== this.textFields['to'].getValue();
+
+        if (isToUpdate) {
+          this.slider.setPropertyValue(field.name, field.getValue());
+        }
+        this.updateFields();
+      });
     });
   }
 
