@@ -60,12 +60,9 @@ export default class Slider {
       ? Math.round((<MouseEvent>event).clientY - this.slider.getBoundingClientRect().top)
       : Math.round((<MouseEvent>event).clientX- this.slider.getBoundingClientRect().left);
 
-    const isPositionValid: boolean = positionInPixels >= 0
-      && positionInPixels <= width;
-
-    if (!isPositionValid) return;
-
-    const positionInPercents = positionInPixels*100/width;
+    const positionInPercents = positionInPixels <= 0
+      ? 0
+      : positionInPixels >= width ? 100 : positionInPixels*100/width;
 
     this.activeHandleIndex = this.getActiveHandleIndex({
       positionInPercents: positionInPercents,

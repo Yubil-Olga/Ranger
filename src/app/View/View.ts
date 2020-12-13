@@ -40,7 +40,6 @@ export default class View {
         this.setDataAttributes(key, options[key]);
       }
     });
-    this.slider.slider.style.setProperty('--transition', '0 ');
   }
 
   addDispatcher() {

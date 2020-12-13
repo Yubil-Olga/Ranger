@@ -139,6 +139,12 @@ describe('Options validation', () => {
 
     model.validateOptions({start: 10, end: 50, isRange: false, to: 30});
     expect(model.getOptions().to).toBe(30);
+
+    model.validateOptions({start: 10, end: 50, isRange: false, to: 80});
+    expect(model.getOptions().to).toBe(50);
+
+    model.validateOptions({start: 10, end: 50, isRange: false, to: 0});
+    expect(model.getOptions().to).toBe(10);
   });
 
   test('Set "to"-value for handle, when value-slider is range', () => {

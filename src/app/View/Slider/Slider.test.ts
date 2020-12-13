@@ -28,16 +28,6 @@ describe('Number slider', () => {
     expect(slider.getActiveHandleIndex({ positionInPercents: 100, handles: slider.handles })).toBe(0);
   });
 
-  test ('Click event: coordinate more then width of the element', () => {
-    const click = new MouseEvent('click', {
-      clientX: 410
-    });
-    Object.defineProperty(slider.getElement(), 'clientWidth', {value: 360, configurable: true});
-    slider.dispatcher.notify = jest.fn();
-    slider.handleSliderClick(click);
-    expect(slider.dispatcher.notify).not.toBeCalled();
-  });
-
   test ('Mousemove', () => {
     const spy = jest.spyOn(slider, 'handleSliderClick');
     const mousemove = new MouseEvent('mousemove');
