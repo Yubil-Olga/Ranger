@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
-import Slider from '../slider/slider';
-import Checkbox from '../checkbox/checkbox';
-import TextField from '../text-field/text-field';
+import Slider from '../slider/Slider';
+import Checkbox from '../checkbox/Checkbox';
+import TextField from '../text-field/TextField';
 
 export default class ControlPanel {
   public $controlPanel: JQuery<Object>;
@@ -37,14 +37,14 @@ export default class ControlPanel {
 
   initCheckboxes() {
     this.$checkboxes = this.$controlPanel.find('.js-control-panel__checkbox');
-    this.$checkboxes.each((index, element) => {
+    this.$checkboxes.each((_, element) => {
       this.checkboxes.push(new Checkbox($(element), this.slider));
     });
   }
 
   initTextFields() {
     this.$textFields = this.$controlPanel.find('.js-control-panel__text-field');
-    this.$textFields.each((index, element) => {
+    this.$textFields.each((_, element) => {
       const textField = new TextField($(element), this.slider);
       this.textFields[textField.name] = textField;
       this.textFields[textField.name].updateValue();

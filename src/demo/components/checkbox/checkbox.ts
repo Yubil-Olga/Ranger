@@ -1,5 +1,5 @@
 import bind from 'bind-decorator';
-import Slider from '../slider/slider';
+import Slider from '../slider/Slider';
 
 export default class Checkbox {
   public $checkbox: JQuery<Object>;

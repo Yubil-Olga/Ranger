@@ -1,5 +1,5 @@
-import Slider from '../slider/slider';
-import ControlPanel from '../control-panel/control-panel';
+import Slider from '../slider/Slider';
+import ControlPanel from '../control-panel/ControlPanel';
 import { IOptions } from '../../../app/IOptions';
 
 export default class Sample {

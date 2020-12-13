@@ -1,5 +1,5 @@
 import bind from 'bind-decorator';
-import Slider from '../slider/slider';
+import Slider from '../slider/Slider';
 import EventDispatcher from '../../../app/EventDispatcher/EventDispatcher';
 
 export default class TextField {
