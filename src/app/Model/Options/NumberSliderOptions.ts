@@ -60,7 +60,7 @@ export default class NumberSliderOptions extends Options {
 
   getScaleStep(scaleStep: number) {
     if (this.isScaleStepValid(scaleStep)) {
-      return scaleStep;
+      return scaleStep % this.step === 0 ? scaleStep : this.step;
     }
     return (this.end - this.start);
   }
