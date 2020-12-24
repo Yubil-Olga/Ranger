@@ -29,15 +29,16 @@ describe('Number slider', () => {
   });
 
   test ('Mousemove', () => {
-    const spy = jest.spyOn(slider, 'handleSliderClick');
+    const spy = jest.spyOn(slider, 'handleSliderMouseDown');
     const mousemove = new MouseEvent('mousemove');
-    slider.handleHandleMouseDown(mousemove);
+    const mousedown = new MouseEvent('mousedown');
+    slider.handles[0].handle.dispatchEvent(mousedown);
     document.dispatchEvent(mousemove);
     expect(spy).toBeCalled();
   });
 
   test ('End select', () => {
-    const spy = jest.spyOn(slider, 'handleSliderClick');
+    const spy = jest.spyOn(slider, 'handleSliderMouseDown');
     spy.mockClear();
     slider.handleDocumentMouseUp();
     const mousemove = new MouseEvent('mousemove');
@@ -63,5 +64,21 @@ describe('Value slider with range', () => {
     slider.handles[1].moveHandle({positionInPercents: 80, isVertical: true});
 
     expect(slider.getActiveHandleIndex({ positionInPercents: 100, handles: slider.handles })).toBe(1);
+  });
+
+  test ('When window resize, handle corrects position', () => {
+    slider.handles.forEach((handle) => {
+      const spy = jest.spyOn(handle, 'moveHandle');
+      window.dispatchEvent(new Event('resize'));
+
+      expect(spy).toBeCalled();
+    });
+  });
+
+  test ('When window resize, bar corrects position', () => {
+    const spy = jest.spyOn(slider.bar, 'moveBar');
+    window.dispatchEvent(new Event('resize'));
+
+    expect(spy).toBeCalled();
   });
 });

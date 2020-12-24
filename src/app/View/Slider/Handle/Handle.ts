@@ -31,9 +31,9 @@ export default class Handle {
     const heightInPercents = (this.handle.clientHeight / this.trackElement.clientHeight) * 100;
 
     if (isVertical) {
-      this.handle.style.top = (positionInPercents - heightInPercents / 2) + '%';
+      this.handle.style.top = `${positionInPercents - heightInPercents / 2}%`;
     } else {
-      this.handle.style.left = (positionInPercents - widthInPercents / 2) + '%';
+      this.handle.style.left = `${positionInPercents - widthInPercents / 2}%`;
     }
   }
 

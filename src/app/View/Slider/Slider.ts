@@ -13,6 +13,8 @@ export default class Slider {
   public handles: Array<Handle>
   public activeHandleIndex: number
   public dispatcher: EventDispatcher = new EventDispatcher();
+  public shift: {x: number, y: number}
+
 
   constructor(options: IOptions) {
     this.options = options;
@@ -33,13 +35,14 @@ export default class Slider {
   }
 
   bindEventListeners() {
-    this.slider.addEventListener('click', this.handleSliderClick);
+    this.slider.addEventListener('mousedown', this.handleSliderMouseDown);
     this.handles.forEach((handle) => handle.handle.addEventListener('mousedown', this.handleHandleMouseDown));
     this.slider.addEventListener('dragstart', this.handleSliderStopDrag);
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
   removeEventListeners() {
-    this.slider.removeEventListener('click', this.handleSliderClick);
+    this.slider.removeEventListener('click', this.handleSliderMouseDown);
     this.handles.forEach((handle) => handle.handle.removeEventListener('mousedown', this.handleHandleMouseDown));
     this.slider.removeEventListener('dragstart', this.handleSliderStopDrag);
   }
@@ -49,16 +52,23 @@ export default class Slider {
   }
 
   @bind
-  handleSliderClick(event: MouseEvent) {
-    this.setTransitionDuration(event);
+  handleSliderMouseDown(event: MouseEvent) {
+    this.setTransitionDuration(<HTMLElement>event.currentTarget);
+
+    if (event.currentTarget === this.slider) {
+      this.shift = {
+        x: 0,
+        y: 0
+      };
+    }
 
     const width: number = this.options.isVertical
       ? this.slider.clientHeight
       : this.slider.clientWidth;
 
     const positionInPixels: number = this.options.isVertical
-      ? Math.round((<MouseEvent>event).clientY - this.slider.getBoundingClientRect().top)
-      : Math.round((<MouseEvent>event).clientX- this.slider.getBoundingClientRect().left);
+      ? Math.round((<MouseEvent>event).clientY - this.slider.getBoundingClientRect().top - this.shift.y)
+      : Math.round((<MouseEvent>event).clientX - this.slider.getBoundingClientRect().left - this.shift.x);
 
     const positionInPercents = positionInPixels <= 0
       ? 0
@@ -74,15 +84,20 @@ export default class Slider {
 
   @bind
   handleHandleMouseDown(event: MouseEvent) {
+    event.stopPropagation();
     event.preventDefault();
-    document.addEventListener('mousemove', this.handleSliderClick);
+    this.shift = {
+      x: event.clientX - (<HTMLElement>event.currentTarget).getBoundingClientRect().left - (<HTMLElement>event.currentTarget).clientWidth / 2,
+      y: event.clientY - (<HTMLElement>event.currentTarget).getBoundingClientRect().top - (<HTMLElement>event.currentTarget).clientHeight / 2
+    };
+    document.addEventListener('mousemove', this.handleSliderMouseDown);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }
 
   @bind
   handleDocumentMouseUp() {
     document.removeEventListener('mouseup', this.handleDocumentMouseUp);
-    document.removeEventListener('mousemove', this.handleSliderClick);
+    document.removeEventListener('mousemove', this.handleSliderMouseDown);
   }
 
   getActiveHandleIndex(data: {positionInPercents: number, handles: any}): number {
@@ -133,8 +148,24 @@ export default class Slider {
     });
   }
 
-  setTransitionDuration(event: MouseEvent): void {
-    const transition = event.type === 'click' ? '0.5s' : '0';
+  setTransitionDuration(currentTarget: HTMLElement): void {
+    const transition = currentTarget === this.slider ? '0.5s' : '0';
     this.slider.style.setProperty('--transition', transition);
+  }
+
+  @bind
+  handleWindowResize() {
+    this.handles.forEach((handle, index) => {
+      handle.moveHandle({
+        positionInPercents: handle.getCurrentPosition(),
+        isVertical: this.options.isVertical
+      });
+      this.bar.moveBar({
+        index: index,
+        positionInPercents: handle.getCurrentPosition(),
+        isRange: this.options.isRange,
+        isVertical: this.options.isVertical
+      });
+    });
   }
 }

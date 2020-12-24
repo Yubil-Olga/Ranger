@@ -18,7 +18,7 @@ describe('Single slider', () => {
 
   test ('Click event', () => {
     const click = new MouseEvent('click', {
-      clientX: 140
+      clientX: 140,
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260, configurable: true});
     Object.defineProperty(view.slider.getElement(), 'getBoundingClientRect', {
@@ -26,9 +26,13 @@ describe('Single slider', () => {
         return { bottom: 0, height: 0, left: 10, right: 0, top: 50 };
       }
     });
+    view.slider.shift = {
+      x: 0,
+      y: 0
+    };
 
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(click);
+    view.slider.handleSliderMouseDown(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 50, index: 0 });
   });
@@ -73,7 +77,7 @@ describe('Double slider', () => {
   });
 
   test ('Click event', () => {
-    const click = new MouseEvent('click', {
+    const mouseDown = new MouseEvent('mousedown', {
       clientY: 128
     });
     Object.defineProperty(view.slider.getElement(), 'clientHeight', {value: 260, configurable: true});
@@ -82,19 +86,17 @@ describe('Double slider', () => {
         return { bottom: 0, height: 0, left: 10, right: 0, top: 50 };
       }
     });
+    view.slider.shift = {
+      x: 0,
+      y: 0
+    };
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(click);
+    view.slider.getElement().dispatchEvent(mouseDown);
+
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 30, index: 0 });
     expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0.5s');
   });
-
-  test('Transition duration', () => {
-    const mousedown = new MouseEvent('mousedown');
-    view.slider.setTransitionDuration(mousedown);
-    expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0');
-  });
-
 });
 
 describe('One more slider', () => {
@@ -122,8 +124,8 @@ describe('One more slider', () => {
   });
 
   test ('Click event', () => {
-    const click = new MouseEvent('click', {
-      clientX: 140
+    const mouseDown = new MouseEvent('mousedown', {
+      clientX: 140,
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260});
     Object.defineProperty(view.slider.getElement(), 'getBoundingClientRect', {
@@ -131,8 +133,13 @@ describe('One more slider', () => {
         return { bottom: 0, height: 0, left: 10, right: 0, top: 50 };
       }
     });
+    view.slider.shift = {
+      x: 0,
+      y: 0
+    };
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(click);
+    view.slider.getElement().dispatchEvent(mouseDown);
+
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 50, index: 1 });
     expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0.5s');
@@ -144,7 +151,7 @@ describe('One more slider', () => {
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260});
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(click);
+    view.slider.handleSliderMouseDown(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 100, index: 1 });
   });
@@ -155,14 +162,13 @@ describe('One more slider', () => {
     });
     Object.defineProperty(view.slider.getElement(), 'clientWidth', {value: 260});
     view.viewChanged.notify = jest.fn();
-    view.slider.handleSliderClick(click);
+    view.slider.handleSliderMouseDown(click);
     expect(view.viewChanged.notify).toBeCalled();
     expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 0, index: 0 });
   });
 
   test('Transition duration', () => {
-    const mousedown = new MouseEvent('mousedown');
-    view.slider.setTransitionDuration(mousedown);
+    view.slider.setTransitionDuration(view.slider.handles[0].handle);
     expect(view.slider.getElement().style.getPropertyValue('--transition')).toBe('0');
   });
 });
