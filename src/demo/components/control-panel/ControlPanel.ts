@@ -17,32 +17,32 @@ export default class ControlPanel {
     this.bindEventListeners();
   }
 
-  init($container: JQuery<Object>) {
+  private init($container: JQuery<Object>) {
     this.$controlPanel = $container.find('.js-control-panel');
     this.initCheckboxes();
     this.initTextFields();
   }
 
-  bindEventListeners() {
+  private bindEventListeners() {
     this.slider.$slider.on('changeHandle', this.handleSliderChangeHandle);
   }
 
   @bind
-  handleSliderChangeHandle() {
+  private handleSliderChangeHandle() {
     if (this.textFields.from && this.textFields.to) {
       this.textFields.from.updateValue();
       this.textFields.to.updateValue();
     }
   }
 
-  initCheckboxes() {
+  private initCheckboxes() {
     this.$checkboxes = this.$controlPanel.find('.js-control-panel__checkbox');
     this.$checkboxes.each((_, element) => {
       this.checkboxes.push(new Checkbox($(element), this.slider));
     });
   }
 
-  initTextFields() {
+  private initTextFields() {
     this.$textFields = this.$controlPanel.find('.js-control-panel__text-field');
     this.$textFields.each((_, element) => {
       const textField = new TextField($(element), this.slider);
@@ -60,7 +60,7 @@ export default class ControlPanel {
     });
   }
 
-  updateFields() {
+  private updateFields() {
     Object.values(this.textFields).forEach((field) => field.updateValue());
   }
 }

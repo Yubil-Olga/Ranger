@@ -6,7 +6,7 @@ import { IOptions } from './IOptions';
 (function( $ ) {
   $.fn.perfectSlider = function(options?, newOptions?) {
     try {
-      return this.map(function(index: number, element: HTMLElement) {
+      return this.map(function(_: number, element: HTMLElement) {
         if (typeof options === 'object' || !options) {
           const data: IOptions = $(element).data();
           const settings: IOptions = $.extend(data, options);

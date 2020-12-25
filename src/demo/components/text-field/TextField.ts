@@ -40,7 +40,7 @@ export default class TextField {
     this.updateStyle(newValue);
   }
 
-  updateType() {
+  private updateType() {
     if (!this.slider.getPropertyValue('values')) {
       this.$textField.attr('type', 'number');
       this.$textField.attr('step', this.slider.getPropertyValue('step'));
@@ -51,7 +51,7 @@ export default class TextField {
     }
   }
 
-  updateStyle(newValue: string) {
+  private updateStyle(newValue: string) {
     if (newValue === undefined) {
       this.$textField.addClass('text-field__input_disabled');
     } else {
@@ -59,17 +59,17 @@ export default class TextField {
     }
   }
 
-  init($container: JQuery<Object>) {
+  private init($container: JQuery<Object>) {
     this.$textField = $container.find('.js-text-field__input');
     this.name = this.$textField.prop('name');
   }
 
-  bindEventListeners() {
+  private bindEventListeners() {
     this.$textField.on('change', this.handleInputChange);
   }
 
   @bind
-  handleInputChange() {
+  private handleInputChange() {
     this.textFieldChanged.notify(this);
   }
 }

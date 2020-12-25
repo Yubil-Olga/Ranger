@@ -9,11 +9,11 @@ export default class Slider {
     this.init(settings);
   }
 
-  findHTMLElement($container: JQuery<Object>) {
+  private findHTMLElement($container: JQuery<Object>) {
     this.$slider = $container.find('.js-slider');
   }
 
-  init(settings?: IOptions) {
+  private init(settings?: IOptions) {
     this.$slider.perfectSlider(settings);
   }
 

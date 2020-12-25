@@ -12,27 +12,27 @@ export default class Checkbox {
     this.bindEventListeners();
   }
 
-  isChecked() {
+  private isChecked() {
     return this.$checkbox.prop('checked');
   }
 
-  init($container: JQuery<Object>) {
+  private init($container: JQuery<Object>) {
     this.$checkbox = $container.find('.js-checkbox__input');
     this.name = this.$checkbox.prop('name');
     this.updateValue();
   }
 
-  updateValue() {
+  private updateValue() {
     const newValue = this.slider.getPropertyValue(this.name);
     this.$checkbox.prop('checked', newValue);
   }
 
-  bindEventListeners() {
+  private bindEventListeners() {
     this.$checkbox.on('change', this.handleCheckboxChange);
   }
 
   @bind
-  handleCheckboxChange() {
+  private handleCheckboxChange() {
     this.slider.setPropertyValue(this.name, this.isChecked());
   }
 }

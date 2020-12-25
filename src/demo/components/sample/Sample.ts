@@ -14,11 +14,11 @@ export default class Sample {
     this.initSlider();
   }
 
-  findHTMLElement($container: JQuery<Object>) {
+  private findHTMLElement($container: JQuery<Object>) {
     this.$sample = $container.find('.js-sample');
   }
 
-  initSlider() {
+  private initSlider() {
     this.slider = new Slider(this.$sample, this.settings);
     this.controlPanel = new ControlPanel(this.$sample, this.slider);
   }
