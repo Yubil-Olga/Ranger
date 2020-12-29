@@ -1,7 +1,7 @@
-import Options from './Options';
 import { IOptions } from '../../IOptions';
+import Options from './Options';
 
-export default class ValueSliderOptions extends Options {
+class ValueSliderOptions extends Options {
   public values: Array<string>
   public from: string
   public to: string
@@ -13,7 +13,7 @@ export default class ValueSliderOptions extends Options {
     this.to = this.getToValue(options.to);
   }
 
-  getFromValue(from: string | number) {
+  public getFromValue(from: string | number) {
     const isFromValueValid = typeof from === 'string'
       && this.values.includes(from)
       && this.values.indexOf(from) < this.values.length -1;
@@ -21,7 +21,7 @@ export default class ValueSliderOptions extends Options {
     return isFromValueValid && typeof from === 'string' ? from : this.values[0];
   }
 
-  getToValue(to: string | number) {
+  public getToValue(to: string | number) {
     if (this.isRange) {
       const isToValueValid = typeof to === 'string' && this.values.indexOf(to) > this.values.indexOf(this.from);
       return isToValueValid && typeof to === 'string'
@@ -35,3 +35,5 @@ export default class ValueSliderOptions extends Options {
     }
   }
 }
+
+export default ValueSliderOptions;

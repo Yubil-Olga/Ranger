@@ -1,8 +1,8 @@
+import { IOptions } from '../../../app/IOptions';
 import Slider from '../slider/Slider';
 import ControlPanel from '../control-panel/ControlPanel';
-import { IOptions } from '../../../app/IOptions';
 
-export default class Sample {
+class Sample {
   public $sample: JQuery<Object>;
   public settings: IOptions;
   public slider: Slider;
@@ -23,3 +23,5 @@ export default class Sample {
     this.controlPanel = new ControlPanel(this.$sample, this.slider);
   }
 }
+
+export default Sample;

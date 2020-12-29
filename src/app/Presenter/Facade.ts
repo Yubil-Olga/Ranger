@@ -2,7 +2,7 @@ import Model  from '../Model/Model';
 import Presenter from '../Presenter/Presenter';
 import { IOptions } from '../IOptions';
 
-export default class Facade {
+class Facade {
   private model: Model
   private presenter: Presenter
   private container: HTMLElement
@@ -12,12 +12,6 @@ export default class Facade {
     this.init(options);
   }
 
-  private init(options: IOptions) {
-    this.model = new Model(options);
-    this.presenter = new Presenter(this.container, this.model);
-    this.model.init();
-  }
-
   public setOptions(options: IOptions) {
     this.model.updateOptions(options);
   }
@@ -25,4 +19,12 @@ export default class Facade {
   public getOptions() {
     return this.model.getOptions();
   }
+
+  private init(options: IOptions) {
+    this.model = new Model(options);
+    this.presenter = new Presenter(this.container, this.model);
+    this.model.init();
+  }
 }
+
+export default Facade;

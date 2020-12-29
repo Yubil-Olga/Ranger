@@ -2,13 +2,25 @@ import Model from '../Model/Model';
 import View from '../View/View';
 import { IOptions } from '../IOptions';
 
-export default class Presenter {
+class Presenter {
   private model: Model
   private view: View
 
   constructor(element: HTMLElement, model: Model) {
     this.model = model;
     this.init(element);
+  }
+
+  public updateModel(data: {positionInPercents: number, index: number}) {
+    this.model.updateModel(data);
+  }
+
+  public updateViewData(data: {positionInPercents: number, index: number, value: string}): void {
+    this.view.update(data);
+  }
+
+  public updateViewOptions(args: IOptions): void {
+    this.view.render(args);
   }
 
   private init(element: HTMLElement) {
@@ -24,16 +36,6 @@ export default class Presenter {
       presenter.updateViewOptions(args);
     });
   }
-
-  public updateModel(data: {positionInPercents: number, index: number}) {
-    this.model.updateModel(data);
-  }
-
-  public updateViewData(data: {positionInPercents: number, index: number, value: string}): void {
-    this.view.update(data);
-  }
-
-  public updateViewOptions(args: IOptions): void {
-    this.view.render(args);
-  }
 }
+
+export default Presenter;

@@ -1,12 +1,20 @@
 import '../../../app/app';
 import { IOptions } from '../../../app/IOptions';
 
-export default class Slider {
+class Slider {
   public $slider: JQuery<Object>
 
   constructor($container: JQuery<Object>, settings: IOptions) {
     this.findHTMLElement($container);
     this.init(settings);
+  }
+
+  public getPropertyValue(name: string) {
+    return this.$slider.perfectSlider('getOptions').get(0)[name];
+  }
+
+  public setPropertyValue(name: string, value: string | number | boolean | string[]) {
+    this.$slider.perfectSlider('setOptions', {[name]: value});
   }
 
   private findHTMLElement($container: JQuery<Object>) {
@@ -16,12 +24,6 @@ export default class Slider {
   private init(settings?: IOptions) {
     this.$slider.perfectSlider(settings);
   }
-
-  getPropertyValue(name: string) {
-    return this.$slider.perfectSlider('getOptions').get(0)[name];
-  }
-
-  setPropertyValue(name: string, value: string | number | boolean | string[]) {
-    this.$slider.perfectSlider('setOptions', {[name]: value});
-  }
 }
+
+export default Slider;

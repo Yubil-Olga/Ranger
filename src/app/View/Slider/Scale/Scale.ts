@@ -1,6 +1,6 @@
 import { IOptions } from '../../../IOptions';
 
-export default class Scale {
+class Scale {
   public scale: HTMLElement
 
   constructor(trackElement: HTMLElement, options: IOptions) {
@@ -8,13 +8,13 @@ export default class Scale {
     this.init(options);
   }
 
-  createTemplate(trackElement: HTMLElement): void {
+  private createTemplate(trackElement: HTMLElement): void {
     this.scale = document.createElement('div');
     this.scale.className = 'perfect-slider__scale';
     trackElement.append(this.scale);
   }
 
-  init(options: IOptions) {
+  private init(options: IOptions) {
     const {isVertical, start, end, scaleStep, values} = options;
 
     if (values) {
@@ -38,7 +38,7 @@ export default class Scale {
     }
   }
 
-  addMark(data : {tag: string, isVertical: boolean, position: string}): void {
+  private addMark(data : {tag: string, isVertical: boolean, position: string}): void {
     const {tag, isVertical, position} = data;
 
     const labelMark = document.createElement('span');
@@ -52,3 +52,5 @@ export default class Scale {
     this.scale.append(labelMark);
   }
 }
+
+export default Scale;

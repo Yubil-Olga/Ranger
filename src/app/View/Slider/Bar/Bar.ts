@@ -1,4 +1,4 @@
-export default class Bar {
+class Bar {
   public bar: HTMLElement
   public trackElement: HTMLElement
 
@@ -7,13 +7,7 @@ export default class Bar {
     this.createTemplate();
   }
 
-  createTemplate() {
-    this.bar = document.createElement('div');
-    this.bar.className = 'perfect-slider__bar';
-    this.trackElement.append(this.bar);
-  }
-
-  moveBar(data: {index: number, positionInPercents: number, isRange: boolean, isVertical: boolean}) {
+  public moveBar(data: {index: number, positionInPercents: number, isRange: boolean, isVertical: boolean}) {
     const {index, positionInPercents, isRange, isVertical } = data;
 
     if (isRange && index === 0) {
@@ -23,7 +17,13 @@ export default class Bar {
     }
   }
 
-  moveBarFrom(positionInPercents: number, isVertical: boolean) {
+  private createTemplate() {
+    this.bar = document.createElement('div');
+    this.bar.className = 'perfect-slider__bar';
+    this.trackElement.append(this.bar);
+  }
+
+  private moveBarFrom(positionInPercents: number, isVertical: boolean) {
     const barStart = positionInPercents + '%';
 
     if (isVertical) {
@@ -33,7 +33,7 @@ export default class Bar {
     }
   }
 
-  moveBarTo(positionInPercents: number, isVertical: boolean) {
+  private moveBarTo(positionInPercents: number, isVertical: boolean) {
     const barEnd = 100 - positionInPercents + '%';
     if (isVertical) {
       this.bar.style.bottom = barEnd;
@@ -42,3 +42,5 @@ export default class Bar {
     }
   }
 }
+
+export default Bar;

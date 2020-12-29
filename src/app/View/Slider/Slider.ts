@@ -1,11 +1,12 @@
 import bind from 'bind-decorator';
+
+import EventDispatcher from '../../EventDispatcher/EventDispatcher';
+import { IOptions } from '../../IOptions';
 import Handle from './Handle/Handle';
 import Scale from './Scale/Scale';
 import Bar from './Bar/Bar';
-import EventDispatcher from '../../EventDispatcher/EventDispatcher';
-import { IOptions } from '../../IOptions';
 
-export default class Slider {
+class Slider {
   public slider: HTMLElement
   public bar: Bar
   public scale: Scale
@@ -22,33 +23,14 @@ export default class Slider {
     this.bindEventListeners();
   }
 
-  getElement() {
+  public getElement() {
     return this.slider;
   }
 
-  private createTemplate() {
-    this.slider = document.createElement('div');
-    this.slider.className = 'perfect-slider__track';
-    this.bar = new Bar(this.slider);
-    this.scale = new Scale(this.slider, this.options);
-    this.handles = this.createHandles(this.options.isRange);
-  }
-
-  bindEventListeners() {
-    this.slider.addEventListener('mousedown', this.handleSliderMouseDown);
-    this.handles.forEach((handle) => handle.handle.addEventListener('mousedown', this.handleHandleMouseDown));
-    this.slider.addEventListener('dragstart', this.handleSliderStopDrag);
-    window.addEventListener('resize', this.handleWindowResize);
-  }
-
-  removeEventListeners() {
+  public removeEventListeners() {
     this.slider.removeEventListener('click', this.handleSliderMouseDown);
     this.handles.forEach((handle) => handle.handle.removeEventListener('mousedown', this.handleHandleMouseDown));
     this.slider.removeEventListener('dragstart', this.handleSliderStopDrag);
-  }
-
-  handleSliderStopDrag(event: MouseEvent) {
-    event.preventDefault();
   }
 
   @bind
@@ -100,7 +82,7 @@ export default class Slider {
     document.removeEventListener('mousemove', this.handleSliderMouseDown);
   }
 
-  getActiveHandleIndex(data: {positionInPercents: number, handles: any}): number {
+  public getActiveHandleIndex(data: {positionInPercents: number, handles: any}): number {
     const { positionInPercents, handles } = data;
 
     let index = 0;
@@ -119,14 +101,7 @@ export default class Slider {
     return index;
   }
 
-  private createHandles(isRange: boolean): Array<Handle> {
-    const data = isRange ? [0,1] : [0];
-    this.handles = [];
-    data.forEach(() => this.handles.push(new Handle(this.slider, this.options.hasTagmark)));
-    return this.handles;
-  }
-
-  update(data: {positionInPercents: number, index: number, value: string}): void {
+  public update(data: {positionInPercents: number, index: number, value: string}): void {
     const { positionInPercents, index, value } = data;
 
     this.handles[index].moveHandle({
@@ -148,13 +123,35 @@ export default class Slider {
     });
   }
 
-  setTransitionDuration(currentTarget: HTMLElement): void {
+  public setTransitionDuration(currentTarget: HTMLElement): void {
     const transition = currentTarget === this.slider ? '0.5s' : '0';
     this.slider.style.setProperty('--transition', transition);
   }
 
+  private createTemplate() {
+    this.slider = document.createElement('div');
+    this.slider.className = 'perfect-slider__track';
+    this.bar = new Bar(this.slider);
+    this.scale = new Scale(this.slider, this.options);
+    this.handles = this.createHandles(this.options.isRange);
+  }
+
+  private bindEventListeners() {
+    this.slider.addEventListener('mousedown', this.handleSliderMouseDown);
+    this.handles.forEach((handle) => handle.handle.addEventListener('mousedown', this.handleHandleMouseDown));
+    this.slider.addEventListener('dragstart', this.handleSliderStopDrag);
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  private createHandles(isRange: boolean): Array<Handle> {
+    const data = isRange ? [0,1] : [0];
+    this.handles = [];
+    data.forEach(() => this.handles.push(new Handle(this.slider, this.options.hasTagmark)));
+    return this.handles;
+  }
+
   @bind
-  handleWindowResize() {
+  private handleWindowResize() {
     this.handles.forEach((handle, index) => {
       handle.moveHandle({
         positionInPercents: handle.getCurrentPosition(),
@@ -168,4 +165,10 @@ export default class Slider {
       });
     });
   }
+
+  private handleSliderStopDrag(event: MouseEvent) {
+    event.preventDefault();
+  }
 }
+
+export default  Slider;

@@ -1,12 +1,12 @@
-import Slider from './Slider/Slider';
-import { IOptions } from '../IOptions';
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
+import { IOptions } from '../IOptions';
+import Slider from './Slider/Slider';
 
-export default class View {
-  private options: IOptions
+class View {
   public slider: Slider
   public rootElement: HTMLElement
   public viewChanged: EventDispatcher = new EventDispatcher();
+  private options: IOptions
 
   constructor(options: IOptions, element: HTMLElement) {
     this.rootElement = element;
@@ -16,15 +16,7 @@ export default class View {
     this.addDispatcher();
   }
 
-  createTemplate() {
-    this.slider = new Slider(this.options);
-    this.rootElement.classList.add('perfect-slider');
-    this.setDirection(this.options.isVertical);
-    this.setColor(this.options.color);
-    this.rootElement.append(this.slider.getElement());
-  }
-
-  render(options: IOptions) {
+  public render(options: IOptions) {
     this.options = options;
     this.slider.removeEventListeners();
     this.slider.getElement().remove();
@@ -42,13 +34,7 @@ export default class View {
     });
   }
 
-  addDispatcher() {
-    this.slider.dispatcher.attach((args: {positionInPercents: number, index: number}) => {
-      this.viewChanged.notify(args);
-    });
-  }
-
-  update(data: {positionInPercents: number, index: number, value: string}) {
+  public update(data: {positionInPercents: number, index: number, value: string}) {
     const {index, value} = data;
 
     this.slider.update(data);
@@ -57,11 +43,25 @@ export default class View {
     this.rootElement.dispatchEvent(new Event('changeHandle'));
   }
 
-  setDataAttributes(key: string, value: string) {
+  private createTemplate() {
+    this.slider = new Slider(this.options);
+    this.rootElement.classList.add('perfect-slider');
+    this.setDirection(this.options.isVertical);
+    this.setColor(this.options.color);
+    this.rootElement.append(this.slider.getElement());
+  }
+
+  private addDispatcher() {
+    this.slider.dispatcher.attach((args: {positionInPercents: number, index: number}) => {
+      this.viewChanged.notify(args);
+    });
+  }
+
+  private setDataAttributes(key: string, value: string) {
     this.rootElement.dataset[key] = value;
   }
 
-  setDirection(isVertical: boolean) {
+  private setDirection(isVertical: boolean) {
     if (isVertical) {
       this.rootElement.classList.add('perfect-slider_vertical');
     } else {
@@ -69,9 +69,11 @@ export default class View {
     }
   }
 
-  setColor(color: string) {
+  private setColor(color: string) {
     if (CSS.supports('background', color)) {
       this.rootElement.style.setProperty('--active-color', color);
     }
   }
 }
+
+export default View;

@@ -1,9 +1,10 @@
 import bind from 'bind-decorator';
+
 import Slider from '../slider/Slider';
 import Checkbox from '../checkbox/Checkbox';
 import TextField from '../text-field/TextField';
 
-export default class ControlPanel {
+class ControlPanel {
   public $controlPanel: JQuery<Object>;
   public slider: Slider;
   public $checkboxes: JQuery<Object>;
@@ -64,3 +65,5 @@ export default class ControlPanel {
     Object.values(this.textFields).forEach((field) => field.updateValue());
   }
 }
+
+export default ControlPanel;

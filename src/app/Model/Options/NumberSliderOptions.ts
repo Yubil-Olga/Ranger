@@ -1,7 +1,7 @@
-import Options from './Options';
 import { IOptions } from '../../IOptions';
+import Options from './Options';
 
-export default class NumberSliderOptions extends Options {
+class NumberSliderOptions extends Options {
   public start: number
   public end: number
   public step: number
@@ -20,7 +20,7 @@ export default class NumberSliderOptions extends Options {
     this.to = this.getToValue(options.to);
   }
 
-  getFromValue(from: number | string) {
+  public getFromValue(from: number | string) {
     if (typeof from === 'number') {
       const isFromValueValid = from >= this.start
       && from < this.end
@@ -32,12 +32,19 @@ export default class NumberSliderOptions extends Options {
     }
   }
 
-  getToValue(to: number | string) {
+  public getToValue(to: number | string) {
     if (typeof to === 'number') {
       if (this.isToValueValid(to)) return to;
       if (to > this.end) return this.end;
     }
     return this.isRange ? this.from + this.step : this.start;
+  }
+
+  public getScaleStep(scaleStep: number) {
+    if (this.isScaleStepValid(scaleStep)) {
+      return scaleStep % this.step === 0 ? scaleStep : this.step;
+    }
+    return (this.end - this.start);
   }
 
   private isToValueValid(to: number) {
@@ -58,14 +65,9 @@ export default class NumberSliderOptions extends Options {
     return (typeof step === 'number' && step > 1 && step < Math.abs(end - start));
   }
 
-  getScaleStep(scaleStep: number) {
-    if (this.isScaleStepValid(scaleStep)) {
-      return scaleStep % this.step === 0 ? scaleStep : this.step;
-    }
-    return (this.end - this.start);
-  }
-
   private isScaleStepValid(scaleStep: number) {
     return (typeof scaleStep === 'number' && scaleStep > 1 && scaleStep < (this.end - this.start));
   }
 }
+
+export default NumberSliderOptions;

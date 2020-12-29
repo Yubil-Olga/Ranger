@@ -1,5 +1,6 @@
-import './View/Slider/slider.scss';
 import jQuery from 'jquery';
+
+import './View/Slider/slider.scss';
 import Facade from './Presenter/Facade';
 import { IOptions } from './IOptions';
 

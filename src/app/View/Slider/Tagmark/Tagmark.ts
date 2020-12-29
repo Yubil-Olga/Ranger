@@ -1,4 +1,4 @@
-export default class Tagmark {
+class Tagmark {
   public handleElement: HTMLElement
   public tagmark: HTMLElement
 
@@ -7,13 +7,15 @@ export default class Tagmark {
     this.createTemplate();
   }
 
+  public setTextContent(text: string) {
+    this.tagmark.textContent = text;
+  }
+
   private createTemplate() {
     this.tagmark = document.createElement('div');
     this.tagmark.className = 'perfect-slider__tagmark';
     this.handleElement.append(this.tagmark);
   }
-
-  public setTextContent(text: string) {
-    this.tagmark.textContent = text;
-  }
 }
+
+export default Tagmark;

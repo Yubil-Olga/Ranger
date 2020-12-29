@@ -1,6 +1,6 @@
 import Tagmark from '../Tagmark/Tagmark';
 
-export default class Handle {
+class Handle {
   public handle: HTMLElement
   public tagmark: Tagmark
   private trackElement: HTMLElement
@@ -10,12 +10,6 @@ export default class Handle {
     this.trackElement = trackElement;
     this.createTemplate();
     this.tagmark = hasTagmark ? new Tagmark(this.handle) : null;
-  }
-
-  private createTemplate(): void {
-    this.handle = document.createElement('div');
-    this.handle.className = 'perfect-slider__handle';
-    this.trackElement.append(this.handle);
   }
 
   public getCurrentPosition() {
@@ -37,7 +31,15 @@ export default class Handle {
     }
   }
 
-  updateTagmarkValue(value: string) {
+  public updateTagmarkValue(value: string) {
     this.tagmark.setTextContent(value);
   }
+
+  private createTemplate(): void {
+    this.handle = document.createElement('div');
+    this.handle.className = 'perfect-slider__handle';
+    this.trackElement.append(this.handle);
+  }
 }
+
+export default Handle;

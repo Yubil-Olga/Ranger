@@ -1,6 +1,6 @@
 import { IOptions } from '../../IOptions';
 
-export default class Data {
+class Data {
   public value: string | number
   public positionInPercents: number
   public index: number
@@ -8,6 +8,11 @@ export default class Data {
   constructor(i: number, options: IOptions, value?: number | string) {
     this.index = i;
     this.init(options, value);
+  }
+
+  public update(value: string | number, positionInPercents: number): void {
+    this.value = value;
+    this.positionInPercents = positionInPercents;
   }
 
   private init(options: IOptions, value: string | number) {
@@ -18,9 +23,6 @@ export default class Data {
       ? (value - options.start)/(end - start) * 100
       : options.values.indexOf(value.toString())/(values.length - 1) * 100;
   }
-
-  public update(value: string | number, positionInPercents: number): void {
-    this.value = value;
-    this.positionInPercents = positionInPercents;
-  }
 }
+
+export default Data;

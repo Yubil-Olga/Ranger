@@ -1,10 +1,10 @@
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
-import Data from './Data/Data';
 import { IOptions } from '../IOptions';
 import ValueSliderOptions from './Options/ValueSliderOptions';
 import NumberSliderOptions from './Options/NumberSliderOptions';
+import Data from './Data/Data';
 
-export default class Model {
+class Model {
   private options: IOptions;
   public data: Array<Data>;
   public modelChanged = new EventDispatcher();
@@ -41,12 +41,6 @@ export default class Model {
   public init(): void {
     this.initData();
     this.data.forEach((el) => this.modelChanged.notify(el));
-  }
-
-  initData() {
-    this.data = this.options.isRange
-      ? [new Data(0, this.options, this.options.from), new Data(1, this.options, this.options.to)]
-      : [new Data(0, this.options, this.options.to)];
   }
 
   public stepCalculation(): number {
@@ -86,4 +80,12 @@ export default class Model {
     const attributes = this.options.isRange ? ['from', 'to'] : ['to'];
     this.options[attributes[index]] = value;
   }
+
+  private initData() {
+    this.data = this.options.isRange
+      ? [new Data(0, this.options, this.options.from), new Data(1, this.options, this.options.to)]
+      : [new Data(0, this.options, this.options.to)];
+  }
 }
+
+export default Model;

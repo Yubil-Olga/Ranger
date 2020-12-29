@@ -1,8 +1,9 @@
 import bind from 'bind-decorator';
-import Slider from '../slider/Slider';
-import EventDispatcher from '../../../app/EventDispatcher/EventDispatcher';
 
-export default class TextField {
+import EventDispatcher from '../../../app/EventDispatcher/EventDispatcher';
+import Slider from '../slider/Slider';
+
+class TextField {
   public $textField: JQuery<Object>;
   public name: string
   public slider: Slider;
@@ -14,7 +15,7 @@ export default class TextField {
     this.bindEventListeners();
   }
 
-  getValue(): string | number | string[] {
+  public getValue(): string | number | string[] {
     const inputType = this.$textField.attr('type');
     const value = this.$textField.val();
 
@@ -27,7 +28,7 @@ export default class TextField {
     return values[inputType];
   }
 
-  updateValue() {
+  public updateValue() {
     if (this.name === 'from' || this.name === 'to') {
       this.updateType();
     }
@@ -73,3 +74,5 @@ export default class TextField {
     this.textFieldChanged.notify(this);
   }
 }
+
+export default TextField;

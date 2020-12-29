@@ -1,7 +1,8 @@
 import bind from 'bind-decorator';
+
 import Slider from '../slider/Slider';
 
-export default class Checkbox {
+class Checkbox {
   public $checkbox: JQuery<Object>;
   public name: string
   public slider: Slider;
@@ -36,3 +37,5 @@ export default class Checkbox {
     this.slider.setPropertyValue(this.name, this.isChecked());
   }
 }
+
+export default Checkbox;

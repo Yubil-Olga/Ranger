@@ -1,7 +1,7 @@
 import { IOptions } from '../../IOptions';
 import defaultOptions from './defaultOptions';
 
-export default class Options implements IOptions  {
+class Options implements IOptions  {
   public defaultOptions: IOptions
   public isRange: boolean
   public isVertical: boolean
@@ -14,7 +14,7 @@ export default class Options implements IOptions  {
     this.init(options);
   }
 
-  init(settings: IOptions): void {
+  private init(settings: IOptions): void {
     const {isRange, isVertical, prefix, color, hasTagmark} = settings;
 
     this.isRange = typeof isRange === 'boolean' ? isRange : this.defaultOptions.isRange;
@@ -24,3 +24,5 @@ export default class Options implements IOptions  {
     this.hasTagmark = typeof hasTagmark === 'boolean' ? hasTagmark : this.defaultOptions.hasTagmark;
   }
 }
+
+export default  Options;
