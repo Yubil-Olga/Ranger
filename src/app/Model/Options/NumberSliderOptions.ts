@@ -35,7 +35,7 @@ class NumberSliderOptions extends Options {
   public getToValue(to: number | string) {
     if (typeof to === 'number') {
       if (this.isToValueValid(to)) return to;
-      if (to > this.end) return this.end;
+      if (to >= this.end) return this.end;
     }
     return this.isRange ? this.from + this.step : this.start;
   }
@@ -62,7 +62,7 @@ class NumberSliderOptions extends Options {
 
   private isStepValid(options: IOptions) {
     const {start, end, step} = options;
-    return (typeof step === 'number' && step > 1 && step < Math.abs(end - start));
+    return (typeof step === 'number' && step > 1 && step <= Math.abs(end - start));
   }
 
   private isScaleStepValid(scaleStep: number) {

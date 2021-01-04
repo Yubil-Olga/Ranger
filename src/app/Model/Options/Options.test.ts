@@ -75,6 +75,9 @@ describe('Options validation', () => {
 
     model.validateOptions({start: 0, end: 50, scaleStep: 10});
     expect(model.getOptions().scaleStep).toBe(10);
+
+    model.validateOptions({start: 0, end: 50, step: 15, scaleStep: 4});
+    expect(model.getOptions().scaleStep).toBe(15);
   });
 
   test('Set step', () => {

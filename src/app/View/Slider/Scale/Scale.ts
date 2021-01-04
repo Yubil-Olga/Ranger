@@ -42,7 +42,7 @@ class Scale {
     const {tag, isVertical, position} = data;
 
     const labelMark = document.createElement('span');
-    labelMark.className = 'perfect-slider__scale-mark';
+    labelMark.className = 'perfect-slider__scale-mark js-perfect-slider__scale-mark';
     labelMark.setAttribute('data-text', tag);
     if (isVertical) {
       labelMark.style.top = position;

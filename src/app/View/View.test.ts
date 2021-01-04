@@ -16,6 +16,19 @@ describe('Single slider', () => {
   };
   const view = new View(options, div);
 
+  test('Click on scale mark', () => {
+    view.viewChanged.notify = jest.fn();
+
+    const scaleMark = document.createElement('span');
+    scaleMark.classList.add('js-perfect-slider__scale-mark');
+    scaleMark.style.left = '20%';
+    view.slider.scale.scale.append(scaleMark);
+    scaleMark.dispatchEvent(new MouseEvent('click', {'bubbles': true}));
+
+    expect(view.viewChanged.notify).toBeCalled();
+    expect(view.viewChanged.notify).toBeCalledWith({ positionInPercents: 20, index: 0 });
+  });
+
   test ('Click event', () => {
     const click = new MouseEvent('click', {
       clientX: 140,
