@@ -4,4 +4,4 @@ function importAll(resolve: any) {
   resolve.keys().forEach(resolve);
 }
 
-importAll(require.context('./', true, /\.(css|scss)$/));
+importAll(require.context('./demo', true, /\.(css|scss)$/));

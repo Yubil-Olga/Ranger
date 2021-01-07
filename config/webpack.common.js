@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -8,7 +7,7 @@ module.exports = {
   context: path.resolve(__dirname, '../src'),
   entry: {
     index: './index.ts',
-    perfectSlider: './app/app.ts'
+    perfectSlider: ['./app/app.ts', './app/View/Slider/slider.scss']
   },
   output: {
     filename: './js/[name].js',
@@ -19,16 +18,12 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
+      currentEnv: process.env.MODE_ENV,
       filename: 'index.html',
       chunks: ['index'],
       template: './demo/demo.pug'
     }),
     new CleanWebpackPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-    }),
     new CopyPlugin({
       patterns: [
         {

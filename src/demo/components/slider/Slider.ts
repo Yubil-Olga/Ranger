@@ -1,4 +1,3 @@
-import '../../../app/app';
 import { IOptions } from '../../../app/IOptions';
 
 class Slider {
