@@ -5,18 +5,10 @@
 ## Demo
 [Demo page](https://yubil-olga.github.io/Range/dist/index.html)
 
-## Архитектура приложения
-
-**View** - отвечает за внешнее представление слайдера, отрисовывает его в Dom. Пользователь взаимодействует непосредственно с View с помощью событий мыши. Как только произошло указанное событие, Presenter получает уведомление (inputChanged).
-
-**Model** - хранит данные о выбранных значениях(_data). Может получить команду от презентера, что данные необходимо пересчитать(valueCalculation). Пересчитывает, обновляет _data и отчитывается перед презентером: modelChanged.
-
-**Presenter** - посредник между View и Model. Слушает события: если inputChanged, вызывает метод модели valueCalculation и передает необходимые для расчета данные. Если modelChanged, то вызывает метод вида слайдера update и передает ему значения и координаты для перерисовки.
-
-## UML диаграмма
-![uml](Diagram.jpg "uml diagram")
-
 ## Использование
+
+Совместимая версия Node.js v10.16.0   
+Для работы слайдера необходима библиотека jQuery 3.5.1.
 
 ### Установка
 
@@ -25,13 +17,26 @@
 3. **npm run build** - запустить сборку
 4. **npm test** - запуск тестов
 
+**npm run dev** - запустить сборку в режиме development  
+**npm start** - запустить webpack-dev-server  
+**npm run lint** - запустить линтер  
+
 ### Инициализация
 
+Необходимо подключить perfectSlider.js и perfectSlider.min.css
+
+```
+<link rel = 'stylesheet' href = 'perfectSlider.min.css'>
+```
 ```
 <div class='myElement'></div>
 ```
 ```javascript
-$(".myElement").perfectSlider()
+import 'perfectSlider.js';
+
+$(() => {
+  $(".myElement").perfectSlider();
+})
 ```
 
 #### Подключение опций:
@@ -41,6 +46,10 @@ $('.myElement').slider({
     direction: 'vertical',
     values: ['one', 'two', 'three']
 });
+```
+Параметры можно также передавать с помощью data-атрибутов:
+```
+<div class='myElement' data-is-range='true' data-start='-80'></div>
 ```
 
 
@@ -59,3 +68,43 @@ $('.myElement').slider({
 | values      | []       | array            | Set your own array of possible slider values. They should be strings.
 | from        | -        | number           | Set position of first handle, if this slider is range
 | to          | 1        | number or string | Set position of handle  |
+
+* * *
+## Методы
+
+**Получить текущие параметры слайдера:**
+
+Возвращает объект jQuery
+```
+const $options = $(".myElement").perfectSlider('getOptions');
+const options = $options.get(0);
+```
+**Передать параметры и обновить слайдер:**
+```
+$(".myElement").perfectSlider('setOptions', { isVertical: true, });
+```
+**Подписаться на обновления слайдера:**   
+   
+this.$slider.perfectSlider('subscribe', callback)
+
+```
+this.$slider.perfectSlider('subscribe', (options: IOptions) => {
+  /*
+    Ваш код
+  */
+});
+```
+**Отписаться от обновлений слайдера:**
+```
+this.$slider.perfectSlider('unsubscribe', callback)
+```
+## Архитектура приложения
+
+**View** - отвечает за внешнее представление слайдера, отрисовывает его в Dom. Пользователь взаимодействует непосредственно с View с помощью событий мыши. Как только произошло указанное событие, Presenter получает уведомление (inputChanged).
+
+**Model** - хранит данные о выбранных значениях(_data). Может получить команду от презентера, что данные необходимо пересчитать(valueCalculation). Пересчитывает, обновляет _data и отчитывается перед презентером: modelChanged.
+
+**Presenter** - посредник между View и Model. Слушает события: если inputChanged, вызывает метод модели valueCalculation и передает необходимые для расчета данные. Если modelChanged, то вызывает метод вида слайдера update и передает ему значения и координаты для перерисовки.
+
+## UML диаграмма
+![uml](Diagram.jpg "uml diagram")

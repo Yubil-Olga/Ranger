@@ -9,6 +9,7 @@ class Model {
   public data: Array<Data>;
   public modelChanged = new EventDispatcher();
   public optionsChanged = new EventDispatcher();
+  public onChange = new EventDispatcher();
 
   constructor(settings: IOptions) {
     this.validateOptions(settings);
@@ -74,6 +75,7 @@ class Model {
     this.updateValues(index, newValue);
 
     this.modelChanged.notify(this.data[index]);
+    this.onChange.notify(this.options);
   }
 
   public updateValues(index: number, value: string | number) {

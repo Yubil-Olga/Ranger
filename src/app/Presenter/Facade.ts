@@ -20,6 +20,14 @@ class Facade {
     return this.model.getOptions();
   }
 
+  public subscribe(fn: Function) {
+    this.model.onChange.attach(fn);
+  }
+
+  public unsubscribe(fn: Function) {
+    this.model.onChange.unsubscribe(fn);
+  }
+
   private init(options: IOptions) {
     this.model = new Model(options);
     this.presenter = new Presenter(this.container, this.model);

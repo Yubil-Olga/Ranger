@@ -12,4 +12,8 @@ export default class EventDispatcher {
   public notify(args: any) {
     this.listeners.forEach((listener) => listener(args));
   }
+
+  public unsubscribe(fn: Function) {
+    this.listeners = this.listeners.filter((listener) => listener !== fn);
+  }
 }
