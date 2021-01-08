@@ -1,0 +1,5 @@
+.checkbox__label{display:flex;justify-content:space-between;align-items:center;cursor:pointer}.checkbox__input{width:20px;height:20px;cursor:pointer}
+.control-panel{display:grid;grid-gap:10px;justify-content:center}
+.sample{padding:30px;box-sizing:border-box;border:1px solid #000;display:flex;flex-flow:row wrap;justify-content:center}
+.text-field__label{display:flex;justify-content:space-between;align-items:center}.text-field__input{border:1px solid #000;padding:5px;box-sizing:border-box;border-radius:4px;margin-left:10px;min-width:220px;cursor:pointer}.text-field__input_disabled{background-color:#eee}.text-field__input:active,.text-field__input:focus{background-color:#fff}
+.demo{display:grid;grid-template-columns:1fr 1fr;grid-gap:20px;justify-items:center;padding:10px;font-family:Arial,Helvetica,sans-serif}@media(max-width:650px){.demo{grid-template-columns:auto;padding:0}}.demo__item{width:100%;display:grid}
