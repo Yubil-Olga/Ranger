@@ -5,11 +5,11 @@ import NumberSliderOptions from './Options/NumberSliderOptions';
 import Data from './Data/Data';
 
 class Model {
-  private options: IOptions;
   public data: Array<Data>;
   public modelChanged = new EventDispatcher();
   public optionsChanged = new EventDispatcher();
   public onChange = new EventDispatcher();
+  private options: IOptions;
 
   constructor(settings: IOptions) {
     this.validateOptions(settings);
