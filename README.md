@@ -16,10 +16,9 @@
 2. **npm install** - установить зависимости
 3. **npm run build** - запустить сборку
 4. **npm test** - запуск тестов
-
-**npm run dev** - запустить сборку в режиме development  
-**npm start** - запустить webpack-dev-server  
-**npm run lint** - запустить линтер  
+5. **npm run dev** - запустить сборку в режиме development
+6. **npm start** - запустить webpack-dev-server
+7. **npm run lint** - запустить линтер
 
 ### Инициализация
 
