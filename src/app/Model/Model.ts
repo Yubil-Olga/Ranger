@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js-light';
+
 import EventDispatcher from '../EventDispatcher/EventDispatcher';
 import { IOptions } from '../IOptions';
 import ValueSliderOptions from './Options/ValueSliderOptions';
@@ -69,7 +71,9 @@ class Model {
 
     const newValue = this.options.values
       ? this.options.values[newPositionInPercents / step]
-      : Math.round(newPositionInPercents * (this.options.end - this.options.start) /100 + this.options.start);
+      : new Decimal(newPositionInPercents * (this.options.end - this.options.start) / 100 + this.options.start)
+        .toDecimalPlaces(4)
+        .toNumber();
 
     this.data[index].update(newValue, newPositionInPercents);
     this.updateValues(index, newValue);

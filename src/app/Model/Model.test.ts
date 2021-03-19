@@ -92,3 +92,36 @@ describe('Value model with range', () => {
     expect(model.updateValues).toBeCalledWith(0, 'three');
   });
 });
+
+describe('Number model with decimal numbers', () => {
+  const options = {
+    isRange: true,
+    start: 0.2,
+    end: 1,
+    step: 0.2,
+    scaleStep: 0.2,
+  };
+  const model = new Model(options);
+  model.init();
+
+  test('Model returns correct data', () => {
+    expect(model.getData()).toEqual([
+      { value: 0.2, positionInPercents: 0, index: 0},
+      { value: 0.4, positionInPercents: 25, index: 1}
+    ]);
+  });
+
+  test('Step calculation return size of one step in %', () => {
+    expect(model.stepCalculation()).toBe(25);
+  });
+
+  test('Update "from"-values', () => {
+    model.updateValues(0, 0.4);
+    expect(model.getOptions().from).toBe(0.4);
+  });
+
+  test('Update "to"-values', () => {
+    model.updateValues(1, 0.8);
+    expect(model.getOptions().to).toBe(0.8);
+  });
+});
