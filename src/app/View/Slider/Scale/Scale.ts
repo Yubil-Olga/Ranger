@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js-light';
+
 import { IOptions } from '../../../IOptions';
 
 class Scale {
@@ -28,7 +30,7 @@ class Scale {
       const percent = (scaleStep / (end - start)) * 100;
       Array(count).fill('').forEach((el,index) => {
         const tag = index * scaleStep + start < end
-          ? (index * scaleStep + start).toString()
+          ? new Decimal(scaleStep).times(index).plus(start).val()
           : end.toString();
         const position = index * percent < 100
           ? index * percent + '%'

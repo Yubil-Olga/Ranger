@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js-light';
+
 import { IOptions } from '../../IOptions';
 import Options from './Options';
 
@@ -24,8 +26,7 @@ class NumberSliderOptions extends Options {
     if (typeof from === 'number') {
       const isFromValueValid = from >= this.start
       && from < this.end
-      && (from - this.start) % this.step === 0;
-
+      && new Decimal(from - this.start).modulo(this.step).isZero();
       return isFromValueValid ? from : this.start;
     } else {
       return this.start;
@@ -49,7 +50,11 @@ class NumberSliderOptions extends Options {
 
   private isToValueValid(to: number) {
     if (this.isRange) {
-      return (to <= this.end && to > this.from && (to - this.start) % this.step === 0);
+      return (
+        to <= this.end
+        && to > this.from
+        && new Decimal(to - this.start).modulo(this.step).isZero()
+      );
     } else {
       return (to <= this.end && to > this.start && (to - this.start) % this.step === 0);
     }
@@ -62,11 +67,11 @@ class NumberSliderOptions extends Options {
 
   private isStepValid(options: IOptions) {
     const {start, end, step} = options;
-    return (typeof step === 'number' && step > 1 && step <= Math.abs(end - start));
+    return (typeof step === 'number' && step > 0 && step <= Math.abs(end - start));
   }
 
   private isScaleStepValid(scaleStep: number) {
-    return (typeof scaleStep === 'number' && scaleStep > 1 && scaleStep < (this.end - this.start));
+    return (typeof scaleStep === 'number' && scaleStep > 0 && scaleStep < (this.end - this.start));
   }
 }
 
