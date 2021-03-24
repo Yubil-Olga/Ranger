@@ -21,6 +21,7 @@ class Slider {
     this.options = options;
     this.createTemplate();
     this.bindEventListeners();
+    this.addDispatcher();
   }
 
   public getElement() {
@@ -29,8 +30,7 @@ class Slider {
 
   public removeEventListeners() {
     this.slider.removeEventListener('click', this.handleSliderMouseDown);
-    this.handles.forEach((handle) => handle.handle.removeEventListener('mousedown', this.handleHandleMouseDown));
-    this.scale.scale.removeEventListener('click', this.handleScaleClick);
+    this.handles.forEach((handle) => handle.removeEventListeners());
     this.slider.removeEventListener('dragstart', this.handleSliderStopDrag);
   }
 
@@ -62,33 +62,6 @@ class Slider {
       handles: this.handles
     });
     this.dispatcher.notify({ positionInPercents: positionInPercents, index: this.activeHandleIndex });
-  }
-
-  @bind
-  public handleScaleClick(event: MouseEvent) {
-    if ((<HTMLElement>event.target).classList.contains('js-perfect-slider__scale-mark')) {
-      const positionInPercents = this.options.isVertical
-        ? Number((<HTMLElement>event.target).style.top.replace('%', ''))
-        : Number((<HTMLElement>event.target).style.left.replace('%', ''));
-      this.activeHandleIndex = this.getActiveHandleIndex({
-        positionInPercents: positionInPercents,
-        handles: this.handles
-      });
-      this.dispatcher.notify({ positionInPercents: positionInPercents, index: this.activeHandleIndex });
-      event.preventDefault();
-    }
-  }
-
-  @bind
-  public handleHandleMouseDown(event: MouseEvent) {
-    event.stopPropagation();
-    event.preventDefault();
-    this.shift = {
-      x: event.clientX - (<HTMLElement>event.currentTarget).getBoundingClientRect().left - (<HTMLElement>event.currentTarget).clientWidth / 2,
-      y: event.clientY - (<HTMLElement>event.currentTarget).getBoundingClientRect().top - (<HTMLElement>event.currentTarget).clientHeight / 2
-    };
-    document.addEventListener('mousemove', this.handleSliderMouseDown);
-    document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }
 
   @bind
@@ -153,8 +126,6 @@ class Slider {
 
   private bindEventListeners() {
     this.slider.addEventListener('mousedown', this.handleSliderMouseDown);
-    this.handles.forEach((handle) => handle.handle.addEventListener('mousedown', this.handleHandleMouseDown));
-    this.scale.scale.addEventListener('click', this.handleScaleClick);
     this.slider.addEventListener('dragstart', this.handleSliderStopDrag);
     window.addEventListener('resize', this.handleWindowResize);
   }
@@ -184,6 +155,18 @@ class Slider {
 
   private handleSliderStopDrag(event: MouseEvent) {
     event.preventDefault();
+  }
+
+  private addDispatcher() {
+    this.handles.forEach((handle) => {
+      handle.dispatcher.attach((shift) => this.moveHandle(shift));
+    });
+  }
+
+  private moveHandle(shift: {x: number, y: number}) {
+    this.shift = shift;
+    document.addEventListener('mousemove', this.handleSliderMouseDown);
+    document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }
 }
 

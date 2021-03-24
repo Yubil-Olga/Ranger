@@ -1,6 +1,9 @@
 import Tagmark from '../Tagmark/Tagmark';
+import bind from 'bind-decorator';
+import EventDispatcher from '../../../EventDispatcher/EventDispatcher';
 
 class Handle {
+  public dispatcher: EventDispatcher = new EventDispatcher();
   public handle: HTMLElement
   public tagmark: Tagmark
   private trackElement: HTMLElement
@@ -9,6 +12,7 @@ class Handle {
   constructor(trackElement: HTMLElement, hasTagmark: boolean) {
     this.trackElement = trackElement;
     this.createTemplate();
+    this.bindEventListeners();
     this.tagmark = hasTagmark ? new Tagmark(this.handle) : null;
   }
 
@@ -39,6 +43,25 @@ class Handle {
     this.handle = document.createElement('div');
     this.handle.className = 'perfect-slider__handle';
     this.trackElement.append(this.handle);
+  }
+
+  @bind
+  public handleHandleMouseDown(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    const shift = {
+      x: event.clientX - (<HTMLElement>event.currentTarget).getBoundingClientRect().left - (<HTMLElement>event.currentTarget).clientWidth / 2,
+      y: event.clientY - (<HTMLElement>event.currentTarget).getBoundingClientRect().top - (<HTMLElement>event.currentTarget).clientHeight / 2
+    };
+    this.dispatcher.notify(shift);
+  }
+
+  public removeEventListeners() {
+    this.handle.removeEventListener('mousedown', this.handleHandleMouseDown);
+  }
+
+  private bindEventListeners() {
+    this.handle.addEventListener('mousedown', this.handleHandleMouseDown);
   }
 }
 
