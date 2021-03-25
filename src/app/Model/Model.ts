@@ -54,7 +54,14 @@ class Model {
   public positionCalculation(data: {positionInPercents: number, step: number}): number {
     const { positionInPercents, step } = data;
 
-    return Math.min(Math.round(positionInPercents / step) * step, 100);
+    const isMaxStep = Math.ceil(positionInPercents / step) * step > 100 &&
+      Math.round((positionInPercents % step) / (100 % step));
+
+    const newPosition = isMaxStep
+      ? 100
+      : Math.round(positionInPercents / step) * step;
+
+    return newPosition;
   }
 
   public updateModel(data: {positionInPercents: number, index: number}) {

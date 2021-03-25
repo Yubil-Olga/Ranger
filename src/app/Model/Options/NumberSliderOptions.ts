@@ -25,8 +25,8 @@ class NumberSliderOptions extends Options {
   public getFromValue(from: number | string) {
     if (typeof from === 'number') {
       const isFromValueValid = from >= this.start
-      && from < this.end
-      && new Decimal(from - this.start).modulo(this.step).isZero();
+        && from < this.end
+        && new Decimal(from - this.start).modulo(this.step).isZero();
       return isFromValueValid ? from : this.start;
     } else {
       return this.start;
